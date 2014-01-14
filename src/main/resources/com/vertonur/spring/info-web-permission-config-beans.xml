@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/security 
+		http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+	<!-- forumzone related permission config start -->
+	<bean id="readForumzonePermissionDataSource" factory-bean="infoCoreSpringContext"
+		factory-method="getBean">
+		<constructor-arg value="validateReadDeptPermissionDataSource" />
+	</bean>
+
+	<bean id="readForumzonePermissionConfigEntry"
+		class="com.vertonur.admin.security.GetForumzonePermissionConfigEntry"
+		scope="prototype">
+		<property name="dataSource" ref="readForumzonePermissionDataSource" />
+		<property name="name" value="forumzone" />
+		<property name="desc" value="${permission.entry.restricted.forumzones}" />
+		<property name="multiple" value="true" />
+	</bean>
+
+	<bean id="readForumzonePermissionConfigSection" class="com.vertonur.admin.security.PermissionConfigSection"
+		scope="prototype">
+		<property name="desc" value="${permission.entry.forumzones}" />
+		<property name="entries">
+			<set>
+				<ref bean="readForumzonePermissionConfigEntry" />
+			</set>
+		</property>
+	</bean>
+	<!-- forumzone related permission config end -->
+
+	<!-- forum related permission config start -->
+	<bean id="readForumPermissionTemplate" factory-bean="infoCoreSpringContext"
+		factory-method="getBean" scope="prototype">
+		<constructor-arg value="readCategoryPermissionTemplate" />
+	</bean>
+
+	<bean id="readForumPermissionDataSource"
+		class="com.vertonur.security.spring.aop.datasource.IdPermissionDataSource"
+		scope="prototype">
+		<property name="permissionExamples">
+			<set>
+				<ref bean="readForumPermissionTemplate" />
+			</set>
+		</property>
+	</bean>
+
+	<bean id="readForumPermissionConfigEntry" class="com.vertonur.admin.security.ForumPermissionConfigEntry"
+		scope="prototype">
+		<property name="dataSource" ref="readForumPermissionDataSource" />
+		<property name="name" value="forum" />
+		<property name="desc" value="${permission.entry.restricted.forums}" />
+		<property name="multiple" value="true" />
+	</bean>
+
+	<bean id="readForumPermissionConfigSection" class="com.vertonur.admin.security.PermissionConfigSection"
+		scope="prototype">
+		<property name="desc" value="${permission.entry.forums}" />
+		<property name="entries">
+			<set>
+				<ref bean="readForumPermissionConfigEntry" />
+			</set>
+		</property>
+	</bean>
+	<!-- forum related permission config end -->
+
+	<!-- Read only related permission config start -->
+	<bean id="writeForumPermissionTemplate" factory-bean="infoCoreSpringContext"
+		factory-method="getBean" scope="prototype">
+		<constructor-arg value="writeCategoryPermissionTemplate" />
+	</bean>
+
+	<bean id="readOnlyForumPermissionDataSource"
+		class="com.vertonur.security.spring.aop.datasource.IdPermissionDataSource"
+		scope="prototype">
+		<property name="permissionExamples">
+			<set>
+				<ref bean="writeForumPermissionTemplate" />
+			</set>
+		</property>
+	</bean>
+
+	<bean id="readOnlyForumPermissionConfigEntry" class="com.vertonur.admin.security.ForumPermissionConfigEntry"
+		scope="prototype">
+		<property name="dataSource" ref="readOnlyForumPermissionDataSource" />
+		<property name="name" value="readOnly" />
+		<property name="desc" value="${permission.entry.read.only.forum.desc}" />
+		<property name="multiple" value="true" />
+	</bean>
+
+	<bean id="readOnlyForumPermissionConfigSection" class="com.vertonur.admin.security.PermissionConfigSection"
+		scope="prototype">
+		<property name="desc" value="${permission.entry.read.only.forum}" />
+		<property name="entries">
+			<set>
+				<ref bean="readOnlyForumPermissionConfigEntry" />
+			</set>
+		</property>
+	</bean>
+	<!-- Read only related permission config end -->
+
+	<!-- annoymous post related permission config start -->
+	<bean id="anonymousCmtPermissionTemplate" factory-bean="infoCoreSpringContext"
+		factory-method="getBean" scope="prototype">
+		<constructor-arg value="saveCmtPermissionTemplate" />
+	</bean>
+
+	<bean id="annoymousCmtPermissionDataSource"
+		class="com.vertonur.security.spring.aop.datasource.IdPermissionDataSource"
+		scope="prototype">
+		<property name="permissionExamples">
+			<set>
+				<ref bean="anonymousCmtPermissionTemplate" />
+			</set>
+		</property>
+	</bean>
+
+	<bean id="annoymousCmtPermissionConfigEntry" class="com.vertonur.admin.security.ForumPermissionConfigEntry"
+		scope="prototype">
+		<property name="dataSource" ref="annoymousCmtPermissionDataSource" />
+		<property name="name" value="annoymousRsp" />
+		<property name="desc" value="${permission.entry.anonymous.posts.deny}" />
+		<property name="multiple" value="true" />
+	</bean>
+
+	<bean id="annoymousCmtPermissionConfigSection" class="com.vertonur.admin.security.PermissionConfigSection"
+		scope="prototype">
+		<property name="desc" value="${permission.entry.anonymous.posts}" />
+		<property name="belongGroupType" value="GENERIC_GST" />
+		<property name="entries">
+			<set>
+				<ref bean="annoymousCmtPermissionConfigEntry" />
+			</set>
+		</property>
+	</bean>
+	<!-- annoymous post related permission config end -->
+
+	<!-- Reply only related permission config start -->
+	<bean id="saveTopicPermissionTemplate" factory-bean="infoCoreSpringContext"
+		factory-method="getBean" scope="prototype">
+		<constructor-arg value="saveInfoPermissionTemplate" />
+	</bean>
+
+	<bean id="saveTopicPermissionDataSource"
+		class="com.vertonur.security.spring.aop.datasource.IdPermissionDataSource"
+		scope="prototype">
+		<property name="permissionExamples">
+			<set>
+				<ref bean="saveTopicPermissionTemplate" />
+			</set>
+		</property>
+	</bean>
+
+	<bean id="saveTopicPermissionConfigEntry" class="com.vertonur.admin.security.ForumPermissionConfigEntry"
+		scope="prototype">
+		<property name="dataSource" ref="saveTopicPermissionDataSource" />
+		<property name="name" value="replyOnly" />
+		<property name="desc" value="${permission.entry.deny.new.topic}" />
+		<property name="multiple" value="true" />
+	</bean>
+
+	<bean id="saveTopicPermissionConfigSection" class="com.vertonur.admin.security.PermissionConfigSection"
+		scope="prototype">
+		<property name="desc" value="${permission.entry.reply.only}" />
+		<property name="entries">
+			<set>
+				<ref bean="saveTopicPermissionConfigEntry" />
+			</set>
+		</property>
+	</bean>
+	<!-- Reply only related permission config end -->
+
+	<!-- Attachments related permission config start -->
+	<bean id="downloadAttmPermissionTemplate" factory-bean="infoCoreSpringContext"
+		factory-method="getBean" scope="prototype">
+		<constructor-arg value="downloadAttmPermissionTemplate" />
+	</bean>
+
+	<bean id="downloadAttmPermissionDataSource"
+		class="com.vertonur.security.spring.aop.datasource.IdPermissionDataSource"
+		scope="prototype">
+		<property name="permissionExamples">
+			<set>
+				<ref bean="downloadAttmPermissionTemplate" />
+			</set>
+		</property>
+	</bean>
+
+	<bean id="downloadAttmPermissionConfigEntry" class="com.vertonur.admin.security.ForumPermissionConfigEntry"
+		scope="prototype">
+		<property name="dataSource" ref="downloadAttmPermissionDataSource" />
+		<property name="name" value="downloadAttm" />
+		<property name="desc" value="${permission.entry.attachment.restricted}" />
+		<property name="multiple" value="true" />
+	</bean>
+
+	<bean id="downloadAttmPermissionConfigSection" class="com.vertonur.admin.security.PermissionConfigSection"
+		scope="prototype">
+		<property name="desc" value="${permission.entry.attachments}" />
+		<property name="entries">
+			<set>
+				<ref bean="downloadAttmPermissionConfigEntry" />
+			</set>
+		</property>
+	</bean>
+
+	<bean id="uploadAttmPermissionTemplate" factory-bean="infoCoreSpringContext"
+		factory-method="getBean" scope="prototype">
+		<constructor-arg value="uploadAttmPermissionTemplate" />
+	</bean>
+
+	<bean id="uploadAttmPermissionDataSource"
+		class="com.vertonur.security.spring.aop.datasource.IdPermissionDataSource"
+		scope="prototype">
+		<property name="permissionExamples">
+			<set>
+				<ref bean="uploadAttmPermissionTemplate" />
+			</set>
+		</property>
+	</bean>
+
+	<bean id="uploadAttmPermissionConfigEntry" class="com.vertonur.admin.security.ForumPermissionConfigEntry"
+		scope="prototype">
+		<property name="dataSource" ref="uploadAttmPermissionDataSource" />
+		<property name="name" value="uploadAttm" />
+		<property name="desc" value="${permission.entry.attachment.desc}" />
+		<property name="multiple" value="true" />
+	</bean>
+
+	<bean id="uploadAttmPermissionConfigSection" class="com.vertonur.admin.security.PermissionConfigSection"
+		scope="prototype">
+		<property name="desc" value="${permission.entry.attachments}" />
+		<property name="entries">
+			<set>
+				<ref bean="uploadAttmPermissionConfigEntry" />
+			</set>
+		</property>
+	</bean>
+	<!-- Attachments related permission config end -->
+
+	<!-- moderation related permission config start -->
+	<bean id="auditContentPermissionTemplate" factory-bean="infoCoreSpringContext"
+		factory-method="getBean" scope="prototype">
+		<constructor-arg value="auditContentPermissionTemplate" />
+	</bean>
+
+	<bean id="auditContentPermissionDataSource"
+		class="com.vertonur.security.spring.aop.datasource.IdPermissionDataSource"
+		scope="prototype">
+		<property name="permissionExamples">
+			<set>
+				<ref bean="auditContentPermissionTemplate" />
+			</set>
+		</property>
+	</bean>
+
+	<bean id="auditContentPermissionConfigEntry" class="com.vertonur.admin.security.ForumPermissionConfigEntry"
+		scope="prototype">
+		<property name="dataSource" ref="auditContentPermissionDataSource" />
+		<property name="name" value="auditContent" />
+		<property name="desc" value="${permission.entry.audit.content}" />
+		<property name="multiple" value="true" />
+	</bean>
+
+	<bean id="moderateContentPermissionTemplate" factory-bean="infoCoreSpringContext"
+		factory-method="getBean" scope="prototype">
+		<constructor-arg value="moderateContentPermissionTemplate" />
+	</bean>
+
+	<bean id="moderateContentPermissionDataSource"
+		class="com.vertonur.security.spring.aop.datasource.IdPermissionDataSource"
+		scope="prototype">
+		<property name="permissionExamples">
+			<set>
+				<ref bean="moderateContentPermissionTemplate" />
+			</set>
+		</property>
+	</bean>
+
+	<bean id="moderateContentPermissionConfigEntry" class="com.vertonur.admin.security.ForumPermissionConfigEntry"
+		scope="prototype">
+		<property name="dataSource" ref="moderateContentPermissionDataSource" />
+		<property name="name" value="moderateContent" />
+		<property name="desc" value="${permission.entry.moderate.content}" />
+		<property name="multiple" value="true" />
+	</bean>
+
+	<bean id="removeContentPermissionTemplate" factory-bean="infoCoreSpringContext"
+		factory-method="getBean" scope="prototype">
+		<constructor-arg value="removeContentPermissionTemplate" />
+	</bean>
+
+	<bean id="removeContentPermissionDataSource"
+		class="com.vertonur.security.spring.aop.datasource.IdPermissionDataSource"
+		scope="prototype">
+		<property name="permissionExamples">
+			<set>
+				<ref bean="removeContentPermissionTemplate" />
+			</set>
+		</property>
+	</bean>
+
+	<bean id="removeContentPermissionConfigEntry" class="com.vertonur.admin.security.ForumPermissionConfigEntry"
+		scope="prototype">
+		<property name="dataSource" ref="removeContentPermissionDataSource" />
+		<property name="name" value="removeContent" />
+		<property name="desc" value="${permission.entry.remove.content}" />
+		<property name="multiple" value="true" />
+	</bean>
+
+	<bean id="editContentPermissionTemplate" factory-bean="infoCoreSpringContext"
+		factory-method="getBean" scope="prototype">
+		<constructor-arg value="editContentPermissionTemplate" />
+	</bean>
+
+	<bean id="editContentPermissionDataSource"
+		class="com.vertonur.security.spring.aop.datasource.IdPermissionDataSource"
+		scope="prototype">
+		<property name="permissionExamples">
+			<set>
+				<ref bean="editContentPermissionTemplate" />
+			</set>
+		</property>
+	</bean>
+
+	<bean id="editContentPermissionConfigEntry" class="com.vertonur.admin.security.ForumPermissionConfigEntry"
+		scope="prototype">
+		<property name="dataSource" ref="editContentPermissionDataSource" />
+		<property name="name" value="editContent" />
+		<property name="desc" value="${permission.entry.edit.content}" />
+		<property name="multiple" value="true" />
+	</bean>
+
+	<bean id="moveTopicPermissionTemplate" factory-bean="infoCoreSpringContext"
+		factory-method="getBean" scope="prototype">
+		<constructor-arg value="moveInfoPermissionTemplate" />
+	</bean>
+
+	<bean id="moveTopicPermissionDataSource"
+		class="com.vertonur.security.spring.aop.datasource.IdPermissionDataSource"
+		scope="prototype">
+		<property name="permissionExamples">
+			<set>
+				<ref bean="moveTopicPermissionTemplate" />
+			</set>
+		</property>
+	</bean>
+
+	<bean id="moveTopicPermissionConfigEntry" class="com.vertonur.admin.security.ForumPermissionConfigEntry"
+		scope="prototype">
+		<property name="dataSource" ref="moveTopicPermissionDataSource" />
+		<property name="name" value="moveTopic" />
+		<property name="desc" value="${permission.entry.move.topic}" />
+		<property name="multiple" value="true" />
+	</bean>
+
+	<bean id="topicLockPermissionTemplate" factory-bean="infoCoreSpringContext"
+		factory-method="getBean" scope="prototype">
+		<constructor-arg value="infoLockPermissionTemplate" />
+	</bean>
+
+	<bean id="topicLockPermissionDataSource"
+		class="com.vertonur.security.spring.aop.datasource.IdPermissionDataSource"
+		scope="prototype">
+		<property name="permissionExamples">
+			<set>
+				<ref bean="topicLockPermissionTemplate" />
+			</set>
+		</property>
+	</bean>
+
+	<bean id="topicLockPermissionConfigEntry" class="com.vertonur.admin.security.ForumPermissionConfigEntry"
+		scope="prototype">
+		<property name="dataSource" ref="topicLockPermissionDataSource" />
+		<property name="name" value="topicLock" />
+		<property name="desc" value="${permission.entry.topic.lock}" />
+		<property name="multiple" value="true" />
+	</bean>
+
+	<bean id="moderationPermissionConfigSection" class="com.vertonur.admin.security.PermissionConfigSection"
+		scope="prototype">
+		<property name="desc" value="${permission.entry.moderation}" />
+		<property name="belongGroupType" value="GENERIC_MDR" />
+		<property name="entries">
+			<set>
+				<ref bean="auditContentPermissionConfigEntry" />
+				<ref bean="moderateContentPermissionConfigEntry" />
+				<ref bean="editContentPermissionConfigEntry" />
+				<ref bean="moveTopicPermissionConfigEntry" />
+				<ref bean="topicLockPermissionConfigEntry" />
+				<ref bean="removeContentPermissionConfigEntry" />
+			</set>
+		</property>
+	</bean>
+	<!-- moderation related permission config end -->
+
+	<bean id="permissionConfigSessionManager"
+		class="com.vertonur.admin.security.PermissionConfigSessionManager"
+		scope="prototype">
+		<property name="sections">
+			<set>
+				<ref bean="readForumzonePermissionConfigSection" />
+				<ref bean="readForumPermissionConfigSection" />
+				<ref bean="annoymousCmtPermissionConfigSection" />
+				<ref bean="saveTopicPermissionConfigSection" />
+				<ref bean="readOnlyForumPermissionConfigSection" />
+				<ref bean="downloadAttmPermissionConfigSection" />
+				<ref bean="uploadAttmPermissionConfigSection" />
+				<ref bean="moderationPermissionConfigSection" />
+			</set>
+		</property>
+	</bean>
+
+	<bean id="readForumzonePermissionTemplate" factory-bean="infoCoreSpringContext"
+		factory-method="getBean" scope="prototype">
+		<constructor-arg value="readDeptPermissionTemplate" />
+	</bean>
+
+	<bean id="validateSaveTopicPermissionDataSource"
+		class="com.vertonur.security.spring.aop.datasource.CategoryIdPermissionDataSource"
+		scope="prototype">
+		<property name="permissionExamples">
+			<set>
+				<ref bean="readForumzonePermissionTemplate" />
+				<ref bean="readForumPermissionTemplate" />
+				<ref bean="writeForumPermissionTemplate" />
+				<ref bean="saveTopicPermissionTemplate" />
+			</set>
+		</property>
+	</bean>
+
+	<bean id="validateSaveRspPermissionDataSource" factory-bean="infoCoreSpringContext"
+		factory-method="getBean" scope="prototype">
+		<constructor-arg value="validateSaveCmtPermissionDataSource" />
+	</bean>
+
+	<bean id="validateDownloadAttmPermissionDataSource"
+		class="com.vertonur.security.spring.aop.datasource.CategoryIdPermissionDataSource"
+		scope="prototype">
+		<property name="permissionExamples">
+			<set>
+				<ref bean="readForumzonePermissionTemplate" />
+				<ref bean="readForumPermissionTemplate" />
+				<ref bean="downloadAttmPermissionTemplate" />
+			</set>
+		</property>
+	</bean>
+
+	<bean id="validateUploadAttmPermissionDataSource"
+		class="com.vertonur.security.spring.aop.datasource.CategoryIdPermissionDataSource"
+		scope="prototype">
+		<property name="permissionExamples">
+			<set>
+				<ref bean="readForumzonePermissionTemplate" />
+				<ref bean="readForumPermissionTemplate" />
+				<ref bean="writeForumPermissionTemplate" />
+				<ref bean="downloadAttmPermissionTemplate" />
+				<ref bean="uploadAttmPermissionTemplate" />
+			</set>
+		</property>
+	</bean>
+
+	<bean id="validateModifyContentPermissionDataSource"
+		class="com.vertonur.security.spring.aop.datasource.CategoryIdPermissionDataSource"
+		scope="prototype">
+		<property name="permissionExamples">
+			<set>
+				<ref bean="readForumzonePermissionTemplate" />
+				<ref bean="readForumPermissionTemplate" />
+				<ref bean="moderateContentPermissionTemplate" />
+				<ref bean="editContentPermissionTemplate" />
+			</set>
+		</property>
+	</bean>
+
+	<bean id="validateDeleteContentPermissionDataSource"
+		class="com.vertonur.security.spring.aop.datasource.CategoryIdPermissionDataSource"
+		scope="prototype">
+		<property name="permissionExamples">
+			<set>
+				<ref bean="readForumzonePermissionTemplate" />
+				<ref bean="readForumPermissionTemplate" />
+				<ref bean="moderateContentPermissionTemplate" />
+				<ref bean="removeContentPermissionTemplate" />
+			</set>
+		</property>
+	</bean>
+
+	<bean id="validateMoveTopicPermissionDataSource"
+		class="com.vertonur.security.spring.aop.datasource.CategoryIdPermissionDataSource"
+		scope="prototype">
+		<property name="permissionExamples">
+			<set>
+				<ref bean="readForumzonePermissionTemplate" />
+				<ref bean="readForumPermissionTemplate" />
+				<ref bean="moderateContentPermissionTemplate" />
+				<ref bean="moveTopicPermissionTemplate" />
+			</set>
+		</property>
+	</bean>
+	
+	<bean id="validateTopicLockPermissionDataSource"
+		class="com.vertonur.security.spring.aop.datasource.CategoryIdPermissionDataSource"
+		scope="prototype">
+		<property name="permissionExamples">
+			<set>
+				<ref bean="readForumzonePermissionTemplate" />
+				<ref bean="readForumPermissionTemplate" />
+				<ref bean="moderateContentPermissionTemplate" />
+				<ref bean="topicLockPermissionTemplate" />
+			</set>
+		</property>
+	</bean>
+</beans>

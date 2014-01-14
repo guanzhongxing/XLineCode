@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+	<form-beans>
+		<!-- user related -->
+		<form-bean name="MyProfileForm" type="com.vertonur.user.user.form.MyProfileForm" />
+		<form-bean name="UserTopicForm" type="com.vertonur.user.topic.form.UserTopicForm" />
+		<form-bean name="ResponseForm"
+			type="com.vertonur.user.response.form.ResponseForm" />
+		<form-bean name="PrivateMsgForm"
+			type="com.vertonur.user.message.form.PrivateMsgForm" />
+		<form-bean name="RegistrationForm"
+			type="com.vertonur.user.registration.form.RegistrationForm" />
+		<form-bean name="ChangePasswordForm"
+			type="com.vertonur.user.user.form.ChangePasswordForm" />
+
+		<!-- admin related -->
+		<form-bean name="ForumzoneForm"
+			type="com.vertonur.admin.forumzone.form.ForumzoneForm" />
+		<form-bean name="ForumForm" type="com.vertonur.admin.forum.form.ForumForm" />
+		<form-bean name="UserAdminForm" type="com.vertonur.admin.form.UserAdminForm" />
+		<form-bean name="ModerationForm" type="com.vertonur.admin.form.ModerationForm" />
+		<form-bean name="SystemConfigForm" type="com.vertonur.admin.form.SystemConfigForm" />
+		<form-bean name="GroupConfigForm" type="com.vertonur.admin.form.GroupConfigForm" />
+		<form-bean name="PermissionConfigForm"
+			type="com.vertonur.admin.form.PermissionConfigForm" />
+		<form-bean name="RankingConfigForm" type="com.vertonur.admin.form.RankingConfigForm" />
+		<form-bean name="MoveTopicForm" type="com.vertonur.admin.form.MoveTopicForm" />
+	</form-beans>
+
+	<global-forwards>
+		<forward name="TimeoutSession" path="/forum/user/login/init.do" />
+		<forward name="ForunzoneList" path="/do/admin/forumzone/list" />
+		<forward name="ForumList" path="/do/admin/forum/list" />
+		<forward name="MessagePage" path="/templates/default/user/message.jsp" />
+		<forward name="ToRankingList" path="/do/admin/ranking/get" />
+	</global-forwards>
+
+	<action-mappings>
+		<!-- common used -->
+		<action path="/checkUserNameExistence" type="com.vertonur.common.CheckUserNameExistence"
+			scope="request" />
+
+		<!-- User related mapping begin -->
+		<!-- Registration related -->
+		<action path="/showAgreement"
+			type="com.vertonur.user.registration.action.ShowAgreementAction">
+			<forward name="ShowAgreement"
+				path="/templates/default/user/registration/show_agreement.jsp" />
+		</action>
+
+		<action path="/initRegistration"
+			type="com.vertonur.user.registration.action.InitRegistrationAction"
+			scope="request">
+			<forward name="ToRegistrationPage"
+				path="/templates/default/user/registration/registration_form.jsp" />
+		</action>
+
+		<action path="/submitRegistration"
+			type="com.vertonur.user.registration.action.RegistrationAction" name="RegistrationForm"
+			validate="true" scope="request" input="/initRegistration.do">
+			<forward name="DoubleSubmit" path="/displayForums.do" />
+			<forward name="AdminUserList" path="/do/admin/user/list" />
+		</action>
+
+		<action path="/accountActivation"
+			type="com.vertonur.user.registration.action.ActivateAccountAction"
+			scope="request" />
+
+		<action path="/initManuallyActivateAcct"
+			type="com.vertonur.user.registration.action.ActivateAccountAction"
+			scope="request">
+			<forward name="ManuallyActivateAcctPage"
+				path="/templates/default/user/registration/activate_account_manual.jsp" />
+		</action>
+
+		<action path="/manuallyActivateAcct"
+			type="com.vertonur.user.registration.action.ActivateAccountAction"
+			scope="request">
+			<forward name="UserLogin" path="/userLogin.do" />
+		</action>
+		<!-- end -->
+
+		<!-- user related -->
+		<action path="/displayProfile"
+			type="com.vertonur.user.user.action.DisplayProfileAction" scope="request">
+			<forward name="ToDisplayProfilePage" path="/templates/default/user/user/user_profile.jsp" />
+		</action>
+
+		<action path="/displayMyProfile"
+			type="com.vertonur.user.user.action.DisplayMyProfileAction" scope="request">
+			<forward name="ToDisplayMyProfilePage" path="/templates/default/user/user/user_form.jsp" />
+		</action>
+
+		<action path="/updateMyProfile"
+			type="com.vertonur.user.user.action.UpdateMyProfileAction" name="MyProfileForm"
+			scope="request" input="/displayMyProfile.do">
+			<forward name="DisplayMyProfile" path="/displayMyProfile.do" />
+		</action>
+
+		<action path="/displayMembers"
+			type="com.vertonur.user.user.action.DisplayMembersAction" scope="request">
+			<forward name="ToDisplayMembersPage" path="/templates/default/user/user/members_list.jsp" />
+		</action>
+
+		<action path="/initChangePassword"
+			type="com.vertonur.user.user.action.InitChangePasswordAction" scope="request"
+			input="/templates/default/user/user/user_change_pwd.jsp">
+			<forward name="ToChangePasswordPage"
+				path="/templates/default/user/user/user_change_pwd.jsp" />
+		</action>
+
+		<action path="/changePassword"
+			type="com.vertonur.user.user.action.ChangePasswordAction" name="ChangePasswordForm"
+			validate="true" input="/templates/default/user/user/user_change_pwd.jsp"
+			scope="request">
+			<forward name="ToForumList" path="/displayForums.do" />
+			<forward name="ToChangePasswordPage"
+				path="/templates/default/user/user/user_change_pwd.jsp" />
+		</action>
+
+		<!-- end -->
+
+		<!-- forum related -->
+		<action path="/displayForums"
+			type="com.vertonur.user.forum.action.DisplayForumsAction" scope="request">
+			<forward name="ToForumListPage" path="/templates/default/user/forum/forum_list.jsp" />
+		</action>
+		<!-- end -->
+
+		<!-- topic related -->
+		<action path="/displayTopics"
+			type="com.vertonur.user.topic.action.DisplayTopicsAction" scope="request">
+			<forward name="ToDisplayTopicsPage"
+				path="/templates/default/user/topic/display_topics.jsp" />
+		</action>
+		<action path="/displayUserSpecifiedTopics"
+			type="com.vertonur.user.topic.action.DisplayUserSpecifiedTopicsAction"
+			scope="request">
+			<forward name="ToDisplayUserSpecifiedTopicsPage"
+				path="/templates/default/user/topic/user_specified_topics.jsp" />
+		</action>
+		<action path="/topicList"
+			type="com.vertonur.user.topic.action.TopicStatisticListAction" scope="request">
+			<forward name="ToTopicListPage"
+				path="/templates/default/user/topic/topic_statistic_list.jsp" />
+		</action>
+		<action path="/initCreateUserTopic"
+			type="com.vertonur.user.topic.action.InitCreateUserTopicAction"
+			input="/displayTopics.do">
+			<forward name="ToCreateUserTopicPage" path="/templates/default/user/topic/topic_form.jsp" />
+		</action>
+		<action path="/createUserTopic"
+			type="com.vertonur.user.topic.action.CreateUserTopicAction" name="UserTopicForm"
+			scope="request" input="/initCreateUserTopic.do">
+			<forward name="DisplayTopics" path="/do/displayTopics" />
+		</action>
+		<action path="/deleteContent"
+			type="com.vertonur.user.topic.action.DeleteContentAction">
+			<forward name="DisplayResponses" path="/displayResponses.do" />
+			<forward name="DisplayTopics" path="/displayTopics.do" />
+		</action>
+		<!-- end -->
+
+		<!-- response related -->
+		<action path="/displayResponses"
+			type="com.vertonur.user.response.action.DisplayResponsesAction"
+			scope="request">
+			<forward name="ToDisplayResponsesPage"
+				path="/templates/default/user/response/responses_show.jsp" />
+			<forward name="ToTopicReviewPage"
+				path="/templates/default/user/response/topic_review.jsp" />
+		</action>
+		<action path="/initRespondTopic"
+			type="com.vertonur.user.response.action.InitRespondTopicAction"
+			scope="request" input="/displayResponses.do">
+			<forward name="ToRespondTopicPage"
+				path="/templates/default/user/response/respond_topic.jsp" />
+		</action>
+		<action path="/respondTopic"
+			type="com.vertonur.user.response.action.RespondTopicAction" name="ResponseForm"
+			scope="request" input="/initRespondTopic.do">
+			<forward name="DisplayResponses" path="/displayResponses.do?recordStatistic=false" />
+		</action>
+		<action path="/displayUserSpecifiedResponses"
+			type="com.vertonur.user.response.action.DisplayUserSpecifiedResponsesAction"
+			scope="request">
+			<forward name="ToDisplayUserSpecifiedResponsesPage"
+				path="/templates/default/user/response/user_specified_responses.jsp" />
+		</action>
+		<!-- end -->
+
+		<!-- private msg related -->
+		<action path="/displayPrivateMsgInbox"
+			type="com.vertonur.user.message.action.DisplayPrivateMessageInboxAction"
+			scope="request">
+			<forward name="DisplayMessagePage" path="/templates/default/user/message/pm_list.jsp" />
+		</action>
+		<action path="/displayPrivateMsgSentbox"
+			type="com.vertonur.user.message.action.DisplayPrivateMessageSentboxAction"
+			scope="request">
+			<forward name="DisplayMessagePage" path="/templates/default/user/message/pm_list.jsp" />
+		</action>
+		<action path="/initCreatePrivateMsg"
+			type="com.vertonur.user.message.action.InitCreatePrivateMessageAction"
+			scope="request">
+			<forward name="ToCreatePrivateMessagePage" path="/templates/default/user/message/pm_form.jsp" />
+		</action>
+		<action path="/createPrivateMsg"
+			type="com.vertonur.user.message.action.CreatePrivateMessageAction"
+			name="PrivateMsgForm" scope="request" input="/initCreatePrivateMsg.do">
+			<forward name="DisplayPrivateMsgSentbox" path="/displayPrivateMsgSentbox.do" />
+		</action>
+		<action path="/displayPrivateMsg"
+			type="com.vertonur.user.message.action.DisplayPrivateMessageAction"
+			scope="request">
+			<forward name="ToDisplayPrivateMsgPage"
+				path="/templates/default/user/message/pm_read_message.jsp" />
+			<forward name="ToPrivateMsgReviewPage"
+				path="/templates/default/user/message/pm_review_message.jsp" />
+		</action>
+
+		<action path="/forum/user/login/init"
+			type="com.vertonur.user.user.action.InitUserLoginAction" scope="request">
+			<forward name="ToLoginFormPage" path="/templates/default/user/user/user_login.jsp" />
+		</action>
+		<!-- end -->
+
+		<!-- Attachment related -->
+		<action path="/downloadAttachment"
+			type="com.vertonur.user.attm.action.DownloadAttachmentAction" scope="request"
+			parameter="downloadFile" input="/templates/default/user/message.jsp" />
+
+		<action path="/initDownloadAttachment"
+			type="com.vertonur.user.attm.action.DownloadAttachmentAction" scope="request"
+			parameter="initFileDownload">
+			<forward name="CaptchaPage" path="/templates/default/user/message.jsp" />
+		</action>
+
+		<action path="/file/upload"
+			type="com.vertonur.user.attm.action.DownloadAttachmentAction" scope="request"
+			name="UserTopicForm" parameter="uploadEmbeddedImage" validate="false">
+
+			<forward name="CkEditorCallbackPage"
+				path="/templates/default/common/ckEditor_callback.jsp" />
+		</action>
+		<!-- end -->
+
+		<action path="/logout" type="com.vertonur.user.logout.action.LogoutAction">
+			<forward name="UserLoginPage" path="/forum/user/login/init.do" />
+		</action>
+		<!-- User related mapping end -->
+
+		<!-- Admin related mapping begin -->
+		<action path="/admin/index" type="com.vertonur.admin.action.AdminIndexAction"
+			scope="request">
+			<forward name="AdminIndex" path="/templates/default/admin/admin_index.jsp" />
+		</action>
+
+		<action path="/admin/statistic" type="com.vertonur.admin.action.SystemStatisticAction"
+			scope="request">
+			<forward name="SystemStatistic" path="/templates/default/admin/admin_welcome.jsp" />
+		</action>
+
+		<action path="/admin/user/list" type="com.vertonur.admin.action.user.UserListAction"
+			name="UserAdminForm" scope="request">
+			<forward name="UserListPage" path="/templates/default/admin/user_list.jsp" />
+		</action>
+
+		<action path="/admin/user/group/update"
+			type="com.vertonur.admin.action.user.UpdateUserGroupAction" name="UserAdminForm"
+			scope="request" input="/do/admin/user/list">
+			<forward name="UserGroupsPage" path="/templates/default/admin/user_groups.jsp" />
+			<forward name="AdminUserList" path="/do/admin/user/list" />
+		</action>
+
+		<action path="/admin/user/lock" type="com.vertonur.admin.action.user.LockUserAction"
+			name="UserAdminForm" scope="request">
+			<forward name="AdminUserList" path="/do/admin/user/list" />
+		</action>
+
+		<!-- forumzone related -->
+		<action path="/admin/forumzone/list" type="com.vertonur.admin.action.ForumzoneListAction"
+			scope="request">
+			<forward name="ForumzoneListPage" path="/templates/default/admin/forumzone_list.jsp" />
+		</action>
+
+		<action path="/admin/forumzone/create/init"
+			type="com.vertonur.admin.forumzone.action.InitCreateForumzoneAction"
+			scope="request">
+			<forward name="ToCreateForumzonePage" path="/templates/default/admin/forumzone_form.jsp" />
+		</action>
+
+
+		<action path="/admin/forumzone/edit/init"
+			type="com.vertonur.admin.forumzone.action.InitEditForumzoneAction"
+			scope="request">
+			<forward name="ToEditForumzonePage" path="/templates/default/admin/forumzone_form.jsp" />
+		</action>
+
+		<action path="/admin/forumzone/create"
+			type="com.vertonur.admin.forumzone.action.CreateForumzoneAction"
+			name="ForumzoneForm" validate="true" scope="request"
+			input="/do/admin/forumzone/create/init">
+		</action>
+
+		<action path="/admin/forumzone/edit"
+			type="com.vertonur.admin.forumzone.action.EditForumzoneAction" name="ForumzoneForm"
+			validate="true" scope="request" input="/do/admin/forumzone/edit/init">
+		</action>
+
+		<action path="/admin/forumzone/delete"
+			type="com.vertonur.admin.forumzone.action.DeleteForumzoneAction"
+			name="ForumzoneForm" validate="false" scope="request"
+			input="/do/admin/forumzone/list">
+		</action>
+		<!-- forumzone end -->
+
+		<!-- forum related -->
+		<action path="/admin/forum/list"
+			type="com.vertonur.admin.forum.action.ManageForumsAction" input="/do/admin/index">
+			<forward name="ToForumListPage" path="/templates/default/admin/forum_list.jsp" />
+		</action>
+
+		<action path="/admin/forum/create/init"
+			type="com.vertonur.admin.forum.action.InitCreateForumAction" scope="request"
+			input="/do/admin/forum/list">
+			<forward name="CreateForumPage" path="/templates/default/admin/forum_form.jsp" />
+		</action>
+
+		<action path="/admin/forum/edit/init"
+			type="com.vertonur.admin.forum.action.InitEditForumAction" scope="request"
+			input="/do/admin/forum/list">
+			<forward name="EditForumPage" path="/templates/default/admin/forum_form.jsp" />
+		</action>
+
+		<action path="/admin/forum/create"
+			type="com.vertonur.admin.forum.action.CreateForumAction" name="ForumForm"
+			validate="true" scope="request" input="/do/admin/forum/create/init" />
+
+		<action path="/admin/forum/edit" type="com.vertonur.admin.forum.action.EditForumAction"
+			name="ForumForm" validate="true" scope="request" input="/do/admin/forum/edit/init" />
+
+		<action path="/admin/forum/delete"
+			type="com.vertonur.admin.forum.action.DeleteForumAction" name="ForumForm"
+			validate="false" scope="request" input="/do/admin/forum/list" />
+		<!-- forum end -->
+
+		<action path="/admin/moderation"
+			type="com.vertonur.admin.action.ModerationLogListAction" scope="request"
+			input="/do/admin/moderation?action=list">
+			<forward name="ToModerationListPage" path="/templates/default/admin/moderation_list.jsp" />
+			<forward name="ToModerationViewPage"
+				path="/templates/default/admin/moderation_list_posts.jsp" />
+			<forward name="ToModeratorLogListPage"
+				path="/templates/default/admin/moderation_acvitity_log.jsp" />
+		</action>
+
+		<action path="/admin/moderation/update" type="com.vertonur.admin.action.ModerateMsgAction"
+			name="ModerationForm" scope="request" input="/do/admin/moderation?action=list">
+			<forward name="ModerationListAction" path="/do/admin/moderation?action=list" />
+		</action>
+
+		<action path="/admin/system/config/list" type="com.vertonur.admin.action.GetSystemConfigAction"
+			scope="request">
+			<forward name="ToSystemConfigPage" path="/templates/default/admin/config_list.jsp" />
+		</action>
+
+		<action path="/admin/system/config/update" type="com.vertonur.admin.action.SystemConfigAction"
+			name="SystemConfigForm" scope="request" input="/do/admin/system/config/list">
+			<forward name="ToSystemConfig" path="/do/admin/system/config/list" />
+		</action>
+
+		<!-- group begin -->
+		<action path="/admin/group/post" type="com.vertonur.admin.action.GroupUpdateAction"
+			name="GroupConfigForm" scope="request" input="/do/admin/group/get?action=add">
+			<forward name="ToGroupList" path="/do/admin/group/get?action=list" />
+		</action>
+
+		<action path="/admin/group/get" type="com.vertonur.admin.action.GroupListAction"
+			scope="request" input="/do/admin/index">
+			<forward name="GroupListPage" path="/templates/default/admin/group_list.jsp" />
+			<forward name="GroupEditPage" path="/templates/default/admin/group_form.jsp" />
+			<forward name="SubGroupListPage" path="/templates/default/admin/sub_group_list.jsp" />
+			<forward name="SubGroupOptionPage" path="/templates/default/admin/sub_group_option.jsp" />
+			<forward name="RankingSubGroupOptionPage"
+				path="/templates/default/admin/ranking/ranking_sub_group_option.jsp" />
+			<forward name="UserSubGroupOptionPage"
+				path="/templates/default/admin/user_sub_group_option.jsp" />
+		</action>
+		<!-- group end -->
+
+		<!-- permission begin -->
+		<action path="/admin/permission/list" type="com.vertonur.admin.action.PermissionListAction"
+			scope="request" input="/do/admin/index">
+			<forward name="PermissionListPage"
+				path="/templates/default/admin/group_security_form.jsp" />
+		</action>
+
+		<action path="/admin/permission/update" type="com.vertonur.admin.action.PermissionUpdateAction"
+			name="PermissionConfigForm" scope="request" input="/do/admin/index">
+			<forward name="ToGroupList" path="/do/admin/group/get?action=list" />
+			<forward name="ToBackendPermissionConfig"
+				path="/do/admin/group/get?action=list&amp;permissionConfig=true" />
+		</action>
+		<!-- permission end -->
+
+		<!-- ranking begin -->
+		<action path="/admin/ranking/get"
+			type="com.vertonur.admin.action.ranking.RankingListAction" scope="request"
+			input="/do/admin/index">
+			<forward name="RankingListPage"
+				path="/templates/default/admin/ranking/ranking_list.jsp" />
+			<forward name="RankingListFragmentPage"
+				path="/templates/default/admin/ranking/ranking_list_fragment.jsp" />
+
+		</action>
+
+		<action path="/admin/ranking/form"
+			type="com.vertonur.admin.action.ranking.InitRankingCreationAction"
+			scope="request">
+			<forward name="RankingFormPage"
+				path="/templates/default/admin/ranking/ranking_form.jsp" />
+		</action>
+
+		<action path="/admin/ranking/update"
+			type="com.vertonur.admin.action.ranking.RankingUpdateAction" name="RankingConfigForm"
+			scope="request" input="/do/admin/ranking/form" />
+
+		<action path="/admin/ranking/delete"
+			type="com.vertonur.admin.action.ranking.RankingDeleteAction" name="RankingConfigForm"
+			validate="false" scope="request" input="/do/admin/ranking/get" />
+
+		<action path="/admin/ranking/pointsconfig/get"
+			type="com.vertonur.admin.action.ranking.GetRankingPointsConfigAction"
+			scope="request" input="/do/admin/index">
+			<forward name="PointsConfigPage"
+				path="/templates/default/admin/ranking/ranking_points_config.jsp" />
+		</action>
+
+		<action path="/admin/ranking/pointsconfig/update"
+			type="com.vertonur.admin.action.ranking.RankingPointsConfigAction"
+			name="RankingConfigForm" scope="request" input="/do/admin/ranking/pointsconfig/get">
+			<forward name="ToPointConfig" path="/do/admin/ranking/pointsconfig/get" />
+		</action>
+		<!-- ranking end -->
+
+		<!-- topic related -->
+		<action path="/admin/topic/move/init" type="com.vertonur.admin.action.InitMoveTopicAction"
+			scope="request" input="/displayForums.do">
+			<forward name="MoveTopicPage" path="/templates/default/admin/topic_move.jsp" />
+		</action>
+
+		<action path="/admin/topic/move" type="com.vertonur.admin.action.MoveTopicAction"
+			scope="request" name="MoveTopicForm" input="/displayForums.do">
+			<forward name="DisplayForums" path="/displayForums.do" />
+		</action>
+
+		<action path="/user/topic/lock" type="com.vertonur.admin.action.TopicLockAction"
+			scope="request" input="/displayResponses.do">
+			<forward name="DisplayResponses" path="/displayResponses.do" />
+		</action>
+
+		<action path="/user/topic/unlock" type="com.vertonur.admin.action.TopicLockAction"
+			scope="request" input="/displayResponses.do">
+			<forward name="DisplayResponses" path="/displayResponses.do" />
+		</action>
+		<!-- topic end -->
+		<!-- Admin related mapping end -->
+	</action-mappings>
+
+	<!-- Setting the null attribute to "false" will display missing resource 
+		values as ???key??? instead of displaying null. This string is easily found 
+		during automated testing of vertonurr JSPs. -->
+	<message-resources parameter="com.vertonur.ApplicationResources"
+		null="false" />
+
+	<plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+		<set-property property="pathnames"
+			value="/org/apache/struts/validator/validator-rules.xml,/WEB-INF/validation.xml" />
+	</plug-in>
+</struts-config>
+

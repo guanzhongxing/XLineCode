@@ -1,0 +1,13 @@
+<center>
+<b>恭喜您!</b>
+<br/>
+</center>
+<br/>
+您已经完成注册程序. 您可以按
+<a class="nav" href="#">这里</a>
+填写更多个人资料如头像等, 或点选
+<a class="nav" href="displayForums.do">这里</a>
+回到首页.
+<br/>
+<br/>
+<center>记得喔!您随时可以点网页上方的 "个人资料" 链接来修改您的个人资料.</center>

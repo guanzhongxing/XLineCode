@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/security 
+		http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+	<bean id="propertyPlaceholderConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:com/vertonur/ClassResources_zh.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Initialize data at start up -->
+	<bean id="dataSourceInitializer"
+		class="org.springframework.jdbc.datasource.init.DataSourceInitializer">
+		<property name="enabled" value="true" />
+		<property name="dataSource" ref="dataSource" />
+		<property name="databasePopulator" ref="databasePopulator" />
+	</bean>
+
+	<bean id="databasePopulator"
+		class="org.springframework.jdbc.datasource.init.ResourceDatabasePopulator">
+		<property name="scripts">
+			<list>
+				<value>classpath:com/vertonur/spring/db-initializer.sql</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="dataSource" destroy-method="close"
+		class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/info_forum" />
+		<property name="user" value="root" />
+		<property name="password" value="123" />
+		
+		<property name="acquireIncrement" value="3" />
+		<property name="maxPoolSize" value="100" />
+		<property name="minPoolSize" value="10" />
+		<property name="idleConnectionTestPeriod" value="100" />
+		<property name="preferredTestQuery" value="SELECT 1" />
+		<property name="testConnectionOnCheckin" value="true" />
+		<property name="maxIdleTime" value="600" />
+	</bean>
+	<!-- end -->
+
+	<bean id="globalConfig" class="com.vertonur.bean.config.GlobalConfig">
+		<property name="homepageLink" value="http://www.xlinecode.com" />
+		<property name="forumName" value="xlinecode" />
+		<property name="forumPageTitle" value="@云端的Java开源论坛" />
+		<property name="loginCaptchaEnabled" value="false" />
+		<property name="registrationCaptchaEnabled" value="false" />
+		<property name="downloadCaptchaEnabled" value="false" />
+		<property name="metaDescLength" value="200" />
+	</bean>
+
+	<bean id="runtimeConfig" class="com.vertonur.bean.config.RuntimeConfig">
+		<property name="uploadRootFolder" value="/upload" />
+		<property name="avatarRootFolder" value="/avatar" />
+		<property name="thumbPrefix" value="_thumb" />
+	</bean>
+
+	<bean id="extendedConfigs" class="java.util.HashSet">
+		<constructor-arg>
+			<set>
+				<value>com.vertonur.bean.config.GlobalConfig</value>
+				<value>com.vertonur.bean.config.RuntimeConfig</value>
+			</set>
+		</constructor-arg>
+	</bean>
+
+	<bean id="wrapper"
+		class="com.vertonur.context.SystemContextServiceEnvironmentWrapper">
+		<constructor-arg
+			value="com.vertonur.dao.hibernate.manager.HibernateDAOManager" />
+		<constructor-arg ref="extendedBeans" />
+		<constructor-arg ref="extendedConfigs" />
+		<constructor-arg ref="externalConfigXmls" />
+		<constructor-arg value="hibernate.cfg.pro.xml" />
+	</bean>
+
+	<bean id="extendedBeans" class="java.util.HashSet">
+		<constructor-arg>
+			<set>
+				<value>com.vertonur.ext.ranking.bean.Ranking</value>
+				<value>com.vertonur.ext.ranking.bean.UserPoint</value>
+				<value>com.vertonur.ext.ranking.bean.PointConfig</value>
+			</set>
+		</constructor-arg>
+	</bean>
+
+	<bean id="externalConfigXmls" class="java.util.HashSet">
+		<constructor-arg>
+			<set>
+				<value>classpath:info-ext-ranking-beans.xml</value>
+			</set>
+		</constructor-arg>
+	</bean>
+
+	<bean id="systemContextService" class="com.vertonur.context.SystemContextService"
+		factory-method="init" />
+
+	<bean id="infoCoreSpringContext" factory-bean="systemContextService"
+		factory-method="getSpringContext">
+	</bean>
+
+	<bean id="defaultUserGroupTemplate" factory-bean="infoCoreSpringContext"
+		factory-method="getBean" scope="prototype">
+		<constructor-arg value="defaultUserGroupTemplate" />
+	</bean>
+
+	<import resource="info-web-security.xml" />
+	<import resource="info-web-permission-config-beans.xml" />
+	<import resource="info-web-permission-config-beans-backend.xml" />
+</beans>

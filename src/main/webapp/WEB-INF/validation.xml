@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC
+        "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.3.0//EN"
+        "http://jakarta.apache.org/commons/dtds/validator_1_3_0.dtd">
+
+<form-validation>
+	<formset>
+		<form name="RegistrationForm">
+			<field property="userName" depends="required,maxlength,minlength">
+				<msg name="required" key="error.form.username.missing" />
+				<msg name="minlength" key="error.form.username.length" />
+				<msg name="maxlength" key="error.form.username.length" />
+
+				<var>
+					<var-name>minlength</var-name>
+					<var-value>5</var-value>
+				</var>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>10</var-value>
+				</var>
+			</field>
+
+			<field property="pwd" depends="required,maxlength,minlength">
+				<msg name="required" key="error.form.password.missing" />
+				<msg name="minlength" key="error.form.password.length" />
+				<msg name="maxlength" key="error.form.password.length" />
+
+				<var>
+					<var-name>minlength</var-name>
+					<var-value>5</var-value>
+				</var>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>10</var-value>
+				</var>
+			</field>
+
+			<field property="confirmPwd" depends="validwhen">
+				<msg name="validwhen" key="error.form.confirmPassword.invalid" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>(pwd==*this*)</var-value>
+				</var>
+			</field>
+
+			<field property="gender" depends="required">
+				<msg name="required" key="error.form.sex.missing" />
+			</field>
+
+			<field property="email" depends="required,email">
+				<msg name="required" key="error.form.email.missing" />
+				<msg name="email" key="error.form.email.invalid" />
+			</field>
+
+			<field property="image" depends="mask">
+				<msg name="mask" key="error.form.fileExtensionInvalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>(?i).+\.((jpg)|(jpeg)|(gif)|(png)|(bmp))$</var-value>
+				</var>
+			</field>
+		</form>
+
+		<form name="ChangePasswordForm">
+			<field property="currentPwd" depends="required,maxlength,minlength">
+				<msg name="required" key="error.form.password.missing" />
+				<msg name="minlength" key="error.form.password.length" />
+				<msg name="maxlength" key="error.form.password.length" />
+
+				<var>
+					<var-name>minlength</var-name>
+					<var-value>5</var-value>
+				</var>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>10</var-value>
+				</var>
+			</field>
+
+			<field property="newPwd" depends="required,maxlength,minlength">
+				<msg name="required" key="error.form.password.missing" />
+				<msg name="minlength" key="error.form.password.length" />
+				<msg name="maxlength" key="error.form.password.length" />
+
+				<var>
+					<var-name>minlength</var-name>
+					<var-value>5</var-value>
+				</var>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>10</var-value>
+				</var>
+			</field>
+
+			<field property="confirmPwd" depends="validwhen">
+				<msg name="validwhen" key="error.form.confirmPassword.invalid" />
+				<var>
+					<var-name>test</var-name>
+					<var-value>(newPwd==*this*)</var-value>
+				</var>
+			</field>
+		</form>
+
+		<form name="ForumzoneForm">
+			<field property="forumzoneName" depends="required,maxlength">
+				<msg name="required"
+					key="message.admin.forumzone.form.ForumzoneForm.forumzoneName.required" />
+				<msg name="maxlength" key="error.form.exceed.max.length.20" />
+
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>20</var-value>
+				</var>
+			</field>
+
+			<field property="forumzoneDescription" depends="maxlength">
+				<msg name="maxlength" key="error.form.exceed.max.length.100" />
+
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>100</var-value>
+				</var>
+			</field>
+		</form>
+
+		<form name="ForumForm">
+			<field property="forumName" depends="required,maxlength">
+				<msg name="required"
+					key="message.admin.forum.form.ForumForm.forumName.required" />
+				<msg name="maxlength" key="error.form.exceed.max.length.20" />
+
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>20</var-value>
+				</var>
+			</field>
+			
+			<field property="forumDescription" depends="maxlength">
+				<msg name="maxlength" key="error.form.exceed.max.length.100" />
+
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>100</var-value>
+				</var>
+			</field>
+		</form>
+
+		<form name="UserTopicForm">
+			<field property="title" depends="required,maxlength,minlength">
+				<msg name="required" key="error.user.topic.form.UserTopicForm.title.required" />
+				<msg name="minlength" key="error.form.beneath.min.length" />
+				<msg name="maxlength" key="error.form.title.exceed.max.length" />
+
+				<var>
+					<var-name>minlength</var-name>
+					<var-value>5</var-value>
+				</var>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>80</var-value>
+				</var>
+			</field>
+
+			<field property="content" depends="required,maxlength,minlength">
+				<msg name="required" key="error.form.content.required" />
+				<msg name="minlength" key="error.form.beneath.min.length" />
+				<msg name="maxlength" key="error.form.content.exceed.max.length" />
+
+				<var>
+					<var-name>minlength</var-name>
+					<var-value>5</var-value>
+				</var>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>20000</var-value>
+				</var>
+			</field>
+		</form>
+
+		<form name="ResponseForm">
+			<field property="title" depends="required,maxlength,minlength">
+				<msg name="required" key="error.user.response.form.ResponseForm.title.required" />
+				<msg name="minlength" key="error.form.beneath.min.length" />
+				<msg name="maxlength" key="error.form.title.exceed.max.length" />
+
+				<var>
+					<var-name>minlength</var-name>
+					<var-value>5</var-value>
+				</var>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>80</var-value>
+				</var>
+			</field>
+
+			<field property="content" depends="required,maxlength,minlength">
+				<msg name="required" key="error.form.content.required" />
+				<msg name="minlength" key="error.form.beneath.min.length" />
+				<msg name="maxlength" key="error.form.content.exceed.max.length" />
+
+				<var>
+					<var-name>minlength</var-name>
+					<var-value>5</var-value>
+				</var>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>20000</var-value>
+				</var>
+			</field>
+		</form>
+
+		<form name="MyProfileForm">
+			<field property="name" depends="required,maxlength,minlength">
+				<msg name="required" key="error.username.missing" />
+				<msg name="minlength" key="error.form.username.length" />
+				<msg name="maxlength" key="error.form.username.length" />
+
+				<var>
+					<var-name>minlength</var-name>
+					<var-value>5</var-value>
+				</var>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>20</var-value>
+				</var>
+			</field>
+
+			<field property="qq" depends="integer">
+				<msg name="qq" key="error.form.qq.invalid" />
+			</field>
+
+			<field property="msn" depends="email">
+				<msg name="msn" key="error.form.email.invalid" />
+			</field>
+
+			<field property="email" depends="required,email">
+				<msg name="required" key="error.form.field.required" />
+				<msg name="email" key="error.form.email.invalid" />
+			</field>
+
+			<field property="image" depends="mask">
+				<msg name="mask" key="error.form.fileExtensionInvalid" />
+				<var>
+					<var-name>mask</var-name>
+					<var-value>(?i).+\.((jpg)|(jpeg)|(gif)|(png)|(bmp))$</var-value>
+				</var>
+			</field>
+		</form>
+
+		<form name="PrivateMsgForm">
+			<field property="subject" depends="required,maxlength,minlength">
+				<msg name="required" key="error.user.topic.form.UserTopicForm.title.required" />
+				<msg name="minlength" key="error.form.beneath.min.length" />
+				<msg name="maxlength" key="error.form.title.exceed.max.length" />
+
+				<var>
+					<var-name>minlength</var-name>
+					<var-value>5</var-value>
+				</var>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>50</var-value>
+				</var>
+			</field>
+
+			<field property="content" depends="required,maxlength,minlength">
+				<msg name="required" key="error.form.content.required" />
+				<msg name="minlength" key="error.form.beneath.min.length" />
+				<msg name="maxlength" key="error.form.pm.content.exceed.max.length" />
+
+				<var>
+					<var-name>minlength</var-name>
+					<var-value>5</var-value>
+				</var>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>255</var-value>
+				</var>
+			</field>
+		</form>
+
+		<form name="GroupConfigForm">
+			<field property="groupName" depends="required,maxlength">
+				<msg name="required" key="error.form.field.required" />
+				<msg name="maxlength" key="error.form.grp.nme.exceed.max.length" />
+
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>20</var-value>
+				</var>
+			</field>
+
+			<field property="parentGroupId" depends="required">
+				<msg name="required" key="error.form.field.required" />
+			</field>
+			
+			<field property="groupType" depends="required">
+				<msg name="required" key="error.form.field.required" />
+			</field>
+
+			<field property="groupDesc" depends="required,maxlength">
+				<msg name="required" key="error.form.field.required" />
+				<msg name="maxlength" key="error.form.grp.desc.exceed.max.length" />
+
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>255</var-value>
+				</var>
+			</field>
+		</form>
+		
+		<form name="SystemConfigForm">
+			<field property="homepageLink" depends="required">
+				<msg name="required" key="error.form.field.required" />
+			</field>
+			<field property="forumName" depends="required">
+				<msg name="required" key="error.form.field.required" />
+			</field>
+			<field property="forumPageTitle" depends="required">
+				<msg name="required" key="error.form.field.required" />
+			</field>
+			<field property="sender" depends="required">
+				<msg name="required" key="error.form.field.required" />
+			</field>
+			<field property="smtpHost" depends="required">
+				<msg name="required" key="error.form.field.required" />
+			</field>
+			<field property="smtpUsername" depends="required">
+				<msg name="required" key="error.form.field.required" />
+			</field>
+			<field property="smtpPwd" depends="required">
+				<msg name="required" key="error.form.field.required" />
+			</field>
+		</form>
+	</formset>
+</form-validation>

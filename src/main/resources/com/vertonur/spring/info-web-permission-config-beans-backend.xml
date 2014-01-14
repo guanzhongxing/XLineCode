@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/security 
+		http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+	<!-- group related permission config start -->
+	<bean id="validateOperateGroupPermissionDataSource" factory-bean="infoCoreSpringContext"
+		factory-method="getBean" scope="prototype">
+		<constructor-arg value="validateOperateGroupPermissionDataSource" />
+	</bean>
+
+	<bean id="operateGroupPermissionConfigEntry"
+		class="com.vertonur.admin.security.FixedValuePermissionConfigEntry"
+		scope="prototype">
+		<property name="dataSource" ref="validateOperateGroupPermissionDataSource" />
+		<property name="name" value="group" />
+		<property name="desc" value="${permission.entry.operate.group}" />
+	</bean>
+
+	<bean id="operateGroupPermissionConfigSection" class="com.vertonur.admin.security.PermissionConfigSection"
+		scope="prototype">
+		<property name="desc" value="${permission.section.group}" />
+		<property name="entries">
+			<set>
+				<ref bean="operateGroupPermissionConfigEntry" />
+			</set>
+		</property>
+	</bean>
+	<!-- group related permission config end -->
+
+	<!-- user related permission config start -->
+	<bean id="validateOperateUserPermissoinDataSource" factory-bean="infoCoreSpringContext"
+		factory-method="getBean" scope="prototype">
+		<constructor-arg value="validateOperateUserPermissoinDataSource" />
+	</bean>
+
+	<bean id="operateUserPermissionConfigEntry"
+		class="com.vertonur.admin.security.FixedValuePermissionConfigEntry"
+		scope="prototype">
+		<property name="dataSource" ref="validateOperateUserPermissoinDataSource" />
+		<property name="name" value="user" />
+		<property name="desc" value="${permission.entry.operate.user}" />
+	</bean>
+
+	<bean id="operateUserPermissionConfigSection" class="com.vertonur.admin.security.PermissionConfigSection"
+		scope="prototype">
+		<property name="desc" value="${permission.section.user}" />
+		<property name="entries">
+			<set>
+				<ref bean="operateUserPermissionConfigEntry" />
+			</set>
+		</property>
+	</bean>
+	<!-- user related permission config end -->
+
+	<!-- forumzone related permission config start -->
+	<bean id="validateOperateForumzonePermissionDataSource"
+		factory-bean="infoCoreSpringContext" factory-method="getBean" scope="prototype">
+		<constructor-arg value="validateOperateDepartmentPermissionDataSource" />
+	</bean>
+
+	<bean id="operateForumzonePermissionConfigEntry"
+		class="com.vertonur.admin.security.FixedValuePermissionConfigEntry"
+		scope="prototype">
+		<property name="dataSource" ref="validateOperateForumzonePermissionDataSource" />
+		<property name="name" value="forumzone" />
+		<property name="desc" value="${permission.entry.operate.forumzone}" />
+	</bean>
+
+	<bean id="operateForumzonePermissionConfigSection" class="com.vertonur.admin.security.PermissionConfigSection"
+		scope="prototype">
+		<property name="desc" value="${permission.section.forumzone}" />
+		<property name="entries">
+			<set>
+				<ref bean="operateForumzonePermissionConfigEntry" />
+			</set>
+		</property>
+	</bean>
+	<!-- forumzone related permission config end -->
+
+	<!-- forum related permission config start -->
+	<bean id="validateOperateForumPermissionDataSource" factory-bean="infoCoreSpringContext"
+		factory-method="getBean" scope="prototype">
+		<constructor-arg value="validateOperateCategoryPermissionDataSource" />
+	</bean>
+
+	<bean id="operateForumPermissionConfigEntry"
+		class="com.vertonur.admin.security.FixedValuePermissionConfigEntry"
+		scope="prototype">
+		<property name="dataSource" ref="validateOperateForumPermissionDataSource" />
+		<property name="name" value="forum" />
+		<property name="desc" value="${permission.entry.operate.forum}" />
+	</bean>
+
+	<bean id="operateForumPermissionConfigSection" class="com.vertonur.admin.security.PermissionConfigSection"
+		scope="prototype">
+		<property name="desc" value="${permission.section.forum}" />
+		<property name="entries">
+			<set>
+				<ref bean="operateForumPermissionConfigEntry" />
+			</set>
+		</property>
+	</bean>
+	<!-- forum related permission config end -->
+
+	<!-- runtime parameter related permission config start -->
+	<bean id="validateConfigRuntimeParameterPermissionDataSource"
+		factory-bean="infoCoreSpringContext" factory-method="getBean" scope="prototype">
+		<constructor-arg value="validateConfigRuntimeParameterPermissionDataSource" />
+	</bean>
+
+	<bean id="configRuntimeParameterPermissionConfigEntry"
+		class="com.vertonur.admin.security.FixedValuePermissionConfigEntry"
+		scope="prototype">
+		<property name="dataSource"
+			ref="validateConfigRuntimeParameterPermissionDataSource" />
+		<property name="name" value="runtimeParameter" />
+		<property name="desc"
+			value="${permission.entry.operate.runtime.parameter}" />
+	</bean>
+
+	<bean id="configRuntimeParameterPermissionConfigSection" class="com.vertonur.admin.security.PermissionConfigSection"
+		scope="prototype">
+		<property name="desc" value="${permission.section.runtime.parameter}" />
+		<property name="entries">
+			<set>
+				<ref bean="configRuntimeParameterPermissionConfigEntry" />
+			</set>
+		</property>
+	</bean>
+	<!-- runtime parameter related permission config end -->
+
+	<!-- ranking related permission config start -->
+	<bean id="validateOperateRankingPermissionDataSource"
+		factory-bean="infoCoreSpringContext" factory-method="getBean" scope="prototype">
+		<constructor-arg value="validateOperateRankingPermissionDataSource" />
+	</bean>
+
+	<bean id="operateRankingPermissionConfigEntry"
+		class="com.vertonur.admin.security.FixedValuePermissionConfigEntry"
+		scope="prototype">
+		<property name="dataSource" ref="validateOperateRankingPermissionDataSource" />
+		<property name="name" value="ranking" />
+		<property name="desc" value="${permission.entry.operate.ranking}" />
+	</bean>
+
+	<bean id="operateRankingPermissionConfigSection" class="com.vertonur.admin.security.PermissionConfigSection"
+		scope="prototype">
+		<property name="desc" value="${permission.section.ranking}" />
+		<property name="entries">
+			<set>
+				<ref bean="operateRankingPermissionConfigEntry" />
+			</set>
+		</property>
+	</bean>
+	<!-- ranking related permission config end -->
+
+	<!-- points related permission config start -->
+	<bean id="validateConfigPointsPermissionDataSource" factory-bean="infoCoreSpringContext"
+		factory-method="getBean" scope="prototype">
+		<constructor-arg value="validateConfigPointsPermissionDataSource" />
+	</bean>
+
+	<bean id="configPointsPermissionConfigEntry"
+		class="com.vertonur.admin.security.FixedValuePermissionConfigEntry"
+		scope="prototype">
+		<property name="dataSource" ref="validateConfigPointsPermissionDataSource" />
+		<property name="name" value="points" />
+		<property name="desc" value="${permission.entry.operate.points}" />
+	</bean>
+
+	<bean id="configPointsPermissionConfigSection" class="com.vertonur.admin.security.PermissionConfigSection"
+		scope="prototype">
+		<property name="desc" value="${permission.section.points}" />
+		<property name="entries">
+			<set>
+				<ref bean="configPointsPermissionConfigEntry" />
+			</set>
+		</property>
+	</bean>
+	<!-- points related permission config end -->
+
+	<bean id="backendPermissionConfigSessionManager"
+		class="com.vertonur.admin.security.PermissionConfigSessionManager"
+		scope="prototype">
+		<property name="sections">
+			<set>
+				<ref bean="operateGroupPermissionConfigSection" />
+				<ref bean="operateUserPermissionConfigSection" />
+				<ref bean="operateForumzonePermissionConfigSection" />
+				<ref bean="operateForumPermissionConfigSection" />
+				<ref bean="configRuntimeParameterPermissionConfigSection" />
+				<ref bean="operateRankingPermissionConfigSection" />
+				<ref bean="configPointsPermissionConfigSection" />
+			</set>
+		</property>
+	</bean>
+	
+	<bean id="validateConfigBackendPermissionPermissionDataSource" factory-bean="infoCoreSpringContext"
+		factory-method="getBean" scope="prototype">
+		<constructor-arg value="validateConfigBackendPermissionPermissionDataSource" />
+	</bean>
+</beans>

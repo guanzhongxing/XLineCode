@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/security 
+		http://www.springframework.org/schema/security/spring-security-3.1.xsd
+	">
+
+	<http auto-config="false" use-expressions="true"
+		entry-point-ref="authenticationEntryPoint" authentication-manager-ref="authenticationManager">
+
+		<intercept-url pattern="/admin/user/group/update.do"
+			access="fullyAuthenticated" />
+		<intercept-url pattern="/admin/user/lock.do" access="fullyAuthenticated" />
+		<intercept-url pattern="/admin/forumzone/create.do"
+			access="fullyAuthenticated" />
+		<intercept-url pattern="/admin/forumzone/edit.do"
+			access="fullyAuthenticated" />
+		<intercept-url pattern="/admin/forumzone/delete.do"
+			access="fullyAuthenticated" />
+		<intercept-url pattern="/admin/forum/create.do" access="fullyAuthenticated" />
+		<intercept-url pattern="/admin/forum/edit.do" access="fullyAuthenticated" />
+		<intercept-url pattern="/admin/forum/delete.do" access="fullyAuthenticated" />
+		<intercept-url pattern="/admin/moderation/update.do"
+			access="fullyAuthenticated" />
+		<intercept-url pattern="/admin/system/config/list.do"
+			access="fullyAuthenticated" />
+		<intercept-url pattern="/admin/group/post.do" access="fullyAuthenticated" />
+		<intercept-url pattern="/admin/permission/update.do"
+			access="fullyAuthenticated" />
+		<intercept-url pattern="/admin/ranking/delete.do"
+			access="fullyAuthenticated" />
+		<intercept-url pattern="/admin/ranking/update.do"
+			access="fullyAuthenticated" />
+		<intercept-url pattern="/admin/ranking/pointsconfig/update.do"
+			access="fullyAuthenticated" />
+		<intercept-url pattern="/updateMyProfile.do" access="fullyAuthenticated" />
+
+		<anonymous enabled="false" />
+		<custom-filter ref="userSessionFilter" before="FORM_LOGIN_FILTER" />
+		<custom-filter ref="authenticationFilter" position="FORM_LOGIN_FILTER" />
+		<custom-filter ref="setUpGuestAuthenticationFilter"
+			position="ANONYMOUS_FILTER" />
+
+		<logout invalidate-session="true" logout-url="/user/filter_logout"
+			success-handler-ref="logoutSuccessHandler" />
+
+		<!-- key set here is validated against key of bean referenced by "services-ref" 
+			attribute,it's required by the Spring security framework -->
+		<remember-me key="2eIPzx-djcj!9lVyrgE0MCgj" services-ref="tokenBasedRememberMeServices" />
+		<access-denied-handler ref="rollbackTransactionAccessDeniedHandler" />
+	</http>
+
+	<beans:bean id="logoutSuccessHandler"
+		class="org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler">
+		<beans:property name="useReferer" value="true" />
+	</beans:bean>
+
+	<beans:bean id="authenticationEntryPoint"
+		class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+		<beans:property name="loginFormUrl" value="/forum/user/login/init.do" />
+	</beans:bean>
+
+	<beans:bean id="authenticationFailureHandler"
+		class="org.springframework.security.web.authentication.ExceptionMappingAuthenticationFailureHandler">
+		<beans:property name="defaultFailureUrl" value="/forum/user/login/init.do" />
+		<beans:property name="useForward" value="true" />
+	</beans:bean>
+
+	<beans:bean id="setUpGuestAuthenticationFilter"
+		class="com.vertonur.filters.SetUpGuestAuthenticationFilter" />
+
+	<beans:bean id="userSessionFilter" class="com.vertonur.filters.UserSessionFilter" />
+
+
+	<beans:bean id="authenticationManager" factory-bean="infoCoreSpringContext"
+		factory-method="getBean">
+		<beans:constructor-arg value="authenticationManager" />
+	</beans:bean>
+
+	<beans:bean id="authenticationFilter"
+		class="com.vertonur.filters.UserSessionAuthenticationFilter">
+		<beans:property name="filterProcessesUrl" value="/userLogin.do" />
+		<beans:property name="postOnly" value="false" />
+		<beans:property name="usernameParameter" value="userId" />
+		<beans:property name="passwordParameter" value="password" />
+		<beans:property name="authenticationManager" ref="authenticationManager" />
+		<beans:property name="authenticationFailureHandler"
+			ref="authenticationFailureHandler" />
+		<beans:property name="rememberMeServices"
+			ref="tokenBasedRememberMeServices" />
+	</beans:bean>
+
+	<beans:bean id="rollbackTransactionAccessDeniedHandler"
+		class="com.vertonur.spring.RollbackTransactionAccessDeniedHandler">
+		<beans:property name="errorPage"
+			value="/templates/default/user/message.jsp" />
+		<beans:property name="backendFullAuthToken" value="/admin" />
+	</beans:bean>
+
+	<beans:bean
+		class="com.vertonur.spring.service.InfoTokenBasedRememberMeServices"
+		id="tokenBasedRememberMeServices">
+		<beans:property name="parameter" value="autoLogin" />
+		<beans:property name="cookieName" value="INFO_FORUM_AUTO_LOGIN" />
+		<beans:property name="key" value="2eIPzx-djcj!9lVyrgE0MCgj" />
+		<beans:property name="tokenValiditySeconds" value="1209600" />
+		<beans:property name="userDetailsService" ref="daoUserDetailsService" />
+	</beans:bean>
+
+	<beans:bean id="daoUserDetailsService" factory-bean="infoCoreSpringContext"
+		factory-method="getBean" scope="prototype">
+		<beans:constructor-arg value="daoUserDetailsService" />
+	</beans:bean>
+</beans:beans>
