@@ -63,7 +63,6 @@
 	<bean id="runtimeConfig" class="com.vertonur.bean.config.RuntimeConfig">
 		<property name="uploadRootFolder" value="/upload" />
 		<property name="avatarRootFolder" value="/avatar" />
-		<property name="thumbPrefix" value="_thumb" />
 	</bean>
 
 	<bean id="extendedConfigs" class="java.util.HashSet">

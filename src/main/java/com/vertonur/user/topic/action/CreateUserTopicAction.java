@@ -16,6 +16,7 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.upload.FormFile;
 
 import com.vertonur.pojo.Attachment;
+import com.vertonur.pojo.AttachmentInfo.AttachmentType;
 import com.vertonur.pojo.Info.InfoType;
 import com.vertonur.pojo.ModerationLog.ModerationStatus;
 import com.vertonur.session.UserSession;
@@ -23,6 +24,7 @@ import com.vertonur.bean.Forum;
 import com.vertonur.bean.Forumzone;
 import com.vertonur.bean.Topic;
 import com.vertonur.bean.User;
+import com.vertonur.bean.config.SystemConfig;
 import com.vertonur.constants.Constants;
 import com.vertonur.context.SystemContextService;
 import com.vertonur.dms.AttachmentService;
@@ -97,20 +99,19 @@ public class CreateUserTopicAction extends Action {
 				}
 
 				FormFile uploadedFile = castedForm.getUpload();
-				Attachment newAttachment = ForumCommonUtil.uploadBcsAttchment(
-						uploadedFile, castedForm.getAttmComment(), context,
-						user);
-				if (newAttachment != null) {
-					newAttachment.getAttmInfo().setUploadConfirmed(true);
-					newAttachment.setAttmHolder(topic.getCore());
-					attachmentService.confirmAttachmentUpload(newAttachment);
-				}
+				Attachment newAttachment = attachmentService.uploadAttchment(
+						AttachmentType.BCS, uploadedFile.getInputStream(),
+						uploadedFile.getContentType(), SystemConfig.getConfig()
+								.getRuntimeConfig().getUploadRootFolder(),
+						uploadedFile.getFileName(), uploadedFile.getFileSize(),
+						castedForm.getAttmComment(), user.getCore(),
+						topic.getCore());
 				if (attachmentIds != null) {
 					for (int attachmentId : attachmentIds) {
 						Attachment attachment = attachmentService
 								.getAttmById(attachmentId);
 						attachment.setAttmHolder(topic.getCore());
-						attachmentService.confirmAttachmentUpload(attachment);
+						attachmentService.confirmEmbeddedImageUpload(attachment);
 					}
 				}
 			} catch (InsufficientPermissionException ex) {

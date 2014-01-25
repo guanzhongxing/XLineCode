@@ -13,7 +13,6 @@ public class RuntimeConfig implements Config {
 	private int id;
 	private String uploadRootFolder;
 	private String avatarRootFolder;
-	private String thumbPrefix;
 
 	@Id
 	@GeneratedValue
@@ -42,14 +41,5 @@ public class RuntimeConfig implements Config {
 
 	public void setAvatarRootFolder(String avatarRootFolder) {
 		this.avatarRootFolder = avatarRootFolder;
-	}
-
-	@Column(name = "RT_CFG_TMB_PFX")
-	public String getThumbPrefix() {
-		return thumbPrefix;
-	}
-
-	public void setThumbPrefix(String thumbPrefix) {
-		this.thumbPrefix = thumbPrefix;
 	}
 }

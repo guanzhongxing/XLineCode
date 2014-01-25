@@ -17,13 +17,14 @@ import org.apache.struts.upload.FormFile;
 
 import com.vertonur.bean.User;
 import com.vertonur.bean.config.GlobalConfig;
+import com.vertonur.bean.config.RuntimeConfig;
 import com.vertonur.bean.config.SystemConfig;
 import com.vertonur.constants.Constants;
 import com.vertonur.context.SystemContextService;
 import com.vertonur.dms.AttachmentService;
 import com.vertonur.dms.constant.ServiceEnum;
 import com.vertonur.pojo.Attachment;
-import com.vertonur.pojo.AttachmentInfo.FileType;
+import com.vertonur.pojo.AttachmentInfo.AttachmentType;
 import com.vertonur.service.UserService;
 import com.vertonur.session.UserSession;
 import com.vertonur.user.topic.form.UserTopicForm;
@@ -71,21 +72,24 @@ public class DownloadAttachmentAction extends MappingDispatchAction {
 		if (!uploadedFile.getContentType().startsWith("image")) {
 			request.setAttribute("isImage", false);
 		} else {
-			ServletContext context = servlet.getServletContext();
 			HttpSession session = request.getSession(false);
 			UserSession userSession = (UserSession) session
 					.getAttribute(Constants.USER_SESSION);
 			UserService userService = new UserService();
 			User user = userService.getUserById(userSession.getUserId());
 			try {
-				Attachment attm = ForumCommonUtil.uploadBcsAttchment(
-						uploadedFile, castedForm.getAttmComment(), context,
-						user);
-				attm.getAttmInfo().setFileType(FileType.EMBEDDED_IMAGE);
 				AttachmentService attachmentService = SystemContextService
 						.getService().getDataManagementService(
 								ServiceEnum.ATTACHMENT_SERVICE);
-				attachmentService.saveAttachment(attm);
+				RuntimeConfig config = SystemConfig.getConfig()
+						.getRuntimeConfig();
+				Attachment attm = attachmentService.uploadInfoEmbededImage(AttachmentType.BCS,
+						uploadedFile.getInputStream(),
+						uploadedFile.getContentType(),
+						config.getUploadRootFolder(),
+						uploadedFile.getFileName(),
+						new Long(uploadedFile.getFileSize()).longValue(),
+						user.getCore());
 
 				request.setAttribute("isImage", true);
 				request.setAttribute("attachmentId", attm.getId());

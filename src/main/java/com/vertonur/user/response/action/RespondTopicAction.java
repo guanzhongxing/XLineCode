@@ -16,19 +16,19 @@ import org.apache.struts.upload.FormFile;
 import com.vertonur.bean.Response;
 import com.vertonur.bean.Topic;
 import com.vertonur.bean.User;
+import com.vertonur.bean.config.SystemConfig;
 import com.vertonur.constants.Constants;
 import com.vertonur.context.SystemContextService;
 import com.vertonur.dms.AttachmentService;
 import com.vertonur.dms.constant.ServiceEnum;
 import com.vertonur.dms.exception.SavingCommentToLockedInfoException;
-import com.vertonur.pojo.Attachment;
+import com.vertonur.pojo.AttachmentInfo.AttachmentType;
 import com.vertonur.pojo.ModerationLog.ModerationStatus;
 import com.vertonur.security.exception.InsufficientPermissionException;
 import com.vertonur.service.InfoService;
 import com.vertonur.service.UserService;
 import com.vertonur.session.UserSession;
 import com.vertonur.user.response.form.ResponseForm;
-import com.vertonur.util.ForumCommonUtil;
 
 public class RespondTopicAction extends Action {
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -78,14 +78,16 @@ public class RespondTopicAction extends Action {
 				}
 
 				FormFile uploadedFile = castedForm.getUpload();
-				Attachment newAttachment = ForumCommonUtil.uploadBcsAttchment(
-						uploadedFile, castedForm.getAttmComment(), context,
-						user);
-				if (newAttachment != null) {
-					newAttachment.getAttmInfo().setUploadConfirmed(true);
-					newAttachment.setAttmHolder(rsp.getCore());
-					attachmentService.confirmAttachmentUpload(newAttachment);
-				}
+				if (uploadedFile != null)
+					attachmentService.uploadAttchment(AttachmentType.BCS,
+							uploadedFile.getInputStream(),
+							uploadedFile.getContentType(), SystemConfig
+									.getConfig().getRuntimeConfig()
+									.getUploadRootFolder(),
+							uploadedFile.getFileName(),
+							new Long(uploadedFile.getFileSize()).longValue(),
+							castedForm.getAttmComment(), user.getCore(),
+							rsp.getCore());
 			} catch (InsufficientPermissionException ex) {
 				systemContextService.rollbackTransaction();
 				request.setAttribute("insufficientPermission", true);
@@ -112,14 +114,16 @@ public class RespondTopicAction extends Action {
 				status = infoService.saveResponse(rsp);
 
 				FormFile uploadedFile = castedForm.getUpload();
-				Attachment attachment = ForumCommonUtil.uploadBcsAttchment(
-						uploadedFile, castedForm.getAttmComment(), context,
-						user);
-				if (attachment != null) {
-					attachment.getAttmInfo().setUploadConfirmed(true);
-					attachment.setAttmHolder(rsp.getCore());
-					attachmentService.confirmAttachmentUpload(attachment);
-				}
+				if (uploadedFile != null)
+					attachmentService.uploadAttchment(AttachmentType.BCS,
+							uploadedFile.getInputStream(),
+							uploadedFile.getContentType(), SystemConfig
+									.getConfig().getRuntimeConfig()
+									.getUploadRootFolder(),
+							uploadedFile.getFileName(),
+							new Long(uploadedFile.getFileSize()).longValue(),
+							castedForm.getAttmComment(), user.getCore(),
+							rsp.getCore());
 			} catch (SavingCommentToLockedInfoException e) {
 				systemContextService.rollbackTransaction();
 				request.setAttribute("saveCmtToLockedInfo", true);
