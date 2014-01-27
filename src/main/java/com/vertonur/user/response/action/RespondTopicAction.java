@@ -2,7 +2,6 @@ package com.vertonur.user.response.action;
 
 import java.util.Date;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -16,13 +15,13 @@ import org.apache.struts.upload.FormFile;
 import com.vertonur.bean.Response;
 import com.vertonur.bean.Topic;
 import com.vertonur.bean.User;
+import com.vertonur.bean.config.RuntimeConfig;
 import com.vertonur.bean.config.SystemConfig;
 import com.vertonur.constants.Constants;
 import com.vertonur.context.SystemContextService;
 import com.vertonur.dms.AttachmentService;
 import com.vertonur.dms.constant.ServiceEnum;
 import com.vertonur.dms.exception.SavingCommentToLockedInfoException;
-import com.vertonur.pojo.AttachmentInfo.AttachmentType;
 import com.vertonur.pojo.ModerationLog.ModerationStatus;
 import com.vertonur.security.exception.InsufficientPermissionException;
 import com.vertonur.service.InfoService;
@@ -48,7 +47,6 @@ public class RespondTopicAction extends Action {
 		HttpSession session = request.getSession(false);
 		UserSession userSession = (UserSession) session
 				.getAttribute(Constants.USER_SESSION);
-		ServletContext context = servlet.getServletContext();
 		UserService userService = new UserService();
 		User user = userService.getUserById(userSession.getUserId());
 		SystemContextService systemContextService = SystemContextService
@@ -78,16 +76,19 @@ public class RespondTopicAction extends Action {
 				}
 
 				FormFile uploadedFile = castedForm.getUpload();
-				if (uploadedFile != null)
-					attachmentService.uploadAttchment(AttachmentType.BCS,
+				if (uploadedFile != null) {
+					RuntimeConfig config = SystemConfig.getConfig()
+							.getRuntimeConfig();
+					attachmentService.uploadAttchment(
+							config.getUploadFileSystem(),
 							uploadedFile.getInputStream(),
-							uploadedFile.getContentType(), SystemConfig
-									.getConfig().getRuntimeConfig()
-									.getUploadRootFolder(),
+							uploadedFile.getContentType(),
+							config.getUploadRootFolder(),
 							uploadedFile.getFileName(),
 							new Long(uploadedFile.getFileSize()).longValue(),
 							castedForm.getAttmComment(), user.getCore(),
 							rsp.getCore());
+				}
 			} catch (InsufficientPermissionException ex) {
 				systemContextService.rollbackTransaction();
 				request.setAttribute("insufficientPermission", true);
@@ -112,18 +113,20 @@ public class RespondTopicAction extends Action {
 			ModerationStatus status = null;
 			try {
 				status = infoService.saveResponse(rsp);
-
 				FormFile uploadedFile = castedForm.getUpload();
-				if (uploadedFile != null)
-					attachmentService.uploadAttchment(AttachmentType.BCS,
+				if (uploadedFile != null) {
+					RuntimeConfig config = SystemConfig.getConfig()
+							.getRuntimeConfig();
+					attachmentService.uploadAttchment(
+							config.getUploadFileSystem(),
 							uploadedFile.getInputStream(),
-							uploadedFile.getContentType(), SystemConfig
-									.getConfig().getRuntimeConfig()
-									.getUploadRootFolder(),
+							uploadedFile.getContentType(),
+							config.getUploadRootFolder(),
 							uploadedFile.getFileName(),
 							new Long(uploadedFile.getFileSize()).longValue(),
 							castedForm.getAttmComment(), user.getCore(),
 							rsp.getCore());
+				}
 			} catch (SavingCommentToLockedInfoException e) {
 				systemContextService.rollbackTransaction();
 				request.setAttribute("saveCmtToLockedInfo", true);

@@ -2,7 +2,6 @@ package com.vertonur.user.topic.action;
 
 import java.util.Date;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -15,26 +14,24 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.upload.FormFile;
 
-import com.vertonur.pojo.Attachment;
-import com.vertonur.pojo.AttachmentInfo.AttachmentType;
-import com.vertonur.pojo.Info.InfoType;
-import com.vertonur.pojo.ModerationLog.ModerationStatus;
-import com.vertonur.session.UserSession;
 import com.vertonur.bean.Forum;
 import com.vertonur.bean.Forumzone;
 import com.vertonur.bean.Topic;
 import com.vertonur.bean.User;
+import com.vertonur.bean.config.RuntimeConfig;
 import com.vertonur.bean.config.SystemConfig;
 import com.vertonur.constants.Constants;
 import com.vertonur.context.SystemContextService;
 import com.vertonur.dms.AttachmentService;
 import com.vertonur.dms.constant.ServiceEnum;
+import com.vertonur.pojo.Info.InfoType;
+import com.vertonur.pojo.ModerationLog.ModerationStatus;
 import com.vertonur.security.exception.InsufficientPermissionException;
 import com.vertonur.service.ForumService;
 import com.vertonur.service.InfoService;
 import com.vertonur.service.UserService;
+import com.vertonur.session.UserSession;
 import com.vertonur.user.topic.form.UserTopicForm;
-import com.vertonur.util.ForumCommonUtil;
 
 public class CreateUserTopicAction extends Action {
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
@@ -63,7 +60,6 @@ public class CreateUserTopicAction extends Action {
 				.getAttribute(Constants.USER_SESSION);
 		UserService userService = new UserService();
 		User user = userService.getUserById(userSession.getUserId());
-		ServletContext context = servlet.getServletContext();
 
 		InfoType infoType = InfoType.valueOf(castedForm.getInfoType());
 		int[] attachmentIds = castedForm.getAttachmentIds();
@@ -99,21 +95,25 @@ public class CreateUserTopicAction extends Action {
 				}
 
 				FormFile uploadedFile = castedForm.getUpload();
-				Attachment newAttachment = attachmentService.uploadAttchment(
-						AttachmentType.BCS, uploadedFile.getInputStream(),
-						uploadedFile.getContentType(), SystemConfig.getConfig()
-								.getRuntimeConfig().getUploadRootFolder(),
-						uploadedFile.getFileName(), uploadedFile.getFileSize(),
-						castedForm.getAttmComment(), user.getCore(),
-						topic.getCore());
-				if (attachmentIds != null) {
-					for (int attachmentId : attachmentIds) {
-						Attachment attachment = attachmentService
-								.getAttmById(attachmentId);
-						attachment.setAttmHolder(topic.getCore());
-						attachmentService.confirmEmbeddedImageUpload(attachment);
-					}
+				if (uploadedFile != null) {
+					RuntimeConfig config = SystemConfig.getConfig()
+							.getRuntimeConfig();
+					attachmentService.uploadAttchment(
+							config.getUploadFileSystem(),
+							uploadedFile.getInputStream(),
+							uploadedFile.getContentType(),
+							config.getUploadRootFolder(),
+							uploadedFile.getFileName(),
+							uploadedFile.getFileSize(),
+							castedForm.getAttmComment(), user.getCore(),
+							topic.getCore());
 				}
+
+				if (attachmentIds != null)
+					for (int attachmentId : attachmentIds)
+						attachmentService.confirmEmbeddedImageUpload(
+								topic.getCore(), attachmentId);
+
 			} catch (InsufficientPermissionException ex) {
 				// do nothing,just get an fresh topic from db to override
 				// the cached one
@@ -144,26 +144,27 @@ public class CreateUserTopicAction extends Action {
 
 			FormFile uploadedFile = castedForm.getUpload();
 			try {
-				Attachment attachment = ForumCommonUtil.uploadBcsAttchment(
-						uploadedFile, castedForm.getAttmComment(), context,
-						user);
-				if (attachment != null) {
-					attachment.getAttmInfo().setUploadConfirmed(true);
-					attachment.setAttmHolder(topic.getCore());
-					attachmentService.confirmAttachmentUpload(attachment);
+				if (uploadedFile != null){
+					RuntimeConfig config = SystemConfig.getConfig()
+							.getRuntimeConfig();
+					attachmentService.uploadAttchment(
+							config.getUploadFileSystem(),
+							uploadedFile.getInputStream(),
+							uploadedFile.getContentType(),
+							config.getUploadRootFolder(),
+							uploadedFile.getFileName(),
+							uploadedFile.getFileSize(),
+							castedForm.getAttmComment(), user.getCore(),
+							topic.getCore());
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			if (attachmentIds != null) {
-				for (int attachmentId : attachmentIds) {
-					Attachment attachment = attachmentService
-							.getAttmById(attachmentId);
-					attachment.setAttmHolder(topic.getCore());
-					attachmentService.confirmAttachmentUpload(attachment);
-				}
-			}
+			if (attachmentIds != null)
+				for (int attachmentId : attachmentIds)
+					attachmentService.confirmEmbeddedImageUpload(
+							topic.getCore(), attachmentId);
 
 			if (ModerationStatus.PENDING.equals(status)
 					|| ModerationStatus.DEFERRED.equals(status)) {

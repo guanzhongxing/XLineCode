@@ -2,15 +2,12 @@ package com.vertonur.user.registration.action;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.mail.EmailException;
 import org.apache.struts.action.Action;
 import org.apache.struts.action.ActionForm;
@@ -24,12 +21,14 @@ import com.vertonur.bean.config.GlobalConfig;
 import com.vertonur.bean.config.RuntimeConfig;
 import com.vertonur.bean.config.SystemConfig;
 import com.vertonur.context.SystemContextService;
+import com.vertonur.dms.AttachmentService;
 import com.vertonur.dms.GroupService;
 import com.vertonur.dms.MailService;
 import com.vertonur.dms.SystemService;
 import com.vertonur.dms.TemplateService;
 import com.vertonur.dms.UserService;
 import com.vertonur.dms.constant.ServiceEnum;
+import com.vertonur.dms.exception.AttachmentSizeExceedException;
 import com.vertonur.pojo.Admin;
 import com.vertonur.pojo.Attachment;
 import com.vertonur.pojo.AttachmentInfo;
@@ -163,37 +162,19 @@ public final class RegistrationAction extends Action {
 	}
 
 	private void setUpAvatar(User user, FormFile image)
-			throws FileNotFoundException, IOException {
+			throws FileNotFoundException, IOException,
+			AttachmentSizeExceedException {
 		RuntimeConfig config = SystemConfig.getConfig().getRuntimeConfig();
 		String avatarRoot = config.getAvatarRootFolder();
-		avatarRoot = config.getUploadRootFolder() + "/" + avatarRoot;
-
-		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-		Date uploadDate = new Date();
-		String realFileName = RandomStringUtils.randomAlphabetic(6) + "_"
-				+ image.getFileName();
-
-		String phisicalPath = avatarRoot + "/" + format.format(uploadDate)
-				+ "/" + realFileName;
-		Date startTime = new Date();
-		String downloadableUrl = ForumCommonUtil.uploadBcsObject(image,
-				phisicalPath);
-		Date endTime = new Date();
-		long elapsedTime = endTime.getTime() - startTime.getTime();
-
-		AttachmentInfo attmInfo = new AttachmentInfo();
-		attmInfo.setAttachmentType(AttachmentType.BCS);
-		attmInfo.setMimeType(image.getContentType());
-		attmInfo.setFilesize(image.getFileSize());
-		attmInfo.setRealFilename(realFileName);
-		attmInfo.setPhysicalFilename(phisicalPath);
-		attmInfo.setDownloadUrl(downloadableUrl);
-		attmInfo.setUploadTime(uploadDate);
-		attmInfo.setUploadTimeInMillis(elapsedTime);
-
-		Attachment attm = new Attachment();
-		attm.setUploader(user);
-		attm.setAttmInfo(attmInfo);
+		avatarRoot = config.getUploadRootFolder() + avatarRoot;
+		SystemContextService systemContextService = SystemContextService
+				.getService();
+		AttachmentService attachmentService = systemContextService
+				.getDataManagementService(ServiceEnum.ATTACHMENT_SERVICE);
+		Attachment attm = attachmentService.uploadAttchment(
+				config.getUploadFileSystem(), image.getInputStream(),
+				image.getContentType(), avatarRoot, image.getFileName(),
+				image.getFileSize(), null, user, null);
 
 		user.setAvatar(attm);
 	}

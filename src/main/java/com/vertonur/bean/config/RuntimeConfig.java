@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import com.vertonur.pojo.AttachmentInfo.AttachmentType;
 import com.vertonur.pojo.config.Config;
 
 @Entity(name = "INFO_FRM_RT_CFG")
@@ -13,6 +14,7 @@ public class RuntimeConfig implements Config {
 	private int id;
 	private String uploadRootFolder;
 	private String avatarRootFolder;
+	private AttachmentType uploadFileSystem;
 
 	@Id
 	@GeneratedValue
@@ -41,5 +43,13 @@ public class RuntimeConfig implements Config {
 
 	public void setAvatarRootFolder(String avatarRootFolder) {
 		this.avatarRootFolder = avatarRootFolder;
+	}
+
+	public AttachmentType getUploadFileSystem() {
+		return uploadFileSystem;
+	}
+
+	public void setUploadFileSystem(AttachmentType uploadFileSystem) {
+		this.uploadFileSystem = uploadFileSystem;
 	}
 }

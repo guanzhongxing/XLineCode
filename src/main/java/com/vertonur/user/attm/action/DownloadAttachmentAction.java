@@ -24,7 +24,6 @@ import com.vertonur.context.SystemContextService;
 import com.vertonur.dms.AttachmentService;
 import com.vertonur.dms.constant.ServiceEnum;
 import com.vertonur.pojo.Attachment;
-import com.vertonur.pojo.AttachmentInfo.AttachmentType;
 import com.vertonur.service.UserService;
 import com.vertonur.session.UserSession;
 import com.vertonur.user.topic.form.UserTopicForm;
@@ -83,7 +82,8 @@ public class DownloadAttachmentAction extends MappingDispatchAction {
 								ServiceEnum.ATTACHMENT_SERVICE);
 				RuntimeConfig config = SystemConfig.getConfig()
 						.getRuntimeConfig();
-				Attachment attm = attachmentService.uploadInfoEmbededImage(AttachmentType.BCS,
+				Attachment attm = attachmentService.uploadInfoEmbededImage(
+						config.getUploadFileSystem(),
 						uploadedFile.getInputStream(),
 						uploadedFile.getContentType(),
 						config.getUploadRootFolder(),

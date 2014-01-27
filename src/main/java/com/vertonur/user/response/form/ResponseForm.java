@@ -111,7 +111,7 @@ public class ResponseForm extends ValidatorForm {
 				.getService()
 				.getDataManagementService(ServiceEnum.RUNTIME_PARAMETER_SERVICE)
 				.getAttachmentConfig();
-		int maxSize = config.getMaxSize();
+		long maxSize = config.getMaxSize();
 		if (upload != null && upload.getFileSize() != 0
 				&& upload.getFileSize() > maxSize) {
 			arg1.setAttribute("fileInvalid", true);

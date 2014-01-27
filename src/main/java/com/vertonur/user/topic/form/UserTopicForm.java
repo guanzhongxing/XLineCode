@@ -106,7 +106,7 @@ public class UserTopicForm extends ValidatorForm {
 				.getService()
 				.getDataManagementService(ServiceEnum.RUNTIME_PARAMETER_SERVICE)
 				.getAttachmentConfig();
-		int maxAttmSize = attachmentConfig.getMaxSize();
+		long maxAttmSize = attachmentConfig.getMaxSize();
 		ActionErrors errors = super.validate(arg0, arg1);
 		if (forumId == -1)
 			errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(

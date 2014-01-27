@@ -120,92 +120,91 @@ public class ForumCommonUtil {
 		return sb.toString();
 	}
 
-	public static Attachment uploadAttchment(FormFile uploadedFile,
-			String attmComment, ServletContext context, User theCurrentUser,
-			Info info) throws Exception {
-
-		AttachmentConfig attachmentConfig = SystemContextService
-				.getService()
-				.getDataManagementService(ServiceEnum.RUNTIME_PARAMETER_SERVICE)
-				.getAttachmentConfig();
-		int maxAttmSize = attachmentConfig.getMaxSize();
-		if (uploadedFile != null && uploadedFile.getFileSize() > 0
-				&& uploadedFile.getFileSize() <= maxAttmSize) {
-			String mimeType = uploadedFile.getContentType();
-			String mainTpye = mimeType.split("/")[0];
-
-			Calendar uploadDate = Calendar.getInstance();
-			String realFileName = uploadedFile.getFileName() + "_";
-
-			String tmp = mainTpye + "/" + uploadDate.get(Calendar.YEAR) + "/"
-					+ uploadDate.get(Calendar.MONTH) + "/"
-					+ uploadDate.get(Calendar.DAY_OF_MONTH);
-			String phisicalPath = context.getRealPath(SystemConfig.getConfig()
-					.getRuntimeConfig().getUploadRootFolder()
-					+ "/" + tmp);
-			File diskFile = new File(phisicalPath);
-			diskFile.mkdirs();
-
-			phisicalPath = phisicalPath + File.separator + realFileName;
-			File file = new File(phisicalPath);
-			while (file.exists()) {
-				int second = Calendar.SECOND;
-				int milisecond = Calendar.MILLISECOND;
-				phisicalPath = phisicalPath + second + milisecond;
-				realFileName = realFileName + second + milisecond;
-				file = new File(phisicalPath);
-			}
-			OutputStream outputStream = new FileOutputStream(phisicalPath);
-			InputStream inputStream = uploadedFile.getInputStream();
-			byte[] buffer = new byte[32768];
-			int n = 0;
-			Date startTime = new Date();
-			while ((n = inputStream.read(buffer)) != -1) {
-				outputStream.write(buffer, 0, n);
-			}
-
-			Date endTime = new Date();
-			long elapsedTime = endTime.getTime() - startTime.getTime();
-			inputStream.close();
-			outputStream.flush();
-			outputStream.close();
-
-			AttachmentInfo attmInfo = new AttachmentInfo();
-			attmInfo.setAttachmentType(AttachmentType.LOCAL);
-			attmInfo.setMimeType(mimeType);
-			attmInfo.setFilesize(uploadedFile.getFileSize());
-			attmInfo.setRealFilename(realFileName);
-			attmInfo.setPhysicalFilename(tmp + "/" + realFileName);
-			attmInfo.setUploadTime(uploadDate.getTime());
-			attmInfo.setComment(attmComment);
-			attmInfo.setUploadTimeInMillis(elapsedTime);
-			if (mainTpye.equals("image")) {
-				attmInfo.setHasThumb(true);
-				String extension = uploadedFile.getFileName().split("\\.")[1];
-				UploadedImageHandler.upload(extension,
-						uploadedFile.getInputStream(), phisicalPath
-								+ SystemConfig.getConfig().getRuntimeConfig()
-										.getThumbPrefix(),
-						attachmentConfig.getThumbWidth(),
-						attachmentConfig.getThumbHeight());
-			}
-			uploadedFile.destroy();
-
-			Attachment attm = new Attachment();
-			attm.setUploader(theCurrentUser.getCore());
-			attm.setAttmHolder(info.getCore());
-			attmInfo.setAttm(attm);
-			AttachmentService attachmentService = SystemContextService
-					.getService().getDataManagementService(
-							ServiceEnum.ATTACHMENT_SERVICE);
-			attachmentService.saveAttachmentInfo(attmInfo);
-
-			attm.setAttmInfo(attmInfo);
-			return attm;
-		}
-
-		return null;
-	}
+//	public static Attachment uploadAttchment(FormFile uploadedFile,
+//			String attmComment, ServletContext context, User theCurrentUser,
+//			Info info) throws Exception {
+//
+//		AttachmentConfig attachmentConfig = SystemContextService
+//				.getService()
+//				.getDataManagementService(ServiceEnum.RUNTIME_PARAMETER_SERVICE)
+//				.getAttachmentConfig();
+//		int maxAttmSize = (int) attachmentConfig.getMaxSize();
+//		if (uploadedFile != null && uploadedFile.getFileSize() > 0
+//				&& uploadedFile.getFileSize() <= maxAttmSize) {
+//			String mimeType = uploadedFile.getContentType();
+//			String mainTpye = mimeType.split("/")[0];
+//
+//			Calendar uploadDate = Calendar.getInstance();
+//			String realFileName = uploadedFile.getFileName() + "_";
+//
+//			String tmp = mainTpye + "/" + uploadDate.get(Calendar.YEAR) + "/"
+//					+ uploadDate.get(Calendar.MONTH) + "/"
+//					+ uploadDate.get(Calendar.DAY_OF_MONTH);
+//			String phisicalPath = context.getRealPath(SystemConfig.getConfig()
+//					.getRuntimeConfig().getUploadRootFolder()
+//					+ "/" + tmp);
+//			File diskFile = new File(phisicalPath);
+//			diskFile.mkdirs();
+//
+//			phisicalPath = phisicalPath + File.separator + realFileName;
+//			File file = new File(phisicalPath);
+//			while (file.exists()) {
+//				int second = Calendar.SECOND;
+//				int milisecond = Calendar.MILLISECOND;
+//				phisicalPath = phisicalPath + second + milisecond;
+//				realFileName = realFileName + second + milisecond;
+//				file = new File(phisicalPath);
+//			}
+//			OutputStream outputStream = new FileOutputStream(phisicalPath);
+//			InputStream inputStream = uploadedFile.getInputStream();
+//			byte[] buffer = new byte[32768];
+//			int n = 0;
+//			Date startTime = new Date();
+//			while ((n = inputStream.read(buffer)) != -1) {
+//				outputStream.write(buffer, 0, n);
+//			}
+//
+//			Date endTime = new Date();
+//			long elapsedTime = endTime.getTime() - startTime.getTime();
+//			inputStream.close();
+//			outputStream.flush();
+//			outputStream.close();
+//
+//			AttachmentInfo attmInfo = new AttachmentInfo();
+//			attmInfo.setAttachmentType(AttachmentType.LOCAL);
+//			attmInfo.setMimeType(mimeType);
+//			attmInfo.setFilesize(uploadedFile.getFileSize());
+//			attmInfo.setRealFilename(realFileName);
+//			attmInfo.setPhysicalFilename(tmp + "/" + realFileName);
+//			attmInfo.setUploadTime(uploadDate.getTime());
+//			attmInfo.setComment(attmComment);
+//			attmInfo.setUploadTimeInMillis(elapsedTime);
+//			if (mainTpye.equals("image")) {
+//				attmInfo.setHasThumb(true);
+//				String extension = uploadedFile.getFileName().split("\\.")[1];
+//				UploadedImageHandler.upload(extension,
+//						uploadedFile.getInputStream(), phisicalPath
+//								+ "",
+//						attachmentConfig.getThumbWidth(),
+//						attachmentConfig.getThumbHeight());
+//			}
+//			uploadedFile.destroy();
+//
+//			Attachment attm = new Attachment();
+//			attm.setUploader(theCurrentUser.getCore());
+//			attm.setAttmHolder(info.getCore());
+//			attmInfo.setAttm(attm);
+//			AttachmentService attachmentService = SystemContextService
+//					.getService().getDataManagementService(
+//							ServiceEnum.ATTACHMENT_SERVICE);
+//			attachmentService.saveAttachmentInfo(attmInfo);
+//
+//			attm.setAttmInfo(attmInfo);
+//			return attm;
+//		}
+//
+//		return null;
+//	}
 
 	/**
 	 * 将文件上传到百度云存储
@@ -218,82 +217,81 @@ public class ForumCommonUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static Attachment uploadBcsAttchment(FormFile uploadedFile,
-			String attmComment, ServletContext context, User theCurrentUser)
-			throws Exception {
+//	public static Attachment uploadBcsAttchment(FormFile uploadedFile,
+//			String attmComment, ServletContext context, User theCurrentUser)
+//			throws Exception {
+//
+//		AttachmentConfig attachmentConfig = SystemContextService
+//				.getService()
+//				.getDataManagementService(ServiceEnum.RUNTIME_PARAMETER_SERVICE)
+//				.getAttachmentConfig();
+//		int maxAttmSize = (int) attachmentConfig.getMaxSize();
+//		if (uploadedFile != null && uploadedFile.getFileSize() > 0
+//				&& uploadedFile.getFileSize() <= maxAttmSize) {
+//			String mimeType = uploadedFile.getContentType();
+//			String mainTpye = mimeType.split("/")[0];
+//
+//			SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+//			Date uploadDate = new Date();
+//			String realFileName = RandomStringUtils.randomAlphabetic(6) + "_"
+//					+ uploadedFile.getFileName();
+//
+//			String tmp = mainTpye + "/" + format.format(uploadDate);
+//			String phisicalPath = SystemConfig.getConfig().getRuntimeConfig()
+//					.getUploadRootFolder()
+//					+ "/" + tmp;
+//
+//			phisicalPath = phisicalPath + "/" + realFileName;
+//			Date startTime = new Date();
+//			String downloadableUrl = uploadBcsObject(uploadedFile, phisicalPath);
+//			Date endTime = new Date();
+//			long elapsedTime = endTime.getTime() - startTime.getTime();
+//
+//			AttachmentInfo attmInfo = new AttachmentInfo();
+//			attmInfo.setAttachmentType(AttachmentType.BCS);
+//			attmInfo.setMimeType(mimeType);
+//			attmInfo.setFilesize(uploadedFile.getFileSize());
+//			attmInfo.setRealFilename(realFileName);
+//			attmInfo.setPhysicalFilename(phisicalPath);
+//			attmInfo.setDownloadUrl(downloadableUrl);
+//			attmInfo.setUploadTime(uploadDate);
+//			attmInfo.setComment(attmComment);
+//			attmInfo.setUploadTimeInMillis(elapsedTime);
+//			uploadedFile.destroy();
+//
+//			Attachment attm = new Attachment();
+//			attm.setUploader(theCurrentUser.getCore());
+//			AttachmentService attachmentService = SystemContextService
+//					.getService().getDataManagementService(
+//							ServiceEnum.ATTACHMENT_SERVICE);
+//			attm.setAttmInfo(attmInfo);
+//
+//			return attm;
+//		}
+//
+//		return null;
+//	}
 
-		AttachmentConfig attachmentConfig = SystemContextService
-				.getService()
-				.getDataManagementService(ServiceEnum.RUNTIME_PARAMETER_SERVICE)
-				.getAttachmentConfig();
-		int maxAttmSize = attachmentConfig.getMaxSize();
-		if (uploadedFile != null && uploadedFile.getFileSize() > 0
-				&& uploadedFile.getFileSize() <= maxAttmSize) {
-			String mimeType = uploadedFile.getContentType();
-			String mainTpye = mimeType.split("/")[0];
-
-			SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
-			Date uploadDate = new Date();
-			String realFileName = RandomStringUtils.randomAlphabetic(6) + "_"
-					+ uploadedFile.getFileName();
-
-			String tmp = mainTpye + "/" + format.format(uploadDate);
-			String phisicalPath = SystemConfig.getConfig().getRuntimeConfig()
-					.getUploadRootFolder()
-					+ "/" + tmp;
-
-			phisicalPath = phisicalPath + "/" + realFileName;
-			Date startTime = new Date();
-			String downloadableUrl = uploadBcsObject(uploadedFile, phisicalPath);
-			Date endTime = new Date();
-			long elapsedTime = endTime.getTime() - startTime.getTime();
-
-			AttachmentInfo attmInfo = new AttachmentInfo();
-			attmInfo.setAttachmentType(AttachmentType.BCS);
-			attmInfo.setMimeType(mimeType);
-			attmInfo.setFilesize(uploadedFile.getFileSize());
-			attmInfo.setRealFilename(realFileName);
-			attmInfo.setPhysicalFilename(phisicalPath);
-			attmInfo.setDownloadUrl(downloadableUrl);
-			attmInfo.setUploadTime(uploadDate);
-			attmInfo.setComment(attmComment);
-			attmInfo.setUploadTimeInMillis(elapsedTime);
-			uploadedFile.destroy();
-
-			Attachment attm = new Attachment();
-			attm.setUploader(theCurrentUser.getCore());
-			AttachmentService attachmentService = SystemContextService
-					.getService().getDataManagementService(
-							ServiceEnum.ATTACHMENT_SERVICE);
-			attm.setAttmInfo(attmInfo);
-			attachmentService.saveAttachment(attm);
-
-			return attm;
-		}
-
-		return null;
-	}
-
-	public static String uploadBcsObject(FormFile uploadedFile,
-			String phisicalPath) throws FileNotFoundException, IOException {
-		BCSCredentials credentials = new BCSCredentials(ACCESS_KEY, SECRET_KEY);
-		BaiduBCS baiduBCS = new BaiduBCS(credentials, HOST);
-		baiduBCS.setDefaultEncoding("UTF-8"); // Default UTF-8
-		ObjectMetadata objectMetadata = new ObjectMetadata();
-		objectMetadata.setContentType(uploadedFile.getContentType());
-		objectMetadata.setContentLength(uploadedFile.getFileSize());
-
-		PutObjectRequest request = new PutObjectRequest(BUCKET, phisicalPath,
-				uploadedFile.getInputStream(), objectMetadata);
-		BaiduBCSResponse<ObjectMetadata> response = baiduBCS.putObject(request);
-		response.getResult();
-
-		GenerateUrlRequest generateUrlRequest = new GenerateUrlRequest(
-				HttpMethodName.GET, BUCKET, phisicalPath);
-		String downloadableUrl = baiduBCS.generateUrl(generateUrlRequest);
-
-		return downloadableUrl;
-	}
+//	public static String uploadBcsObject(FormFile uploadedFile,
+//			String phisicalPath) throws FileNotFoundException, IOException {
+//		BCSCredentials credentials = new BCSCredentials(ACCESS_KEY, SECRET_KEY);
+//		BaiduBCS baiduBCS = new BaiduBCS(credentials, HOST);
+//		baiduBCS.setDefaultEncoding("UTF-8"); // Default UTF-8
+//		ObjectMetadata objectMetadata = new ObjectMetadata();
+//		objectMetadata.setContentType(uploadedFile.getContentType());
+//		objectMetadata.setContentLength(uploadedFile.getFileSize());
+//
+//		PutObjectRequest request = new PutObjectRequest(BUCKET, phisicalPath,
+//				uploadedFile.getInputStream(), objectMetadata);
+//		BaiduBCSResponse<ObjectMetadata> response = baiduBCS.putObject(request);
+//		response.getResult();
+//
+//		GenerateUrlRequest generateUrlRequest = new GenerateUrlRequest(
+//				HttpMethodName.GET, BUCKET, phisicalPath);
+//		String downloadableUrl = baiduBCS.generateUrl(generateUrlRequest);
+//
+//		return downloadableUrl;
+//	}
 
 	public static int strToIntTransitionBuffer(String value) {
 		if (value != null && !value.equals(""))
@@ -336,7 +334,7 @@ public class ForumCommonUtil {
 			String thumbPath = context.getRealPath(File.separator
 					+ config.getUploadRootFolder() + File.separator
 					+ attachmentInfo.getPhysicalFilename()
-					+ config.getThumbPrefix());
+					+ "");
 			File thumb = new File(thumbPath);
 			thumb.delete();
 		}
