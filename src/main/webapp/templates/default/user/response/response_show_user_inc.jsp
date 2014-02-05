@@ -3,7 +3,8 @@
 <span class="gensmall"> <c:set var="attmInfo"
 		value="${author.avatar.attmInfo}" /> <c:choose>
 		<c:when test="${attmInfo.attachmentType=='LOCAL'}">
-			<c:set var="avatarUrl" value="${contextPath}${attmInfo.downloadUrl}" />
+			<c:set var="avatarUrl"
+				value="${contextPath}/local/image.do?id=${author.avatar.id}" />
 		</c:when>
 		<c:otherwise>
 			<c:set var="avatarUrl" value="${attmInfo.downloadUrl}" />

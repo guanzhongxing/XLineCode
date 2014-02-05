@@ -15,8 +15,6 @@ import org.apache.struts.upload.FormFile;
 import com.vertonur.bean.Response;
 import com.vertonur.bean.Topic;
 import com.vertonur.bean.User;
-import com.vertonur.bean.config.RuntimeConfig;
-import com.vertonur.bean.config.SystemConfig;
 import com.vertonur.constants.Constants;
 import com.vertonur.context.SystemContextService;
 import com.vertonur.dms.AttachmentService;
@@ -76,19 +74,15 @@ public class RespondTopicAction extends Action {
 				}
 
 				FormFile uploadedFile = castedForm.getUpload();
-				if (uploadedFile != null) {
-					RuntimeConfig config = SystemConfig.getConfig()
-							.getRuntimeConfig();
-					attachmentService.uploadAttchment(
-							config.getUploadFileSystem(),
+				if (uploadedFile != null)
+					attachmentService.uploadAttachment(
 							uploadedFile.getInputStream(),
 							uploadedFile.getContentType(),
-							config.getUploadRootFolder(),
 							uploadedFile.getFileName(),
 							new Long(uploadedFile.getFileSize()).longValue(),
 							castedForm.getAttmComment(), user.getCore(),
 							rsp.getCore());
-				}
+
 			} catch (InsufficientPermissionException ex) {
 				systemContextService.rollbackTransaction();
 				request.setAttribute("insufficientPermission", true);
@@ -114,19 +108,15 @@ public class RespondTopicAction extends Action {
 			try {
 				status = infoService.saveResponse(rsp);
 				FormFile uploadedFile = castedForm.getUpload();
-				if (uploadedFile != null) {
-					RuntimeConfig config = SystemConfig.getConfig()
-							.getRuntimeConfig();
-					attachmentService.uploadAttchment(
-							config.getUploadFileSystem(),
+				if (uploadedFile != null)
+					attachmentService.uploadAttachment(
 							uploadedFile.getInputStream(),
 							uploadedFile.getContentType(),
-							config.getUploadRootFolder(),
 							uploadedFile.getFileName(),
 							new Long(uploadedFile.getFileSize()).longValue(),
 							castedForm.getAttmComment(), user.getCore(),
 							rsp.getCore());
-				}
+
 			} catch (SavingCommentToLockedInfoException e) {
 				systemContextService.rollbackTransaction();
 				request.setAttribute("saveCmtToLockedInfo", true);

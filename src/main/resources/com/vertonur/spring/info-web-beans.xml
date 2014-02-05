@@ -39,7 +39,7 @@
 		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/info_forum" />
 		<property name="user" value="root" />
 		<property name="password" value="123" />
-		
+
 		<property name="acquireIncrement" value="3" />
 		<property name="maxPoolSize" value="100" />
 		<property name="minPoolSize" value="10" />
@@ -60,17 +60,11 @@
 		<property name="metaDescLength" value="200" />
 	</bean>
 
-	<bean id="runtimeConfig" class="com.vertonur.bean.config.RuntimeConfig">
-		<property name="uploadRootFolder" value="/upload" />
-		<property name="avatarRootFolder" value="/avatar" />
-		<property name="uploadFileSystem" value="BCS" />
-	</bean>
 
 	<bean id="extendedConfigs" class="java.util.HashSet">
 		<constructor-arg>
 			<set>
 				<value>com.vertonur.bean.config.GlobalConfig</value>
-				<value>com.vertonur.bean.config.RuntimeConfig</value>
 			</set>
 		</constructor-arg>
 	</bean>

@@ -7,7 +7,6 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.vertonur.bean.config.GlobalConfig;
-import com.vertonur.bean.config.RuntimeConfig;
 import com.vertonur.bean.config.SystemConfig;
 import com.vertonur.constants.Constants;
 import com.vertonur.context.SystemContextService;
@@ -35,25 +34,15 @@ public class InitForumServlet extends HttpServlet {
 		DAOManager manager = systemContextService.getDaoManager();
 
 		manager.beginTransaction();
-		ConfigDAO<RuntimeConfig, Integer> runtimeConfigDao = manager
-				.getExtendedConfigDAO(RuntimeConfig.class);
 		ConfigDAO<GlobalConfig, Integer> globalConfigDao = manager
 				.getExtendedConfigDAO(GlobalConfig.class);
 		GlobalConfig globalConfig = globalConfigDao.getConfig();
-		RuntimeConfig runtimeConfig = null;
 		if (globalConfig == null) {
 			globalConfig = (GlobalConfig) appContext.getBean("globalConfig");
 			globalConfigDao.saveConfig(globalConfig);
-
-			runtimeConfig = (RuntimeConfig) appContext.getBean("runtimeConfig");
-			runtimeConfigDao.saveConfig(runtimeConfig);
-		} else
-			runtimeConfig = runtimeConfigDao.getConfig();
-		context.setAttribute("uploadRootFolder",
-				runtimeConfig.getUploadRootFolder());
+		}
 		SystemConfig systemConfig = new SystemConfig();
 		systemConfig.setGlobalConfig(globalConfig);
-		systemConfig.setRuntimeConfig(runtimeConfig);
 		SystemConfig.setConfig(systemConfig);
 
 		int sessionTiming = SystemContextService
@@ -64,7 +53,6 @@ public class InitForumServlet extends HttpServlet {
 		manager.commitTransaction();
 
 		context.setAttribute("globalConfig", globalConfig);
-		context.setAttribute("runtimeConfig", runtimeConfig);
 	}
 
 	public void destroy() {

@@ -4,7 +4,6 @@ public class SystemConfig {
 	private static SystemConfig config;
 	
 	private GlobalConfig globalConfig;
-	private RuntimeConfig runtimeConfig;
 
 	public GlobalConfig getGlobalConfig() {
 		return globalConfig;
@@ -14,14 +13,6 @@ public class SystemConfig {
 		this.globalConfig = globalConfig;
 	}
 
-	public RuntimeConfig getRuntimeConfig() {
-		return runtimeConfig;
-	}
-
-	public void setRuntimeConfig(RuntimeConfig runtimeConfig) {
-		this.runtimeConfig = runtimeConfig;
-	}
-
 	public static SystemConfig getConfig() {
 		return config;
 	}
@@ -29,5 +20,4 @@ public class SystemConfig {
 	public static void setConfig(SystemConfig config) {
 		SystemConfig.config = config;
 	}
-
 }

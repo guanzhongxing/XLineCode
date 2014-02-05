@@ -18,8 +18,6 @@ import com.vertonur.bean.Forum;
 import com.vertonur.bean.Forumzone;
 import com.vertonur.bean.Topic;
 import com.vertonur.bean.User;
-import com.vertonur.bean.config.RuntimeConfig;
-import com.vertonur.bean.config.SystemConfig;
 import com.vertonur.constants.Constants;
 import com.vertonur.context.SystemContextService;
 import com.vertonur.dms.AttachmentService;
@@ -96,13 +94,9 @@ public class CreateUserTopicAction extends Action {
 
 				FormFile uploadedFile = castedForm.getUpload();
 				if (uploadedFile != null) {
-					RuntimeConfig config = SystemConfig.getConfig()
-							.getRuntimeConfig();
-					attachmentService.uploadAttchment(
-							config.getUploadFileSystem(),
+					attachmentService.uploadAttachment(
 							uploadedFile.getInputStream(),
 							uploadedFile.getContentType(),
-							config.getUploadRootFolder(),
 							uploadedFile.getFileName(),
 							uploadedFile.getFileSize(),
 							castedForm.getAttmComment(), user.getCore(),
@@ -144,14 +138,10 @@ public class CreateUserTopicAction extends Action {
 
 			FormFile uploadedFile = castedForm.getUpload();
 			try {
-				if (uploadedFile != null){
-					RuntimeConfig config = SystemConfig.getConfig()
-							.getRuntimeConfig();
-					attachmentService.uploadAttchment(
-							config.getUploadFileSystem(),
+				if (uploadedFile != null) {
+					attachmentService.uploadAttachment(
 							uploadedFile.getInputStream(),
 							uploadedFile.getContentType(),
-							config.getUploadRootFolder(),
 							uploadedFile.getFileName(),
 							uploadedFile.getFileSize(),
 							castedForm.getAttmComment(), user.getCore(),

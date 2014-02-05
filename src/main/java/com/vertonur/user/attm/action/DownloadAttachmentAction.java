@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -17,13 +16,13 @@ import org.apache.struts.upload.FormFile;
 
 import com.vertonur.bean.User;
 import com.vertonur.bean.config.GlobalConfig;
-import com.vertonur.bean.config.RuntimeConfig;
 import com.vertonur.bean.config.SystemConfig;
 import com.vertonur.constants.Constants;
 import com.vertonur.context.SystemContextService;
 import com.vertonur.dms.AttachmentService;
 import com.vertonur.dms.constant.ServiceEnum;
 import com.vertonur.pojo.Attachment;
+import com.vertonur.pojo.AttachmentInfo;
 import com.vertonur.service.UserService;
 import com.vertonur.session.UserSession;
 import com.vertonur.user.topic.form.UserTopicForm;
@@ -80,13 +79,9 @@ public class DownloadAttachmentAction extends MappingDispatchAction {
 				AttachmentService attachmentService = SystemContextService
 						.getService().getDataManagementService(
 								ServiceEnum.ATTACHMENT_SERVICE);
-				RuntimeConfig config = SystemConfig.getConfig()
-						.getRuntimeConfig();
 				Attachment attm = attachmentService.uploadInfoEmbededImage(
-						config.getUploadFileSystem(),
 						uploadedFile.getInputStream(),
 						uploadedFile.getContentType(),
-						config.getUploadRootFolder(),
 						uploadedFile.getFileName(),
 						new Long(uploadedFile.getFileSize()).longValue(),
 						user.getCore());
@@ -104,32 +99,32 @@ public class DownloadAttachmentAction extends MappingDispatchAction {
 		return mapping.findForward("CkEditorCallbackPage");
 	}
 
+	public ActionForward showImage(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response) {
+
+		int attmId = Integer.parseInt(request.getParameter("id"));
+		downloadLocalFile(attmId, response);
+		return null;
+	}
+
 	/**
-	 * 转换为使用BCS的形式
-	 * 
 	 * @param attm
 	 * @param response
 	 */
-	@SuppressWarnings("unused")
-	@Deprecated
-	private void downloadLocalFile(Attachment attm, HttpServletResponse response) {
+	public void downloadLocalFile(int attmId, HttpServletResponse response) {
+		AttachmentService attachmentService = SystemContextService.getService()
+				.getDataManagementService(ServiceEnum.ATTACHMENT_SERVICE);
+		Attachment attm = attachmentService.getAttmById(attmId);
+		AttachmentInfo info = attm.getAttmInfo();
 		response.setContentType(attm.getAttmInfo().getMimeType());
-		response.setHeader(
-				"Content-Disposition",
-				"attachment; filename="
-						+ ForumCommonUtil.toUtf8String(attm.getAttmInfo()
-								.getRealFilename()) + ";");
+		response.setHeader("Content-Disposition", "attachment; filename="
+				+ ForumCommonUtil.toUtf8String(info.getFileName()) + ";");
 		response.setContentLength((int) attm.getAttmInfo().getFilesize());
 
 		FileInputStream fis = null;
 		OutputStream os = null;
 		try {
-			String filename = SystemConfig.getConfig().getRuntimeConfig()
-					.getUploadRootFolder()
-					+ "/" + attm.getAttmInfo().getPhysicalFilename();
-			ServletContext context = servlet.getServletContext();
-			filename = context.getRealPath(filename);
-			fis = new FileInputStream(filename);
+			fis = new FileInputStream(info.getFilePath());
 			os = response.getOutputStream();
 
 			int c;
@@ -155,6 +150,5 @@ public class DownloadAttachmentAction extends MappingDispatchAction {
 				}
 			}
 		}
-
 	}
 }

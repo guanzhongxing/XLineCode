@@ -52,8 +52,8 @@ public class UpdatePatch093 {
 			info.setFilesize(4345);
 			info.setMimeType("image/jpeg");
 			info.setHasThumb(false);
-			info.setPhysicalFilename("upload/avatar/20131027/defaultAvatar.jpeg");
-			info.setRealFilename("defaultAvatar.jpeg");
+			info.setFilePath("upload/avatar/20131027/defaultAvatar.jpeg");
+			info.setFileName("defaultAvatar.jpeg");
 			info.setUploadTime(new Date());
 			info.setUploadTimeInMillis(0);
 			info.setAttachmentType(AttachmentType.BCS);

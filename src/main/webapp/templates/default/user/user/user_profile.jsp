@@ -31,10 +31,11 @@
 	<tr>
 		<td class="row1" valign="top" align="center" height="6"><c:set
 				var="attmInfo" value="${requestScope.displayedUser.avatar.attmInfo}" />
+			<c:set var="avatar" value="${requestScope.displayedUser.avatar}" />
 			<c:choose>
 				<c:when test="${attmInfo.attachmentType=='LOCAL'}">
 					<c:set var="avatarUrl"
-						value="${contextPath}${attmInfo.downloadUrl}" />
+						value="${contextPath}/local/image.do?id=${avatar.id}" />
 				</c:when>
 				<c:otherwise>
 					<c:set var="avatarUrl" value="${attmInfo.downloadUrl}" />

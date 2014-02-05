@@ -51,13 +51,13 @@ public class BaiduAppSecretKeyChangePatch {
 		List<Attachment> attms = attachmentervice.getBcsAttms();
 		for (Attachment attm : attms) {
 			AttachmentInfo attmInfo = attm.getAttmInfo();
-			String name = attmInfo.getPhysicalFilename();
+			String filePath = attmInfo.getFilePath();
 			BCSCredentials credentials = new BCSCredentials(
 					ForumCommonUtil.ACCESS_KEY, ForumCommonUtil.SECRET_KEY);
 			BaiduBCS baiduBCS = new BaiduBCS(credentials, ForumCommonUtil.HOST);
 			baiduBCS.setDefaultEncoding("UTF-8"); // Default UTF-8
 			GenerateUrlRequest generateUrlRequest = new GenerateUrlRequest(
-					HttpMethodName.GET, ForumCommonUtil.BUCKET, name);
+					HttpMethodName.GET, ForumCommonUtil.BUCKET, filePath);
 			String downloadableUrl = baiduBCS.generateUrl(generateUrlRequest);
 			attmInfo.setDownloadUrl(downloadableUrl);
 		}

@@ -245,6 +245,10 @@
 			<forward name="CkEditorCallbackPage"
 				path="/templates/default/common/ckEditor_callback.jsp" />
 		</action>
+
+		<action path="/local/image"
+			type="com.vertonur.user.attm.action.DownloadAttachmentAction" scope="request"
+			parameter="showImage" />
 		<!-- end -->
 
 		<action path="/logout" type="com.vertonur.user.logout.action.LogoutAction">

@@ -2,6 +2,7 @@ package com.vertonur.user.registration.action;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,10 +19,8 @@ import org.apache.struts.action.ActionMessages;
 import org.apache.struts.upload.FormFile;
 
 import com.vertonur.bean.config.GlobalConfig;
-import com.vertonur.bean.config.RuntimeConfig;
 import com.vertonur.bean.config.SystemConfig;
 import com.vertonur.context.SystemContextService;
-import com.vertonur.dms.AttachmentService;
 import com.vertonur.dms.GroupService;
 import com.vertonur.dms.MailService;
 import com.vertonur.dms.SystemService;
@@ -30,9 +29,6 @@ import com.vertonur.dms.UserService;
 import com.vertonur.dms.constant.ServiceEnum;
 import com.vertonur.dms.exception.AttachmentSizeExceedException;
 import com.vertonur.pojo.Admin;
-import com.vertonur.pojo.Attachment;
-import com.vertonur.pojo.AttachmentInfo;
-import com.vertonur.pojo.AttachmentInfo.AttachmentType;
 import com.vertonur.pojo.Moderator;
 import com.vertonur.pojo.User;
 import com.vertonur.pojo.config.AttachmentConfig;
@@ -83,20 +79,9 @@ public final class RegistrationAction extends Action {
 					.getDefaultUserGroupId();
 			group = groupService.getGroupById(defaultUserGroupId);
 		}
-		User user = createUser(rgtForm, fromAdmin, group);
-
-		FormFile image = rgtForm.getImage();
-		if (image != null && image.getFileSize() != 0) {
-			setUpAvatar(user, image);
-		} else
-			setUpAvatar(user, "defaultAvatar.jpeg");
-		GroupType groupType = group.getGroupType();
 		UserService userService = SystemContextService.getService()
 				.getDataManagementService(ServiceEnum.USER_SERVICE);
-		if (groupType == GroupType.GENERIC_MDR) {
-			userService.saveModerator((Moderator) user);
-		} else
-			userService.saveUser(user);
+		User user = createUser(rgtForm, group, userService);
 
 		boolean requireAuthEmail = SystemContextService
 				.getService()
@@ -124,8 +109,9 @@ public final class RegistrationAction extends Action {
 		}
 	}
 
-	private User createUser(RegistrationForm rgtForm, boolean fromAdmin,
-			Group group) {
+	private User createUser(RegistrationForm rgtForm, Group group,
+			UserService userService) throws FileNotFoundException,
+			AttachmentSizeExceedException, IOException, URISyntaxException {
 		String userName = rgtForm.getUserName();
 		String password = rgtForm.getPwd();
 		char gender = rgtForm.getGender();
@@ -157,44 +143,20 @@ public final class RegistrationAction extends Action {
 				.getAttachmentConfig();
 		user.setAttmEnabled(config.isAttmtEnabled());
 		user.setCanDownloadAttms(config.isDownloadEnabled());
+		if (groupType == GroupType.GENERIC_MDR) {
+			userService.saveModerator((Moderator) user);
+		} else
+			userService.saveUser(user);
 
+		FormFile image = rgtForm.getImage();
+		if (image != null && image.getFileSize() != 0)
+			userService.setUpAvatar(image.getInputStream(),
+					image.getContentType(), image.getFileName(),
+					image.getFileSize(), user);
+		else
+			userService.setUpDefaultAvatar(user);
+		userService.updateUser(user);
 		return user;
-	}
-
-	private void setUpAvatar(User user, FormFile image)
-			throws FileNotFoundException, IOException,
-			AttachmentSizeExceedException {
-		RuntimeConfig config = SystemConfig.getConfig().getRuntimeConfig();
-		String avatarRoot = config.getAvatarRootFolder();
-		avatarRoot = config.getUploadRootFolder() + avatarRoot;
-		SystemContextService systemContextService = SystemContextService
-				.getService();
-		AttachmentService attachmentService = systemContextService
-				.getDataManagementService(ServiceEnum.ATTACHMENT_SERVICE);
-		Attachment attm = attachmentService.uploadAttchment(
-				config.getUploadFileSystem(), image.getInputStream(),
-				image.getContentType(), avatarRoot, image.getFileName(),
-				image.getFileSize(), null, user, null);
-
-		user.setAvatar(attm);
-	}
-
-	private void setUpAvatar(User user, String defaultAvatar) {
-		RuntimeConfig config = SystemConfig.getConfig().getRuntimeConfig();
-		String filePath = config.getUploadRootFolder()
-				+ config.getAvatarRootFolder() + "/" + defaultAvatar;
-
-		AttachmentInfo attmInfo = new AttachmentInfo();
-		attmInfo.setAttachmentType(AttachmentType.LOCAL);
-		attmInfo.setRealFilename(defaultAvatar);
-		attmInfo.setPhysicalFilename(filePath);
-		attmInfo.setDownloadUrl(filePath);
-
-		Attachment attm = new Attachment();
-		attm.setUploader(user);
-		attm.setAttmInfo(attmInfo);
-
-		user.setAvatar(attm);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
