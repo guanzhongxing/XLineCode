@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.vertonur</groupId>
 	<artifactId>info-forum</artifactId>
-	<version>0.9.3</version>
+	<version>0.9.4</version>
 	<packaging>war</packaging>
 
 	<dependencies>
@@ -181,49 +181,49 @@
 		<dependency>
 			<groupId>com.vertonur</groupId>
 			<artifactId>info-context</artifactId>
-			<version>0.9.3</version>
+			<version>0.9.4</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.vertonur</groupId>
 			<artifactId>info-dao-api</artifactId>
-			<version>0.9.3</version>
+			<version>0.9.4</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.vertonur</groupId>
 			<artifactId>info-dao-hb</artifactId>
-			<version>0.9.3</version>
+			<version>0.9.4</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.vertonur</groupId>
 			<artifactId>info-dms</artifactId>
-			<version>0.9.3</version>
+			<version>0.9.4</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.vertonur</groupId>
 			<artifactId>info-ext-ranking</artifactId>
-			<version>0.9.3</version>
+			<version>0.9.4</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.vertonur</groupId>
 			<artifactId>info-object-model</artifactId>
-			<version>0.9.3</version>
+			<version>0.9.4</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.vertonur</groupId>
 			<artifactId>info-security</artifactId>
-			<version>0.9.3</version>
+			<version>0.9.4</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.vertonur</groupId>
 			<artifactId>info-utilities</artifactId>
-			<version>0.9.3</version>
+			<version>0.9.4</version>
 		</dependency>
 	</dependencies>
 
@@ -231,7 +231,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.6</maven.compiler.source>
 		<maven.compiler.target>1.6</maven.compiler.target>
-		<OPENSHIFT_REPO_DIR>D:\git\oschina\XLineCode</OPENSHIFT_REPO_DIR>
+		<OPENSHIFT_REPO_DIR>D:\info-web\info-forum\oschina\XLineCode</OPENSHIFT_REPO_DIR>
 	</properties>
 
 	<profiles>
