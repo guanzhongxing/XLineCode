@@ -27,13 +27,6 @@ import com.vertonur.pojo.Comment;
  */
 public class ForumCommonUtil {
 
-	// TODO: move bcs and yinxiangma config to xml
-	// XLineCode的demo的百度云存储空间
-	public static String HOST = "bcs.duapp.com";
-	public static String ACCESS_KEY = "6lHNnwyPTevGeNOLOzsOQ8GR";
-	public static String SECRET_KEY = "IUnniM8ibA0iUCz2273Q6vAwj6OsUkBs ";
-	public static String BUCKET = "xlinecode-demo";
-
 	public static enum PageType {
 		HOME_PAGE, INFO_PAGE
 	}
@@ -41,6 +34,7 @@ public class ForumCommonUtil {
 	public static String checkCaptchaResult(HttpServletRequest request)
 			throws IOException {
 
+		// TODO: move yinxiangma config to xml
 		return YinXiangMa.Check_Answer("你的印象码的key",
 				request.getParameter("YinXiangMa_challenge"),
 				request.getParameter("YXM_level"),
@@ -92,7 +86,6 @@ public class ForumCommonUtil {
 
 		return sb.toString();
 	}
-
 
 	public static int strToIntTransitionBuffer(String value) {
 		if (value != null && !value.equals(""))

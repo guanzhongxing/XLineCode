@@ -17,8 +17,8 @@ import com.vertonur.dms.AttachmentService;
 import com.vertonur.dms.constant.ServiceEnum;
 import com.vertonur.pojo.Attachment;
 import com.vertonur.pojo.AttachmentInfo;
+import com.vertonur.pojo.config.AttachmentConfig;
 import com.vertonur.session.UserSession;
-import com.vertonur.util.ForumCommonUtil;
 
 /**
  * 该类用于在百度云存储的SecretKey被用户重置后对BCS类型的AttachmentInfo的downloadUrl数据根据新的SecretKey重新生成公有链接
@@ -48,16 +48,17 @@ public class BaiduAppSecretKeyChangePatch {
 
 		AttachmentService attachmentervice = service
 				.getDataManagementService(ServiceEnum.ATTACHMENT_SERVICE);
+		AttachmentConfig config = attachmentervice.getSysAttmConfig();
 		List<Attachment> attms = attachmentervice.getBcsAttms();
 		for (Attachment attm : attms) {
 			AttachmentInfo attmInfo = attm.getAttmInfo();
 			String filePath = attmInfo.getFilePath();
 			BCSCredentials credentials = new BCSCredentials(
-					ForumCommonUtil.ACCESS_KEY, ForumCommonUtil.SECRET_KEY);
-			BaiduBCS baiduBCS = new BaiduBCS(credentials, ForumCommonUtil.HOST);
+					config.getBcsAccessKey(), config.getBcsSecretKey());
+			BaiduBCS baiduBCS = new BaiduBCS(credentials, config.getBcsHost());
 			baiduBCS.setDefaultEncoding("UTF-8"); // Default UTF-8
 			GenerateUrlRequest generateUrlRequest = new GenerateUrlRequest(
-					HttpMethodName.GET, ForumCommonUtil.BUCKET, filePath);
+					HttpMethodName.GET, config.getBcsBucket(), filePath);
 			String downloadableUrl = baiduBCS.generateUrl(generateUrlRequest);
 			attmInfo.setDownloadUrl(downloadableUrl);
 		}
