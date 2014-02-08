@@ -163,14 +163,6 @@
 
 		<!-- 第三方包部署在openshift的路径配置 -->
 		<dependency>
-			<groupId>com.baidu</groupId>
-			<artifactId>bcs-sdk-java</artifactId>
-			<version>1.4.5</version>
-			<scope>system</scope>
-			<systemPath>${OPENSHIFT_REPO_DIR}/src/main/webapp/WEB-INF/lib/bcs-sdk-java_1.4.5.jar</systemPath>
-		</dependency>
-
-		<dependency>
 			<groupId>com.yinxiangma</groupId>
 			<artifactId>com.YinXiangMa</artifactId>
 			<version>4.0</version>
