@@ -56,7 +56,7 @@
 			<c:forEach var="attm" items="${requestScope.attachments}">
 				var attach_${attm.id} = new Array();
 	
-				attach_${attm.id}["filename"] = "${attm.info.realFilename}";
+				attach_${attm.id}["filename"] = "${attm.info.fileName}";
 				attach_${attm.id}["description"] = "${attm.info.comment}";
 				attach_${attm.id}["id"] = "${attm.id}";
 	

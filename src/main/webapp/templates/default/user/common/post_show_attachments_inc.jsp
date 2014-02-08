@@ -17,7 +17,7 @@
 			class="attachtable" align="center">
 			<tr>
 				<td width="15%" class="attachrow"><span class="genmed">&nbsp;filename</span></td>
-				<td width="75%" class="attachrow"><span class="genmed">${attm.attmInfo.realFilename}</span></td>
+				<td width="75%" class="attachrow"><span class="genmed">${attm.attmInfo.fileName}</span></td>
 
 				<td rowspan="4" align="center"><c:choose>
 						<c:when test="${requestScope.enableDownloadAttm}">
