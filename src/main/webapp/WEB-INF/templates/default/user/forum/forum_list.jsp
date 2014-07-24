@@ -1,7 +1,6 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
-<%@ include file="/templates/default/user/common/header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/user/common/header.jsp"%>
 
-<html:errors />
 <table width="100%" align="center">
 	<tr>
 		<td width="100%" height="318" valign="top"><c:choose>
@@ -44,11 +43,11 @@
 													<c:choose>
 														<c:when test="${forum.hasNewTopic}">
 															<img
-																src="${contextPath}/templates/default/images/new.gif" />
+																src="${resourcesHost}/images/new.gif" />
 														</c:when>
 														<c:otherwise>
 															<img
-																src="${contextPath}/templates/default/images/folder_big.gif"
+																src="${resourcesHost}/images/folder_big.gif"
 																alt="[Folder]" />
 														</c:otherwise>
 													</c:choose>
@@ -107,7 +106,7 @@
 																<a
 																	href="${contextPath}/displayResponses.do?forumId=${forum.id}&topicId=${latestTopic.id}">
 																	<img
-																	src="${contextPath}/templates/default/images/icon_latest_reply.gif"
+																	src="${resourcesHost}/images/icon_latest_reply.gif"
 																	border="0" alt="[Latest Reply]" />
 																</a>
 															</c:when>
@@ -171,7 +170,7 @@
 				<c:set var="systemState" value="${requestScope.systemState}" />
 				<tr>
 					<td class="row1" valign="middle" align="center" rowspan="2"><img
-						src="${contextPath}/templates/default/images/whosonline.gif"
+						src="${resourcesHost}/images/whosonline.gif"
 						alt="[Who's Online]" /></td>
 					<td class="row1 gensmall" align="left" width="100%"><fmt:message
 							key="forum_list.jsp.totalresponsenum">
@@ -228,18 +227,18 @@
 			<table cellspacing="3" cellpadding="0" align="center" border="0">
 				<tr>
 					<td align="center" width="20"><img
-						src="${contextPath}/templates/default/images/new.gif" /></td>
+						src="${resourcesHost}/images/new.gif" /></td>
 					<td><span class="gensmall"><fmt:message
 								key="forum_list.jsp.newTopics" /></span></td>
 					<td>&nbsp;&nbsp;</td>
 					<td align="center" width="20"><img
-						src="${contextPath}/templates/default/images/folder.gif"
+						src="${resourcesHost}/images/folder.gif"
 						alt="[Folder]" /></td>
 					<td><span class="gensmall"><fmt:message
 								key="forum_list.jsp.noNewTopics" /></span></td>
 					<td>&nbsp;&nbsp;</td>
 					<td align="center" width="20"><img
-						src="${contextPath}/templates/default/images/folder_lock.gif"
+						src="${resourcesHost}/images/folder_lock.gif"
 						alt="[Lock Folder]" /></td>
 					<td><span class="gensmall"><fmt:message
 								key="forum_list.jsp.blockedForum" /></span></td>
@@ -248,4 +247,4 @@
 	</tr>
 </table>
 
-<%@ include file="/templates/default/common/footer.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

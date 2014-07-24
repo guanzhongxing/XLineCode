@@ -26,6 +26,7 @@ public class InitForumServlet extends HttpServlet {
 		ServletContext context = getServletContext();
 		String contextPath = context.getContextPath();
 		context.setAttribute("contextPath", contextPath);
+		context.setAttribute("resourcesHost", context.getInitParameter("resourcesHost"));
 
 		WebApplicationContext appContext = WebApplicationContextUtils
 				.getRequiredWebApplicationContext(context);

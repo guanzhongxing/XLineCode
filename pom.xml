@@ -1,9 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.vertonur</groupId>
+	<parent>
+		<artifactId>info-parent</artifactId>
+		<groupId>com.vertonur</groupId>
+		<version>0.9.4</version>
+	</parent>
 	<artifactId>info-forum</artifactId>
-	<version>0.9.4</version>
 	<packaging>war</packaging>
 
 	<dependencies>
@@ -51,7 +54,6 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>3.5.6-Final</version>
 		</dependency>
 
 		<dependency>
@@ -81,7 +83,6 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.0.8</version>
 		</dependency>
 
 		<dependency>
@@ -94,25 +95,34 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.5.8</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.5.8</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
-			<version>3.1.4.RELEASE</version>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
-			<version>3.1.4.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
@@ -173,49 +183,41 @@
 		<dependency>
 			<groupId>com.vertonur</groupId>
 			<artifactId>info-context</artifactId>
-			<version>0.9.4</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.vertonur</groupId>
 			<artifactId>info-dao-api</artifactId>
-			<version>0.9.4</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.vertonur</groupId>
 			<artifactId>info-dao-hb</artifactId>
-			<version>0.9.4</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.vertonur</groupId>
 			<artifactId>info-dms</artifactId>
-			<version>0.9.4</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.vertonur</groupId>
 			<artifactId>info-ext-ranking</artifactId>
-			<version>0.9.4</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.vertonur</groupId>
 			<artifactId>info-object-model</artifactId>
-			<version>0.9.4</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.vertonur</groupId>
 			<artifactId>info-security</artifactId>
-			<version>0.9.4</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.vertonur</groupId>
 			<artifactId>info-utilities</artifactId>
-			<version>0.9.4</version>
 		</dependency>
 	</dependencies>
 
