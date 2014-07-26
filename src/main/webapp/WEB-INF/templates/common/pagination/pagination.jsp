@@ -10,7 +10,7 @@
 	start:which will be send back to server to get the next
 		cycle of paged entries in a collection
  -->
- <script type="text/javascript" src="${contextPath}/scripts/pagination.js"></script>
+ <script type="text/javascript" src="${resourcesHost}/javascripts/pagination.js"></script>
  <c:set var="offset" value="${requestScope.pageCxt.offset}" />
  
 <c:if test="${requestScope.pageCxt.size>offset}">
@@ -31,7 +31,7 @@
 			
 				<!-- Always write the first 3 links -->
 				<c:forEach var="index" begin="1" end="3">
-					<%@ include file="/templates/common/pagination/page_link.jsp" %>
+					<%@ include file="/WEB-INF/templates/common/pagination/page_link.jsp" %>
 				</c:forEach>
 				<!--------------- end --------------->
 				
@@ -60,7 +60,7 @@
 		
 						<c:if test="${max >= min + 1}">
 							<c:forEach var="index" begin="${min}" end="${max-1}">
-								<%@ include file="/templates/common/pagination/page_link.jsp" %>
+								<%@ include file="/WEB-INF/templates/common/pagination/page_link.jsp" %>
 							</c:forEach>
 						</c:if>
 		
@@ -74,14 +74,14 @@
 	
 				<!-- Write the last 3 links -->
 				<c:forEach var="index" begin="${totalPages-2}" end="${totalPages}">
-					<%@ include file="/templates/common/pagination/page_link.jsp" %>
+					<%@ include file="/WEB-INF/templates/common/pagination/page_link.jsp" %>
 				</c:forEach>
 				<!------------ end ----------->
 				
 			</c:when>
 			<c:otherwise>
 				<c:forEach var="index" begin="1" end="${totalPages}">
-					<%@ include file="/templates/common/pagination/page_link.jsp" %>
+					<%@ include file="/WEB-INF/templates/common/pagination/page_link.jsp" %>
 				</c:forEach>
 			</c:otherwise>
 		</c:choose>

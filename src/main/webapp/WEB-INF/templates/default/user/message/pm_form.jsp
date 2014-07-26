@@ -1,7 +1,7 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
 <fmt:message var="title" key="all.jsp.privateMsg" />
-<%@ include file="/templates/default/user/common/header.jsp"%>
-<%@ include file="/templates/default/user/common/tinyMCE.htm"%>
+<%@ include file="/WEB-INF/templates/default/user/common/header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/user/common/tinyMCE.htm"%>
 
 <c:if test="${not empty requestScope.reviewedPm}" var="isReply"
 	scope="page">
@@ -17,7 +17,7 @@
 					border="0">
 					<tr>
 						<td align="right"><span class="nav"> &raquo; <a
-								class="nav" href="displayForums.do"><fmt:message
+								class="nav" href="{contextPath}/forums"><fmt:message
 										key="all.jsp.forums" /></a>
 						</span></td>
 					</tr>
@@ -104,7 +104,7 @@
 						<td class="row2">
 							<div>
 								<%@ include
-									file="/templates/default/user/common/post_options_tab.jsp"%>
+									file="/WEB-INF/templates/default/user/common/post_options_tab.jsp"%>
 							</div>
 						</td>
 					</tr>
@@ -143,4 +143,4 @@
 	</table>
 </html:form>
 
-<%@ include file="/templates/default/common/footer.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

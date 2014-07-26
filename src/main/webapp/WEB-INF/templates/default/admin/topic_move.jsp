@@ -1,5 +1,5 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
-<%@ include file="/templates/default/user/common/header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/user/common/header.jsp"%>
 <script type="text/javascript">
 	function askModerationReason() {
 		var message = prompt("<fmt:message key="topic_move.jsp.move.promt" />");
@@ -27,7 +27,7 @@
 					align="center">
 					<tr>
 						<td align="left" class="nav"><a class="nav"
-							href="${contextPath}/displayForums.do"><fmt:message key="all.jsp.forums" /></a></td>
+							href="${contextPath}/forums"><fmt:message key="all.jsp.forums" /></a></td>
 					</tr>
 				</table>
 
@@ -85,4 +85,4 @@
 	</table>
 </html:form>
 
-<%@ include file="/templates/default/common/footer.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

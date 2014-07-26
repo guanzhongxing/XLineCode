@@ -1,5 +1,5 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
-<%@ include file="/templates/default/user/common/header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/user/common/header.jsp"%>
 <script type="text/javascript">
 	function confirmDelete(contentId,contentType,isAuthor) {
 		if (confirm("<fmt:message
@@ -99,7 +99,7 @@
 						<div class="postinfo">
 							<div class="date">
 								<img
-									src="${contextPath}/templates/default/images/icon_minipost_new.gif"
+									src="${resourcesHost}/images/icon_minipost_new.gif"
 									alt="[Post New]" />
 								<fmt:formatDate value="${currentTopic.createdTime}"
 									dateStyle="medium" />
@@ -114,9 +114,9 @@
 							<div class="action">
 								<c:if test="${requestScope.enableNewRsp}">
 									<a
-										href="${contextPath}/initRespondTopic.do?quote=true&topicId=${currentTopic.id}&forumId=${forum.id}&forumzoneId=${forumzoneId}"
+										href="${contextPath}/forums/topics/${currentTopic.id}/response?quote=true"
 										rel="nofollow" class="icon_quote"><img
-										src="${contextPath}/templates/default/images/${locale}/icon_quote.gif"
+										src="${resourcesHost}/images/${locale}/icon_quote.gif"
 										alt="" /></a>
 								</c:if>
 								<c:if
@@ -124,11 +124,11 @@
 									<a
 										href="${contextPath}/initCreateUserTopic.do?forumzoneId=${forumzoneId}&forumId=${forum.id}&edit=true&topicId=${currentTopic.id}"
 										rel="nofollow" class="icon_edit"><img
-										src="${contextPath}/templates/default/images/${locale}/icon_edit.gif"
+										src="${resourcesHost}/images/${locale}/icon_edit.gif"
 										alt="" /></a>
 								</c:if>
 								<a class="nav" href="#top"><img
-									src="${contextPath}/templates/default/images/icon_up.gif"
+									src="${resourcesHost}/images/icon_up.gif"
 									alt="[Up]" /></a>
 							</div>
 						</div>
@@ -150,7 +150,7 @@
 								var="attachments" value="${currentTopic.attachments}" /> <c:if
 								test="${not empty currentTopic.attachments && currentTopic.author.canDownloadAttms}">
 								<%@ include
-									file="/templates/default/user/common/post_show_attachments_inc.jsp"%>
+									file="/WEB-INF/templates/default/user/common/post_show_attachments_inc.jsp"%>
 							</c:if><!-- UJian Button BEGIN -->
 						<div class="ujian-hook"></div> <script type="text/javascript">var ujian_config = {num:6,picSize:84,textHeight:45};</script>
 						<script type="text/javascript"
@@ -175,7 +175,7 @@
 
 				<tr>
 					<td class="spacerow" colspan="2" height="1"><img
-						src="${contextPath}/templates/default/images/spacer.gif" alt=""
+						src="${resourcesHost}/images/spacer.gif" alt=""
 						width="1" height="1" /></td>
 				</tr>
 				<!-- Topic end -->
@@ -214,7 +214,7 @@
 									value="${response.attachments}" /> <c:if
 									test="${not empty response.attachments && response.author.canDownloadAttms}">
 									<%@ include
-										file="/templates/default/user/common/post_show_attachments_inc.jsp"%>
+										file="/WEB-INF/templates/default/user/common/post_show_attachments_inc.jsp"%>
 								</c:if></td>
 						</tr>
 
@@ -232,7 +232,7 @@
 
 						<tr>
 							<td class="spacerow" colspan="2" height="1"><img
-								src="${contextPath}/templates/default/images/spacer.gif" alt=""
+								src="${resourcesHost}/images/spacer.gif" alt=""
 								width="1" height="1" /></td>
 						</tr>
 					</c:forEach>
@@ -259,13 +259,13 @@
 								id="topic${currentTopic.id}" rel="nofollow"
 								onclick="return confirmDelete(${currentTopic.id},'topic',${currentTopic.author.id==requestScope.userId});"><img
 								class="icon_topic_delete"
-								src="${contextPath}/templates/default/images/topic_delete.gif"
+								src="${resourcesHost}/images/topic_delete.gif"
 								alt="[Delete]"></a>
 						</c:if> <c:if test="${enableTopicMovement}">
 							<a
 								href="${contextPath}/do/admin/topic/move/init?topicId=${currentTopic.id}"
 								rel="nofollow"><img class="icon_topic_move"
-								src="${contextPath}/templates/default/images/topic_move.gif"
+								src="${resourcesHost}/images/topic_move.gif"
 								title="Move" alt=""></a>
 						</c:if> <c:if test="${enableTopicLock}">
 							<c:choose>
@@ -274,7 +274,7 @@
 										onclick="return confirmLockUnlock(${currentTopic.id},${currentTopic.author.id==requestScope.userId});"
 										href="${contextPath}/do/user/topic/unlock?forumId=${forum.id}&topicId=${currentTopic.id}"
 										rel="nofollow"><img class="icon_topic_lock"
-										src="${contextPath}/templates/default/images/topic_unlock.gif"
+										src="${resourcesHost}/images/topic_unlock.gif"
 										title="Unlock" alt=""> </a>
 								</c:when>
 								<c:otherwise>
@@ -282,7 +282,7 @@
 										onclick="return confirmLockUnlock(${currentTopic.id},${currentTopic.author.id==requestScope.userId});"
 										href="${contextPath}/do/user/topic/lock?forumId=${forum.id}&topicId=${currentTopic.id}"><img
 										class="icon_topic_lock"
-										src="${contextPath}/templates/default/images/topic_lock.gif"
+										src="${resourcesHost}/images/topic_lock.gif"
 										title="Lock" alt=""></a>
 								</c:otherwise>
 							</c:choose>
@@ -291,7 +291,7 @@
 				<tr>
 					<td align="left" class="gensmall"></td>
 					<td align="right"><%@ include
-							file="/templates/default/user/common/forums_navigator.jsp"%>
+							file="/WEB-INF/templates/default/user/common/forums_navigator.jsp"%>
 					</td>
 				</tr>
 			</table>
@@ -302,4 +302,4 @@
 
 <a name="quick"></a>
 
-<%@ include file="/templates/default/common/footer.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

@@ -21,13 +21,8 @@ public class ForumService {
 				ServiceEnum.CATEGORY_SERVICE);
 	}
 
-	public Forum getForumById(int forumzoneId, int forumId) {
-		return new Forum(service.getCategoryById(forumzoneId, forumId));
-	}
-
-	public Forum getForumById(int forumzoneId, int forumId, boolean useCache) {
-		return new Forum(
-				service.getCategoryById(forumzoneId, forumId, useCache));
+	public Forum getForumById(int forumId) {
+		return new Forum(service.getCategoryById(forumId));
 	}
 
 	public Integer saveForum(int forumzoneId, Forum forum) {
@@ -57,9 +52,8 @@ public class ForumService {
 		service.hasNewInfosToUser(forum.getCore(), user.getCore());
 	}
 
-	public void updateStatistician(int forumzoneId, int forumId,
-			ForumStatistician statistician) {
-		service.updateStatistician(forumzoneId, forumId, statistician.getCore());
+	public void updateStatistician(int forumId, ForumStatistician statistician) {
+		service.updateStatistician(forumId, statistician.getCore());
 	}
 
 	public void changeForumzone(int forumzoneId, Forum forum) {

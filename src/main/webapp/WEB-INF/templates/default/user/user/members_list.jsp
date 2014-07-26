@@ -1,6 +1,6 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
 <fmt:message var="title" key="header.jsp.members" />
-<%@ include file="/templates/default/user/common/header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/user/common/header.jsp"%>
 
 <table cellspacing="0" cellpadding="0" width="100%" border="0">
 	<tr>
@@ -8,10 +8,10 @@
 			<table width="100%">
 				<tr>
 					<td align="left"><span class="nav"><a class="nav"
-							href="displayForums.do">&gt;&gt;&gt;<fmt:message
+							href="${contextPath}/forums">&gt;&gt;&gt;<fmt:message
 									key="members_list.jsp.forums" /></a></span></td>
 					<td class="nav" nowrap="nowrap" align="right"><%@ include
-							file="/templates/common/pagination/pagination.jsp"%>
+							file="/WEB-INF/templates/common/pagination/pagination.jsp"%>
 					</td>
 				</tr>
 			</table>
@@ -51,7 +51,7 @@
 					href="displayProfile.do?userId=${member.id}">${member.name}</a></span></td>
 			<td class="row2"><span class="gen"><a
 					href="initCreatePrivateMsg.do?userId=${member.id}" class="icon_pm"><img
-						src="${contextPath}/templates/default/images/${locale}/icon_pm.gif"
+						src="${resourcesHost}/images/${locale}/icon_pm.gif"
 						alt="" /></a></span></td>
 			<td class="row2"><span class="gen"><c:choose>
 						<c:when test="${requestScope.showEmail}">
@@ -75,4 +75,4 @@
 	</tr>
 </table>
 
-<%@ include file="/templates/default/common/footer.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

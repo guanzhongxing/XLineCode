@@ -1,6 +1,6 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
 <link rel="stylesheet" type="text/css"
-	href="${contextPath}/templates/default/styles/style.css" />
+	href="${resourcesHost}/css/style.css" />
 
 
 
@@ -24,7 +24,7 @@
 				<html:form action="admin/moderation/update" method="post">
 					<tr>
 						<td class="nav" nowrap="nowrap" align="right"><%@ include
-								file="/templates/common/pagination/pagination.jsp"%>
+								file="/WEB-INF/templates/common/pagination/pagination.jsp"%>
 						</td>
 					</tr>
 					
@@ -103,7 +103,7 @@
 
 												<tr>
 													<td colspan="2" height="1" class="spacerow"><img
-														src="${contextPath}/templates/default/images/spacer.gif"
+														src="${resourcesHost}/images/spacer.gif"
 														alt="" width="1" height="1" /></td>
 												</tr>
 											</table>
@@ -116,7 +116,7 @@
 
 					<tr>
 						<td class="nav" nowrap="nowrap" align="right"><%@ include
-								file="/templates/common/pagination/pagination.jsp"%>
+								file="/WEB-INF/templates/common/pagination/pagination.jsp"%>
 						</td>
 					</tr>
 					<tr>

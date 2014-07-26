@@ -1,6 +1,6 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
 <link rel="stylesheet" type="text/css"
-	href="${contextPath}/templates/default/styles/style.css" />
+	href="${resourcesHost}/css/style.css" />
 <html:form action="/admin/user/group/update" method="post">
 	<input type="hidden" name="userId" value="${user.id}" />
 	<table class="forumline" cellSpacing="1" cellPadding="3" width="100%"

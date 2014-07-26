@@ -1,5 +1,5 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
-<%@ include file="/templates/default/user/common/header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/user/common/header.jsp"%>
 
 <table cellspacing="0" cellpadding="10" width="100%" align="center"
 	border="0">
@@ -8,7 +8,7 @@
 			<table cellspacing="2" cellpadding="2" width="100%" align="center">
 				<tr>
 					<td valign="middle" nowrap="nowrap" align=left class="gensmall">
-						<a class="maintitle" href="${contextPath}/displayForums.do"><fmt:message
+						<a class="maintitle" href="${contextPath}/forums"><fmt:message
 								key="display_topics.jsp.forums" /></a>
 					</td>
 					<td valign="bottom" align="left" colspan="2"></td>
@@ -25,7 +25,7 @@
 
 				<tr align="center">
 					<td valign="middle" align="center" colspan="6" height="28"><img
-						src="${contextPath}/templates/default/images/500.jpg" /></td>
+						src="${resourcesHost}/images/500.jpg" /></td>
 				</tr>
 			</table>
 
@@ -60,4 +60,4 @@
 	</tr>
 </table>
 
-<%@ include file="/templates/default/common/footer.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

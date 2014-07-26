@@ -71,12 +71,8 @@ public class InfoService {
 		return ForumCommonUtil.convertInfosToTopics(infos);
 	}
 
-	public Topic getTopicById(int forumId, int topicId) {
-		return new Topic(service.getInfoById(forumId, topicId));
-	}
-
-	public Topic getTopicById(int forumId, int topicId, boolean useCache) {
-		return new Topic(service.getInfoById(forumId, topicId, useCache));
+	public Topic getTopicById(int topicId) {
+		return new Topic(service.getInfoById(topicId));
 	}
 
 	public long getTopicNumByCreator(User theUser) {

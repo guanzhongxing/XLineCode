@@ -1,12 +1,12 @@
 <%@ page contentType="text/html;charset=utf-8" language="java"%>
-<%@ include file="/templates/common/taglibs.jsp"%>
+<%@ include file="/WEB-INF/templates/common/taglibs.jsp"%>
 
 <html>
 <head>
 <meta http-equiv="Content-Type" content="utf-8" />
 <title>{pageTitle}</title>
 <link rel="stylesheet" type="text/css"
-	href="${contextPath}/templates/default/styles/style.css" />
+	href="${resourcesHost}/css/style.css" />
 </head>
 
 <body bgcolor="#FFFFFF" text="#000000" link="#01336B" vlink="#01336B">
@@ -43,7 +43,7 @@
 				<table width="100%" border="0" cellspacing="0" cellpadding="0">
 					<tr>
 						<td width="100%"><img
-							src="${contextPath}/templates/default/images/icon_minipost.gif"
+							src="${resourcesHost}/images/icon_minipost.gif"
 							width="12" height="9" border="0" alt="Post" /> <span
 							class="postdetails"> <fmt:formatDate
 							value="${response.createdTime}" dateStyle="medium" /> <fmt:formatDate
@@ -66,7 +66,7 @@
 
 			<tr>
 				<td colspan="2" height="1" class="spacerow"><img
-					src="${contextPath}/templates/${templateName}/images/spacer.gif"
+					src="${resourcesHost}/images/spacer.gif"
 					alt="" width="1" height="1" /></td>
 			</tr>
 		</c:forEach>
@@ -82,7 +82,7 @@
 		<table width="100%" border="0" cellspacing="0" cellpadding="0">
 			<tr>
 				<td width="100%"><img
-					src="${contextPath}/templates/default/images/icon_minipost.gif"
+					src="${resourcesHost}/images/icon_minipost.gif"
 					width="12" height="9" border="0" alt="Post" /> <span
 					class="postdetails"> <fmt:formatDate
 					value="${currentTopic.createdTime}" dateStyle="medium" /> <fmt:formatDate
@@ -105,7 +105,7 @@
 
 	<tr>
 		<td colspan="2" height="1" class="spacerow"><img
-			src="${contextPath}/templates/${templateName}/images/spacer.gif"
+			src="${resourcesHost}/images/spacer.gif"
 			alt="" width="1" height="1" /></td>
 	</tr>
 </table>

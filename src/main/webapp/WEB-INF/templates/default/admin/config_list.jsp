@@ -1,7 +1,7 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
 <script type="text/javascript" src="${contextPath}/scripts/jquery.js"></script>
 <link rel="stylesheet" type="text/css"
-	href="${contextPath}/templates/default/styles/style.css" />
+	href="${resourcesHost}/css/style.css" />
 <script language="javascript">
 	function changeValue(field, value) {
 		var f = document.getElementById(field);

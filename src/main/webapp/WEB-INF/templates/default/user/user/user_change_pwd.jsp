@@ -1,5 +1,5 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
-<%@ include file="/templates/default/user/common/header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/user/common/header.jsp"%>
 
 <html:form action="changePassword.do" method="post"
 	enctype="multipart/form-data">
@@ -11,7 +11,7 @@
 					width="100%" border="0">
 					<tr>
 						<td colspan="2"><span class="forumlink"><a
-								class="forumlink" href="displayForums.do"><fmt:message
+								class="forumlink" href="${contextPath}/forums"><fmt:message
 										key="all.jsp.forums" /></a></span></td>
 					</tr>
 					<tr>
@@ -74,4 +74,4 @@
 	</table>
 </html:form>
 
-<%@ include file="/templates/default/common/footer.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

@@ -1,6 +1,6 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
 <fmt:message var="title" key="header.jsp.myProfile" />
-<%@ include file="/templates/default/user/common/header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/user/common/header.jsp"%>
 
 <set var="displayedUser" value="${requestScope.displayedUser}" />
 <html:form action="updateMyProfile.do" method="post"
@@ -14,7 +14,7 @@
 					width="100%" border="0">
 					<tr>
 						<td colspan="2"><span class="forumlink"><a
-								class="forumlink" href="displayForums.do"><fmt:message
+								class="forumlink" href="${contextPath}/forums"><fmt:message
 										key="all.jsp.forums" /></a></span></td>
 					</tr>
 					<tr>
@@ -223,4 +223,4 @@
 	</table>
 </html:form>
 
-<%@ include file="/templates/default/common/footer.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

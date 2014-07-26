@@ -1,6 +1,6 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
 <fmt:message var="title" key="user_specified_topics.jsp.title" />
-<%@ include file="/templates/default/user/common/header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/user/common/header.jsp"%>
 
 <c:set var="displayedUser" value="${requestScope.displayedUser}" />
 <table cellspacing="0" cellpadding="10" width="100%" align="center"
@@ -18,10 +18,10 @@
 					href="displayProfile.do?userId=${displayedUser.id}"> <fmt:message
 					key="user_specified_topics.jsp.profileFor">
 					<fmt:param value="${displayedUser.name}" />
-				</fmt:message> </a> &raquo; <a class="nav" href="displayForums.do"><fmt:message
+				</fmt:message> </a> &raquo; <a class="nav" href="${contextPath}/forums"><fmt:message
 					key="user_specified_topics.jsp.forums" /></a></td>
 				<td align="right">
-					<%@ include file="/templates/common/pagination/pagination.jsp" %>
+					<%@ include file="/WEB-INF/templates/common/pagination/pagination.jsp" %>
 				</td>
 			</tr>
 		</table>
@@ -48,7 +48,7 @@
 			<c:forEach var="topic" items="${requestScope.userSpecifiedTopics}">
 				<tr>
 					<td class="row1" valign="middle" align="center" width="20"><img
-						src="${contextPath}/templates/default/images/folder_new.gif"
+						src="${resourcesHost}/images/folder_new.gif"
 						alt="" /></td>
 					<td class="row1" width="100%"><span class="topictitle">
 					<a
@@ -75,7 +75,7 @@
 										<br/>
 										<a href="displayProfile.do?userId=${latestResponse.author.id}">${latestResponse.author.name}</a>
 										<a href="displayResponses.do?forumId=${topic.forum.id}&topicId=${topic.id}#${latestResponse.id}">
-											<img src="${contextPath}/templates/default/images/icon_latest_reply.gif" border="0" alt="[Latest Reply]" />
+											<img src="${resourcesHost}/images/icon_latest_reply.gif" border="0" alt="[Latest Reply]" />
 										</a>
 									
 								</c:when>
@@ -100,4 +100,4 @@
 	</tr>
 </table>
 
-<%@ include file="/templates/default/common/footer.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

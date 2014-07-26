@@ -1,4 +1,4 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
 
 <c:forEach var="subGroup" items="${group.subGroups}">
 	<c:set var="selected" value="false" />

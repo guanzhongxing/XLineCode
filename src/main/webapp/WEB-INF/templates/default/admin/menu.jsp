@@ -1,10 +1,10 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
 
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css"
-	href="${contextPath}/templates/default/styles/style.css" />
+	href="${resourcesHost}/css/style.css" />
 </head>
 <body text="#000000" vlink="#5493b4" link="#006699" bgcolor="#e5e5e5">
 	<table cellspacing="0" cellpadding="4" width="100%" align="center"
@@ -20,7 +20,7 @@
 
 					<tr>
 						<td class="row1"><a id="forumIndex" class="genmed"
-							target="_top" href="${contextPath}/displayForums.do"><fmt:message
+							target="_top" href="${contextPath}/forums"><fmt:message
 									key="menu.jsp.forum.index" /></a></td>
 					</tr>
 					<tr>

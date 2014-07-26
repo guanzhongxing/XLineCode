@@ -1,7 +1,7 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
 
 <link rel="stylesheet" type="text/css"
-	href="${contextPath}/templates/default/styles/style.css" />
+	href="${resourcesHost}/css/style.css" />
 <table class="forumline" cellspacing="1" cellpadding="3" width="100%"
 	border="0">
 	<tr>
@@ -89,6 +89,6 @@
 <table width="100%">
 	<tr>
 		<td align="right"><%@ include
-				file="/templates/common/pagination/pagination.jsp"%></td>
+				file="/WEB-INF/templates/common/pagination/pagination.jsp"%></td>
 	</tr>
 </table>

@@ -1,5 +1,5 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
-<%@ include file="/templates/default/user/common/header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/user/common/header.jsp"%>
 
 <a name="top" id="top"></a>
 <table width="100%" cellspacing="0" cellpadding="10" border="0"
@@ -10,7 +10,7 @@
 				align="center">
 				<tr>
 					<td align="left" class="nav"><a class="nav"
-						href="${contextPath}/displayForums.do"><fmt:message
+						href="${contextPath}/forums"><fmt:message
 								key="all.jsp.forums" /></a></td>
 				</tr>
 			</table>
@@ -89,7 +89,7 @@
 
 							<tr>
 								<td align="center"><a class="nav"
-									href="${contextPath}/displayForums.do"><fmt:message
+									href="${contextPath}/forums"><fmt:message
 											key="all.jsp.forums" /></a></td>
 							</tr>
 						</table>
@@ -99,4 +99,4 @@
 	</tr>
 </table>
 
-<%@ include file="/templates/default/common/footer.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

@@ -1,5 +1,5 @@
 <script
-	src="${contextPath}/scripts/ckeditor_4.2.2_standard/ckeditor/ckeditor.js"></script>
+	src="${resourcesHost}/javascripts/ckeditor_4.2.2_standard/ckeditor/ckeditor.js"></script>
 <script>
 	<c:choose>
 	<c:when test="${requestScope.attachmentsEnabled}">

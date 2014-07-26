@@ -2,9 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <link rel="stylesheet" type="text/css"
-	href="${contextPath}/templates/default/styles/style.css" />
+	href="${resourcesHost}/css/style.css" />
 <link rel="stylesheet" type="text/css"
-	href="${contextPath}/templates/default/styles/${locale}.css" />
+	href="${resourcesHost}/css/${locale}.css" />
 <script type="text/javascript" src="../../tiny_mce_popup.js"></script>
 <script type="text/javascript" src="jscripts/embed.js"></script>
 <script type="text/javascript"><!--

@@ -21,7 +21,7 @@
 
 				<td rowspan="4" align="center"><c:choose>
 						<c:when test="${requestScope.enableDownloadAttm}">
-							<img src="${contextPath}/templates/default/images/icon_disk.gif"
+							<img src="${resourcesHost}/images/icon_disk.gif"
 								alt="[Disk]" />
 							<c:choose>
 								<c:when test="${requestScope.downloadCaptchaEnabled}">
@@ -36,7 +36,7 @@
 						</c:when>
 						<c:otherwise>
 							<img
-								src="${contextPath}/templates/default/images/icon_disk_disable.gif"
+								src="${resourcesHost}/images/icon_disk_disable.gif"
 								title="<fmt:message
 								key="all.jsp.lack.of.permission" />" />
 						</c:otherwise>

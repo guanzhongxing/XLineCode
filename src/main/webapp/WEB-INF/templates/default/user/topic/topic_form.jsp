@@ -1,8 +1,8 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
-<%@ include file="/templates/default/user/common/header.jsp"%>
-<%@ include file="/templates/default/user/common/ckEditor_init.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/user/common/header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/user/common/ckEditor_init.jsp"%>
 <link rel="stylesheet" type="text/css"
-	href="${contextPath}/templates/default/styles/tabs.css" />
+	href="${resourcesHost}/css/tabs.css" />
 <script type="text/javascript" src="${contextPath}/scripts/post.js"></script>
 
 <c:choose>
@@ -38,7 +38,7 @@
 					<tr>
 						<td align="right"><span class="nav"> <a class="nav"
 								href="displayTopics.do?forumzoneId=${param.forumzoneId}&forumId=${param.forumId}">${requestScope.forumName}</a>
-								&raquo; <a class="nav" href="displayForums.do"><fmt:message
+								&raquo; <a class="nav" href="${contextPath}/forums"><fmt:message
 										key="topic_form.jsp.forums" /></a>
 						</span></td>
 					</tr>
@@ -105,7 +105,7 @@
 							<div id="postOptions" class="postTabContents">
 								<div>
 									<%@ include
-										file="/templates/default/user/common/post_options_tab.jsp"%>
+										file="/WEB-INF/templates/default/user/common/post_options_tab.jsp"%>
 								</div>
 							</div> <!-- Attachments tab --> <c:if
 								test="${requestScope.attachmentsEnabled}">
@@ -113,7 +113,7 @@
 									style="display: none;">
 									<div>
 										<%@ include
-											file="/templates/default/user/common/post_attachments_tab.jsp"%>
+											file="/WEB-INF/templates/default/user/common/post_attachments_tab.jsp"%>
 									</div>
 								</div>
 							</c:if>
@@ -145,4 +145,4 @@
 	</table>
 </html:form>
 
-<%@ include file="/templates/default/common/footer.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

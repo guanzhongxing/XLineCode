@@ -50,8 +50,7 @@ public class CreateUserTopicAction extends Action {
 		int forumId = castedForm.getForumId();
 		int topicId = castedForm.getTopicId();
 		ForumService forumService = new ForumService();
-		Forum forum = forumService.getForumById(castedForm.getForumzoneId(),
-				forumId, false);
+		Forum forum = forumService.getForumById(forumId);
 		Forumzone forumzone = forum.getForumzone();
 		HttpSession session = request.getSession(false);
 		UserSession userSession = (UserSession) session
@@ -64,7 +63,7 @@ public class CreateUserTopicAction extends Action {
 		AttachmentService attachmentService = SystemContextService.getService()
 				.getDataManagementService(ServiceEnum.ATTACHMENT_SERVICE);
 		if (castedForm.isEditted()) {
-			Topic topic = infoService.getTopicById(forumId, topicId, false);
+			Topic topic = infoService.getTopicById(topicId);
 			String originalSubject = topic.getSubject();
 			String originalContent = topic.getContent();
 			InfoType originalInfoType = topic.getInfoType();
@@ -111,7 +110,7 @@ public class CreateUserTopicAction extends Action {
 			} catch (InsufficientPermissionException ex) {
 				// do nothing,just get an fresh topic from db to override
 				// the cached one
-				topic = infoService.getTopicById(forumId, topicId, false);
+				topic = infoService.getTopicById(topicId);
 				topic.setSubject(originalSubject);
 				topic.setContent(originalContent);
 				topic.setInfoType(originalInfoType);

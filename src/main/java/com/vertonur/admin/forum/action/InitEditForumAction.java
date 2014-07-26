@@ -29,10 +29,8 @@ public final class InitEditForumAction extends Action {
 		String forumIdStr = request.getParameter("forumId");
 		if (forumIdStr != null && !"".equals(forumIdStr)) {
 			int forumId = Integer.parseInt(forumIdStr);
-			int forumzoneId = Integer.parseInt(request
-					.getParameter("forumzoneId"));
 			ForumService forumService = new ForumService();
-			Forum forum = forumService.getForumById(forumzoneId, forumId);
+			Forum forum = forumService.getForumById(forumId);
 			request.setAttribute("forum", forum);
 
 			request.setAttribute("servicePath", "/admin/forum/edit");

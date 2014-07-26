@@ -2,12 +2,12 @@
 <fmt:message var="title" key="header.jsp.login" />
 <%@ include file="/WEB-INF/templates/default/user/common/header.jsp"%>
 
-<form action="${contextPath}/userLogin.do" method="post">
+<form action="${contextPath}/users/login" method="post">
 	<table cellspacing="2" cellpadding="2" width="100%" align="center"
 		border="0">
 		<tr>
 			<td class="nav" align="right"><a class="nav"
-				href="${contextPath}/displayForums.do">&gt;&gt;&gt;<fmt:message
+				href="${contextPath}/forums">&gt;&gt;&gt;<fmt:message
 						key="forum_list.jsp.forums" /></a></td>
 		</tr>
 	</table>

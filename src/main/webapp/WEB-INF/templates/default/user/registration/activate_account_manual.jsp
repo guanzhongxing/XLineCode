@@ -1,5 +1,5 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
-<%@ include file="/templates/default/user/common/header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/user/common/header.jsp"%>
 
 <script type="text/javascript">
 	function validateForm(f) {
@@ -35,7 +35,7 @@
 		border="0">
 		<tr>
 			<td align="left"><span class="nav"><a class="nav"
-					href="displayForums.do"><fmt:message
+					href="{contextPath}/forums"><fmt:message
 							key="activate_account_manual.jsp.forum.index" /></a></span></td>
 		</tr>
 	</table>
@@ -78,4 +78,4 @@
 	</table>
 </form>
 
-<%@ include file="/templates/default/common/footer.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

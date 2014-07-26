@@ -28,7 +28,7 @@
 						<c:when
 							test="${topic.infoType=='CATEGORY_ANNOUNCEMENT'||topic.infoType=='DEPARTMENT_ANNOUNCEMENT'||topic.infoType=='SYSTEM_ANNOUNCEMENT'}">
 							<img
-								src="${contextPath}/templates/default/images/folder_announce.gif"
+								src="${resourcesHost}/images/folder_announce.gif"
 								alt="<fmt:message key="folder_descriptions.htm.announce" />" />
 						</c:when>
 						<c:otherwise>
@@ -36,9 +36,9 @@
 						</c:otherwise>
 					</c:choose></td>
 				<td ${class1} width="100%"><span class="topictitle"> <a
-						href="displayResponses.do?forumId=${forum.id}&topicId=${topic.id}">${topic.subject}</a>
+						href="${contextPath}/forums/topics/${topic.id}">${topic.subject}</a>
 				</span> <c:if test="${topic.newToUser}">
-						<img src="${contextPath}/templates/default/images/new.gif"
+						<img src="${resourcesHost}/images/new.gif"
 							alt="New" />
 					</c:if></td>
 
@@ -63,8 +63,8 @@
 								<br />
 								<a href="displayProfile.do?userId=${latestResponse.author.id}">${latestResponse.author.name}</a>
 								<a
-									href="displayResponses.do?forumId=${forum.id}&topicId=${latestResponse.topic.id}#${latestResponse.id}"><img
-									src="${contextPath}/templates/default/images/icon_latest_reply.gif"
+									href="${contextPath}/forums/topics/${latestResponse.topic.id}#${latestResponse.id}"><img
+									src="${resourcesHost}/images/icon_latest_reply.gif"
 									border="0" alt="[Latest Reply]" /></a>
 							</c:when>
 							<c:otherwise>

@@ -24,10 +24,6 @@ public class ForumzoneService {
 		return new Forumzone(service.getDepartmentById(id));
 	}
 
-	public Forumzone getForumzoneById(int id, boolean useCache) {
-		return new Forumzone(service.getDepartmentById(id, useCache));
-	}
-
 	public boolean deleteForumzone(Forumzone forumzone) {
 		return service.deleteDepartment(forumzone.getCore());
 	}

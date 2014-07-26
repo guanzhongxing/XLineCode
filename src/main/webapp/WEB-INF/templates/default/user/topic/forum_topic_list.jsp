@@ -1,5 +1,5 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
-<%@ include file="/templates/default/user/common/header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/user/common/header.jsp"%>
 
 <c:set var="currentForum" value="${requestScope.currentForum}" />
 <table cellspacing="0" cellpadding="10" width="100%" align="center"
@@ -13,24 +13,24 @@
 								<a
 									href="initCreateUserTopic.do?forumzoneId=${currentForum.forumzone.id}&forumId=${currentForum.id}"
 									rel="nofollow" class="icon_new_topic"> <img
-									src="${contextPath}/templates/default/images/${locale}/post.gif"
+									src="${resourcesHost}/images/${locale}/post.gif"
 									alt="" />
 								</a>
 							</c:when>
 							<c:otherwise>
 								<img
-									src="${contextPath}/templates/default/images/${locale}/post_disable.gif"
+									src="${resourcesHost}/images/${locale}/post_disable.gif"
 									title="<fmt:message
 								key="all.jsp.lack.of.permission" />" />
 							</c:otherwise>
 						</c:choose></td>
 					<td valign="middle" align="left" colspan="2"><a
-						class="maintitle" href="displayForums.do"> <fmt:message
+						class="maintitle" href="${contextPath}/forums"> <fmt:message
 								key="display_topics.jsp.forums" />
 					</a>&raquo; <span class="maintitle" style="color: #DD6900">
 							${currentForum.name} </span></td>
 					<td class="nav" nowrap="nowrap" align="right"><%@ include
-							file="/templates/common/pagination/pagination.jsp"%>
+							file="/WEB-INF/templates/common/pagination/pagination.jsp"%>
 					</td>
 				</tr>
 			</table>
@@ -83,24 +83,24 @@
 								<a
 									href="initCreateUserTopic.do?forumzoneId=${currentForum.forumzone.id}&forumId=${currentForum.id}"
 									rel="nofollow" class="icon_new_topic"> <img
-									src="${contextPath}/templates/default/images/${locale}/post.gif"
+									src="${resourcesHost}/images/${locale}/post.gif"
 									alt="" />
 								</a>
 							</c:when>
 							<c:otherwise>
 								<img
-									src="${contextPath}/templates/default/images/${locale}/post_disable.gif"
+									src="${resourcesHost}/images/${locale}/post_disable.gif"
 									title="<fmt:message
 								key="all.jsp.lack.of.permission" />" />
 							</c:otherwise>
 						</c:choose></td>
 					<td valign="middle" align="left"><span class="nav"> <a
-							class="nav" href="displayForums.do"> <fmt:message
+							class="nav" href="${contextPath}/forums"> <fmt:message
 									key="display_topics.jsp.forums" />
 						</a> &raquo; <span class="nav" style="color: #DD6900">${currentForum.name}</span>
 					</span></td>
 					<td class="nav" nowrap="nowrap" align="right"><%@ include
-							file="/templates/common/pagination/pagination.jsp"%>
+							file="/WEB-INF/templates/common/pagination/pagination.jsp"%>
 					</td>
 				</tr>
 
@@ -113,7 +113,7 @@
 				<tr>
 					<td align="left" class="gensmall"></td>
 					<td align="right"><%@ include
-							file="/templates/default/user/common/forums_navigator.jsp"%>
+							file="/WEB-INF/templates/default/user/common/forums_navigator.jsp"%>
 					</td>
 				</tr>
 			</table>
@@ -122,7 +122,7 @@
 				border="0">
 				<tr>
 					<td valign="top" align="left"><%@ include
-							file="/templates/default/user/common/folder_descriptions.htm"%>
+							file="/WEB-INF/templates/default/user/common/folder_descriptions.htm"%>
 					</td>
 				</tr>
 			</table>
@@ -130,4 +130,4 @@
 	</tr>
 </table>
 
-<%@ include file="/templates/default/common/footer.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

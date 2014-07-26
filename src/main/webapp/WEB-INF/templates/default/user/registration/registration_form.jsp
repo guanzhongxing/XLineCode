@@ -1,6 +1,6 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
 <fmt:message var="title" key="header.jsp.register" />
-<%@ include file="/templates/default/user/common/header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/user/common/header.jsp"%>
 
 <script type="text/javascript">
 	var act; //the variable might be a problem if too many users generate XHR request(too many idle variables)
@@ -15,7 +15,7 @@
 		border="0">
 		<tr>
 			<td align="right"><span class="nav"><a class="nav"
-					href="displayForums.do"><fmt:message
+					href="${contextPath}/forums"><fmt:message
 							key="registration_form.jsp.forums" /></a></span></td>
 		</tr>
 	</table>
@@ -146,4 +146,4 @@
 	</table>
 </html:form>
 
-<%@ include file="/templates/default/common/footer.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

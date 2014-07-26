@@ -1,4 +1,4 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
 <c:choose>
 	<c:when test="${mode=='recent'}">
 		<fmt:message var="title" key="header.jsp.recentTopic" />
@@ -7,7 +7,7 @@
 		<fmt:message var="title" key="header.jsp.hottestTopics" />
 	</c:otherwise>
 </c:choose>
-<%@ include file="/templates/default/user/common/header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/user/common/header.jsp"%>
 
 
 <table cellspacing="0" cellpadding="10" width="100%" align="center"
@@ -23,13 +23,13 @@
 							<c:when test="${mode=='recent'}">
 								<span class="nav" style="color: #DD6900"><fmt:message
 										key="recent_topics.jsp.recentTopics" /></span> &raquo;
-								<a class="nav" href="displayForums.do"><fmt:message
+								<a class="nav" href="${contextPath}/forums"><fmt:message
 										key="recent_topics.jsp.forums" /></a>
 							</c:when>
 							<c:otherwise>
 								<span class="nav" style="color: #DD6900"><fmt:message
 										key="header.jsp.hottestTopics" /></span> &raquo;
-								<a class="nav" href="displayForums.do"><fmt:message
+								<a class="nav" href="${contextPath}/forums"><fmt:message
 										key="hottest_topics.jsp.forums" /></a>
 							</c:otherwise>
 						</c:choose></td>
@@ -105,7 +105,7 @@
 												href="displayProfile.do?userId=${latestResponse.author.id}">${latestResponse.author.name}</a>
 											<a
 												href="displayResponses.do?forumId=${forum.id}&topicId=${latestResponse.topic.id}#${latestResponse.id}"><img
-												src="${contextPath}/templates/default/images/icon_latest_reply.gif"
+												src="${resourcesHost}/images/icon_latest_reply.gif"
 												border="0" alt="Latest Reply" /></a>
 										</c:when>
 										<c:otherwise>
@@ -131,4 +131,4 @@
 	</tr>
 </table>
 
-<%@ include file="/templates/default/common/footer.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

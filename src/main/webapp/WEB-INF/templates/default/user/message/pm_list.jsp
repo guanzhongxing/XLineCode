@@ -1,6 +1,6 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
 <fmt:message var="title" key="all.jsp.privateMsg" />
-<%@ include file="/templates/default/user/common/header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/user/common/header.jsp"%>
 
 <c:set var="boxType" value="${requestScope.boxType}" />
 <table cellspacing="0" cellpadding="10" width="100%" align="center" border="0">
@@ -18,7 +18,7 @@
 												<c:if test="${boxType!='inbox'}">
 													<a href="displayPrivateMsgInbox.do">
 												</c:if>
-												<img src="${contextPath}/templates/default/images/msg_inbox.gif" border="0" alt="[Inbox]" />
+												<img src="${resourcesHost}/images/msg_inbox.gif" border="0" alt="[Inbox]" />
 												<c:if test="${boxType!='inbox'}">
 													</a>
 												</c:if>
@@ -36,7 +36,7 @@
 												<c:if test="${boxType!='sentbox'}">
 													<a href="displayPrivateMsgSentbox.do">
 												</c:if>
-												<img src="${contextPath}/templates/default/images/msg_sentbox.gif" border="0" alt="[Sentbox]" />
+												<img src="${resourcesHost}/images/msg_sentbox.gif" border="0" alt="[Sentbox]" />
 												<c:if test="${boxType!='sentbox'}">
 													</a>
 												</c:if>
@@ -63,15 +63,15 @@
 						<tbody>
 							<tr>
 								<td valign="middle" align="left">
-									<a href="initCreatePrivateMsg.do" class="icon_new_topic"><img src="${contextPath}/templates/default/images/${locale}/post.gif" alt="New Topic" /></a>
+									<a href="initCreatePrivateMsg.do" class="icon_new_topic"><img src="${resourcesHost}/images/${locale}/post.gif" alt="New Topic" /></a>
 								</td>
 								<td align="left" width="100%">
 									<span class="nav">
-									 <a class="nav" href="displayForums.do"><fmt:message key="all.jsp.forums"/></a>
+									 <a class="nav" href="{contextPath}/forums"><fmt:message key="all.jsp.forums"/></a>
 									 </span>
 								</td>
 								<td class="nav" nowrap="nowrap" align="right">
-						  			<%@ include file="/templates/common/pagination/pagination.jsp" %>
+						  			<%@ include file="/WEB-INF/templates/common/pagination/pagination.jsp" %>
 								</td>
 							</tr>
 						</tbody>
@@ -109,23 +109,23 @@
 											<c:when test="${boxType=='inbox'}">
 												<c:choose>
 													<c:when test="${pm.readToReceiver}">
-														<img src="${contextPath}/templates/default/images/folder.gif" alt="<fmt:message key="folder_descriptions.htm.read"/>" />
+														<img src="${resourcesHost}/images/folder.gif" alt="<fmt:message key="folder_descriptions.htm.read"/>" />
 													</c:when>
 													<c:otherwise>
-														<img src="${contextPath}/templates/default/images/folder_unRead.gif" alt="<fmt:message key="folder_descriptions.htm.unRead"/>" />
+														<img src="${resourcesHost}/images/folder_unRead.gif" alt="<fmt:message key="folder_descriptions.htm.unRead"/>" />
 													</c:otherwise>
 												</c:choose>
 												
 											</c:when>
 											<c:otherwise>
-												<img src="${contextPath}/templates/default/images/folder.gif" alt="Unread" />
+												<img src="${resourcesHost}/images/folder.gif" alt="Unread" />
 											</c:otherwise>
 										</c:choose>
 									</td>
 									<td class="row1" valign="middle" width="55%">
 										<span class="topictitle">&nbsp;<a class="topictitle" href="displayPrivateMsg.do?pmId=${pm.id}">${pm.subject}</a>
 											<c:if test="${pm.newToReceiver}">
-												<img src="${contextPath}/templates/default/images/new.gif" alt="New" />
+												<img src="${resourcesHost}/images/new.gif" alt="New" />
 											</c:if>
 										</span>
 									</td>
@@ -158,13 +158,13 @@
 						<tbody>
 							<tr>
 								<td valign="middle" align="left">
-									<a href="initCreatePrivateMsg.do" class="icon_new_topic nav"><img src="${contextPath}/templates/default/images/${locale}/post.gif" alt="" /></a>
+									<a href="initCreatePrivateMsg.do" class="icon_new_topic nav"><img src="${resourcesHost}/images/${locale}/post.gif" alt="" /></a>
 								</td>
 								<td valign="middle" align="left" width="100%"><span class="nav"></span></td>
 								<td valign="top" nowrap="nowrap" align="right">
 								</td>
 								<td class="nav" nowrap="nowrap" align="right">
-						  			<%@ include file="/templates/common/pagination/pagination.jsp" %>
+						  			<%@ include file="/WEB-INF/templates/common/pagination/pagination.jsp" %>
 								</td>
 							</tr>
 						</tbody>
@@ -176,4 +176,4 @@
 	</tbody>
 </table>
 
-<%@ include file="/templates/default/common/footer.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

@@ -1,12 +1,12 @@
 <%@ page contentType="text/html;charset=utf-8" language="java"%>
 <fmt:message var="title" key="all.jsp.privateMsg" />
-<%@ include file="/templates/common/taglibs.jsp"%>
+<%@ include file="/WEB-INF/templates/common/taglibs.jsp"%>
 
 <html>
 	<head>
 		<meta http-equiv="Content-Style-Type" content="text/css" />
 		<title>{pageTitle}</title>
-		<link rel="stylesheet" type="text/css" href="${contextPath}/templates/default/styles/style.css" />
+		<link rel="stylesheet" type="text/css" href="${resourcesHost}/css/style.css" />
 	</head>
 
 	<c:set var="reviewedPm" value="${requestScope.thePm}" />

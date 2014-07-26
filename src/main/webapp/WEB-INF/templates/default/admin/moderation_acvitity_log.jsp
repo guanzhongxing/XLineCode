@@ -1,6 +1,6 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
 <fmt:message var="title" key="header.jsp.mdr.log" />
-<%@ include file="/templates/default/user/common/header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/user/common/header.jsp"%>
 
 <table cellspacing="0" cellpadding="10" width="100%" align="center"
 	border="0">
@@ -11,12 +11,12 @@
 				border="0">
 				<tr>
 					<td valign="bottom" align="left"><a class="maintitle"
-						href="${contextPath}/displayForums.do"><fmt:message
+						href="${contextPath}/forums"><fmt:message
 								key="display_topics.jsp.forums" /></a>&raquo; <span
 						class="maintitle" style="color: #DD6900"><fmt:message
 								key="moderation_acvitity_log.jsp.mdr.log" /></span></td>
 					<td class="gen" align="right"><%@ include
-							file="/templates/common/pagination/pagination.jsp"%></td>
+							file="/WEB-INF/templates/common/pagination/pagination.jsp"%></td>
 				</tr>
 			</table>
 
@@ -124,16 +124,16 @@
 				border="0">
 				<tr>
 					<td valign="bottom" align="left"><a class="maintitle"
-						href="${contextPath}/displayForums.do"><fmt:message
+						href="${contextPath}/forums"><fmt:message
 								key="display_topics.jsp.forums" /></a>&raquo; <span
 						class="maintitle" style="color: #DD6900"><fmt:message
 								key="moderation_acvitity_log.jsp.mdr.log" /></span></td>
 					<td class="gen" align="right"><%@ include
-							file="/templates/common/pagination/pagination.jsp"%></td>
+							file="/WEB-INF/templates/common/pagination/pagination.jsp"%></td>
 				</tr>
 			</table>
 		</td>
 	</tr>
 </table>
 
-<%@ include file="/templates/default/common/footer.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

@@ -1,9 +1,10 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
-<%@ include file="/templates/default/user/common/header.jsp"%>
-<%@ include file="/templates/default/user/common/ckEditor_init.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/user/common/header.jsp"%>
+<%@ include
+	file="/WEB-INF/templates/default/user/common/ckEditor_init.jsp"%>
 <link rel="stylesheet" type="text/css"
-	href="${contextPath}/templates/default/styles/tabs.css" />
-<script type="text/javascript" src="${contextPath}/scripts/post.js"></script>
+	href="${resourcesHost}/css/tabs.css" />
+<script type="text/javascript" src="${resourcesHost}/javascripts/post.js"></script>
 
 <c:choose>
 	<c:when test="${not empty requestScope.edittedRsp}">
@@ -35,10 +36,9 @@
 					border="0">
 					<tr>
 						<td align="right"><span class="nav"> <a class="nav"
-								href="displayResponses.do?forumId=${param.forumId}&topicId=${param.topicId}">${requestScope.topicTitle}</a>&raquo;
-								<a class="nav"
-								href="displayTopics.do?forumzoneId=${param.forumzoneId}&forumId=${param.forumId}">${requestScope.forumName}</a>&raquo;
-								<a class="nav" href="displayForums.do"><fmt:message
+								href="${contextPath}/forums/topics/${requestScope.topic.id}">${requestScope.topic.subject}</a>&raquo;
+								<a class="nav" href="${contextPath}/forums/${requestScope.forum.id}">${requestScope.forum.name}</a>&raquo;
+								<a class="nav" href="${contextPath}/forums"><fmt:message
 										key="respond_topic.jsp.forums" /></a>
 						</span></td>
 					</tr>
@@ -49,7 +49,7 @@
 					<tr>
 						<th class="thhead" colspan="2" height="25"><b> <fmt:message
 									key="respond_topic.jsp.respondTopic">
-									<fmt:param value="${requestScope.topicTitle}" />
+									<fmt:param value="${requestScope.topic.subject}" />
 								</fmt:message>
 						</b></th>
 					</tr>
@@ -60,10 +60,11 @@
 						<td class="row2" width="85%"><span class="gen"><html:errors
 									property="title" /><input class="subject" type="text"
 								tabindex="2" maxlength="100" name="title"
-								value="<c:choose><c:when test="${not empty title}">${title}</c:when><c:when test="${(empty title)&&!editted}"><fmt:message key="respond_topic.jsp.Re"><fmt:param value="${requestScope.topicTitle}"/></fmt:message></c:when></c:choose>" />
-								<input type="hidden" name="forumId" value="${param.forumId}" />
-								<input type="hidden" name="editted" value="${editted}" /> <input
-								type="hidden" name="topicId" value="${param.topicId}" /> <input
+								value="<c:choose><c:when test="${not empty title}">${title}</c:when><c:when test="${(empty title)&&!editted}"><fmt:message key="respond_topic.jsp.Re"><fmt:param value="${requestScope.topic.subject}"/></fmt:message></c:when></c:choose>" />
+								<input type="hidden" name="forumId"
+								value="${requestScope.forum.id}" /> <input type="hidden"
+								name="editted" value="${editted}" /> <input type="hidden"
+								name="topicId" value="${requestScope.topic.id}" /> <input
 								type="hidden" name="responseId" value="${param.responseId}" />
 						</span></td>
 					</tr>
@@ -114,7 +115,7 @@
 							<div id="postOptions" class="postTabContents">
 								<div>
 									<%@ include
-										file="/templates/default/user/common/post_options_tab.jsp"%>
+										file="/WEB-INF/templates/default/user/common/post_options_tab.jsp"%>
 								</div>
 							</div> <!-- Attachments tab --> <c:if
 								test="${requestScope.attachmentsEnabled}">
@@ -122,7 +123,7 @@
 									style="display: none;">
 									<div>
 										<%@ include
-											file="/templates/default/user/common/post_attachments_tab.jsp"%>
+											file="/WEB-INF/templates/default/user/common/post_attachments_tab.jsp"%>
 									</div>
 								</div>
 							</c:if>
@@ -174,7 +175,7 @@
 					<tr>
 						<td class="row1"><iframe width="100%" height="300"
 								frameborder="0"
-								src="${contextPath}/displayResponses.do?forumId=${param.forumId}&topicId=${param.topicId}&iFrame=true"></iframe>
+								src="${contextPath}/forums/topics/${requestScope.topic.id}?iFrame=true"></iframe>
 						</td>
 					</tr>
 				</table>
@@ -183,4 +184,4 @@
 	</table>
 </html:form>
 
-<%@ include file="/templates/default/common/footer.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

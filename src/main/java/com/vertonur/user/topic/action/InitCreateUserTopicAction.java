@@ -46,8 +46,8 @@ public final class InitCreateUserTopicAction extends Action {
 		int forumId = Integer.parseInt(request.getParameter("forumId"));
 		String edit = request.getParameter("edit");
 		if ("true".equals(edit)) {
-			Topic topic = infoService.getTopicById(forumId,
-					Integer.parseInt(request.getParameter("topicId")));
+			Topic topic = infoService.getTopicById(Integer.parseInt(request
+					.getParameter("topicId")));
 			request.setAttribute("edittedTopic", topic);
 			request.setAttribute("editted", true);
 			if (userSession.getUserId() != topic.getAuthor().getId()
@@ -76,9 +76,8 @@ public final class InitCreateUserTopicAction extends Action {
 			request.setAttribute("maxAttmSize", attachmentConfig.getMaxSize());
 		}
 
-		int forumzoneId = Integer.parseInt(request.getParameter("forumzoneId"));
 		ForumService service = new ForumService();
-		Forum forum = service.getForumById(forumzoneId, forumId);
+		Forum forum = service.getForumById(forumId);
 		request.setAttribute("forumName", forum.getName());
 
 		if (userSession.isAdmin()) {

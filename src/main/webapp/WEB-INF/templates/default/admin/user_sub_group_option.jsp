@@ -1,4 +1,4 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
 
 <c:set var="baseUrl"
 	value="/do/admin/group/get?action=subGroup&type=userOption&userId=${user.id}" />

@@ -1,7 +1,6 @@
 package com.vertonur.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -27,9 +26,8 @@ import com.vertonur.util.ForumCommonUtil.PageType;
 @RequestMapping({ "/", "/forums" })
 public class ForumController {
 
-	@RequestMapping(method=RequestMethod.GET)
-	public String showHomePage(Map<String, Object> model,
-			HttpServletRequest request) {
+	@RequestMapping(method = RequestMethod.GET)
+	public String getForumList(HttpServletRequest request) {
 		ForumzoneService forumzoneService = new ForumzoneService();
 		List<Forumzone> forumzones = forumzoneService.getForumzones();
 		request.setAttribute(Constants.FORUMZONES, forumzones);

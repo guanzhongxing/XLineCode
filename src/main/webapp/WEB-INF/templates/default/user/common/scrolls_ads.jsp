@@ -52,19 +52,19 @@
 </script>
 
 <DIV id=lovexin1 class="div_ads1">
-	<img src='${contextPath}/templates/default/images/close.gif'
+	<img src='${resourcesHost}/images/close.gif'
 		class="closeAds" onClick='javascript:window.hide()' vspace='3'>
 	<a href=''> <img
-		src='${contextPath}/templates/default/images/ad_100x300.jpg'
+		src='${resourcesHost}/images/ad_100x300.jpg'
 		class="ads" />
 	</a>
 </DIV>
 
 <DIV id=lovexin2 class="div_ads2">
-	<img src='${contextPath}/templates/default/images/close.gif'
+	<img src='${resourcesHost}/images/close.gif'
 		class="closeAds" onClick='javascript:window.hide()' vspace='3'>
 	<a href=''> <img
-		src='${contextPath}/templates/default/images/ad_100x300.jpg'
+		src='${resourcesHost}/images/ad_100x300.jpg'
 		class="ads" />
 	</a>
 </DIV>

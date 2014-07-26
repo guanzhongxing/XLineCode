@@ -37,8 +37,7 @@ public class EditForumzoneAction extends Action {
 		int priority = forumzoneForm.getPriority();
 
 		ForumzoneService forumzoneService = new ForumzoneService();
-		Forumzone forumzone = forumzoneService.getForumzoneById(forumzoneId,
-				false);
+		Forumzone forumzone = forumzoneService.getForumzoneById(forumzoneId);
 		forumzone.setName(forumzoneName);
 		forumzone.setDescription(forumzoneDescription);
 		forumzone.setModerated(moderated);

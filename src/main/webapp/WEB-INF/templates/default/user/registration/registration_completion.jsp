@@ -1,6 +1,6 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
 <fmt:message var="title" key="header.jsp.register" />
-<%@ include file="/templates/default/user/common/header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/user/common/header.jsp"%>
 
 <a name="top" id="top"></a>
 <table width="100%" cellspacing="0" cellpadding="10" border="0"
@@ -12,7 +12,7 @@
 				align="center">
 				<tr>
 					<td align="left" class="nav"><a class="nav"
-						href="${contextPath}/displayForums.do"><fmt:message
+						href="${contextPath}/forums"><fmt:message
 								key="registration_completion.jsp.forums" /></a></td>
 				</tr>
 			</table>
@@ -35,7 +35,7 @@
 											key="registration_completion.jsp.registrationCompleteMsg">
 											<fmt:param
 												value="${contextPath}/displayMyProfile.do?userId=${param.userId}" />
-											<fmt:param value="${contextPath}/displayForums.do" />
+											<fmt:param value="${contextPath}/forums" />
 										</fmt:message>
 								</span></td>
 							</tr>
@@ -49,4 +49,4 @@
 	</tr>
 </table>
 
-<%@ include file="/templates/default/common/footer.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

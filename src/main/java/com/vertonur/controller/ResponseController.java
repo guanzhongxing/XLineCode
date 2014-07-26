@@ -1,17 +1,20 @@
-package com.vertonur.user.response.action;
+package com.vertonur.controller;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.struts.action.Action;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionMessage;
+import org.apache.struts.action.ActionMessages;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.vertonur.bean.Forum;
 import com.vertonur.bean.Forumzone;
@@ -35,22 +38,23 @@ import com.vertonur.service.InfoService;
 import com.vertonur.service.UserService;
 import com.vertonur.session.UserSession;
 import com.vertonur.util.ForumCommonUtil;
-import com.vertonur.util.PermissionUtils;
 import com.vertonur.util.ForumCommonUtil.PageType;
+import com.vertonur.util.PermissionUtils;
 
-public final class DisplayResponsesAction extends Action {
+@Controller
+public class ResponseController {
 
-	public ActionForward execute(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+	@RequestMapping(value = "/forums/topics/{topicId}", method = RequestMethod.GET)
+	public String getResponseList(@PathVariable int topicId,
+			@RequestParam(required = false) boolean iFrame,
+			HttpServletRequest request) throws IllegalAccessException,
+			InstantiationException, InvocationTargetException,
+			NoSuchMethodException {
 
-		String topicIdStr = request.getParameter("topicId");
-		String forumIdStr = request.getParameter("forumId");
-		int forumId = Integer.parseInt(forumIdStr);
 		InfoService infoService = new InfoService();
 		Topic topic;
-		if (topicIdStr != null && !"".equals(topicIdStr)) {
-			topic = infoService.getTopicById(Integer.parseInt(topicIdStr));
+		if (topicId != 0) {
+			topic = infoService.getTopicById(topicId);
 		} else {
 			topic = (Topic) request.getAttribute(Constants.CURRENT_TOPIC);
 		}
@@ -71,9 +75,8 @@ public final class DisplayResponsesAction extends Action {
 		request.setAttribute(Constants.RESPONSES, responses);
 		request.setAttribute(Constants.CURRENT_TOPIC, topic);
 
-		String iFrame = request.getParameter("iFrame");
-		if ("true".equals(iFrame))
-			return mapping.findForward("ToTopicReviewPage");
+		if (iFrame)
+			return "default/user/response/topic_review_list";
 		else {
 			HttpSession session = request.getSession(false);
 			UserSession userSession = (UserSession) session
@@ -113,9 +116,7 @@ public final class DisplayResponsesAction extends Action {
 
 			long paginationSize = infoService.getResponseNumByTopic(topic);
 			PaginationContext pageCxt = new PaginationContext(paginationSize,
-					paginationStart, mapping.getPath().split("/")[1]
-							+ ".do?forumId=" + forum.getId() + "&topicId="
-							+ topic.getId(), CxtType.RESPONSE);
+					paginationStart, request.getServletPath(), CxtType.RESPONSE);
 			request.setAttribute("pageCxt", pageCxt);
 
 			AttachmentConfig attmConfig = service.getDataManagementService(
@@ -125,6 +126,7 @@ public final class DisplayResponsesAction extends Action {
 					attmConfig.getThumbEnabled());
 			int userId = userSession.getUserId();
 			request.setAttribute("userId", userId);
+			int forumId = topic.getForum().getId();
 			checkPermissions(forumId, request, topic);
 
 			boolean enableTopicLock;
@@ -132,7 +134,7 @@ public final class DisplayResponsesAction extends Action {
 				enableTopicLock = true;
 			else
 				enableTopicLock = PermissionUtils.checkTopicLockPermission(
-						getServlet().getServletContext(), forumId);
+						request.getServletContext(), forumId);
 			request.setAttribute("enableTopicLock", enableTopicLock);
 
 			GlobalConfig globalConfig = SystemConfig.getConfig()
@@ -149,13 +151,13 @@ public final class DisplayResponsesAction extends Action {
 			UserConfig config = runtimeParameterService.getUserConfig();
 			request.setAttribute("avatarHeight", config.getAvatarHeight());
 			request.setAttribute("avatarWidth", config.getAvatarWidth());
-			return mapping.findForward("ToDisplayResponsesPage");
+			return "default/user/response/response_list";
 		}
 	}
 
 	private void checkPermissions(int forumId, HttpServletRequest request,
 			Topic topic) {
-		ServletContext servletContext = getServlet().getServletContext();
+		ServletContext servletContext = request.getServletContext();
 		request.setAttribute("enableNewRsp", PermissionUtils
 				.checkResponsePostPermission(servletContext, topic));
 
@@ -163,13 +165,78 @@ public final class DisplayResponsesAction extends Action {
 				.checkAttachmentDownloadPermission(servletContext, forumId));
 
 		request.setAttribute("enableModeratorEdition", PermissionUtils
-				.checkModeratorEditionPermission(getServlet()
-						.getServletContext(), forumId));
+				.checkModeratorEditionPermission(servletContext, forumId));
 		request.setAttribute("enableModeratorDeletion", PermissionUtils
-				.checkModeratorDeletionPermission(getServlet()
-						.getServletContext(), forumId));
+				.checkModeratorDeletionPermission(servletContext, forumId));
 		request.setAttribute("enableTopicMovement", PermissionUtils
-				.checkMoveTopicPermission(getServlet().getServletContext(),
-						forumId));
+				.checkMoveTopicPermission(servletContext, forumId));
+	}
+
+	@RequestMapping(value = "/forums/topics/{topicId}/response", method = RequestMethod.GET)
+	public String showResponseForm(@PathVariable int topicId,
+			@RequestParam(defaultValue = "0") int responseId,
+			@RequestParam(required = false) boolean quote,
+			@RequestParam(required = false) boolean edit,
+			HttpServletRequest request) {
+
+		HttpSession session = request.getSession(false);
+		UserSession userSession = (UserSession) session
+				.getAttribute(Constants.USER_SESSION);
+		InfoService infoService = new InfoService();
+
+		// check new rsp interval
+		if (infoService.isInNewRspInterval(userSession.getSessionId())) {
+			ActionMessages messages = new ActionMessages();
+			messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
+					"error.rsp.post.within.time.limition"));
+			// result.addError(error);
+			return "default/user/response/response_list";
+		}
+		// end
+
+		Topic topic = infoService.getTopicById(topicId);
+		Forum forum = topic.getForum();
+
+		request.setAttribute("topic", topic);
+		request.setAttribute("forum", forum);
+
+		Response rsp = null;
+		if (responseId != 0)
+			rsp = infoService.getResponseById(responseId);
+
+		if (quote) {
+			if (responseId != 0)
+				request.setAttribute("quotedMsg", rsp);
+			else
+				request.setAttribute("quotedMsg", topic);
+
+		} else if (edit && responseId != 0) {
+			request.setAttribute("edittedRsp", rsp);
+			request.setAttribute("editted", true);
+
+			if (userSession.isModerator()
+					&& (userSession.getUserId() != rsp.getAuthor().getId()))
+				request.setAttribute("fromModeration", true);
+		}
+
+		UserService userService = new UserService();
+		User theCurrentUser = userService.getUserById(userSession.getUserId());
+		int forumId = forum.getId();
+		if (PermissionUtils.checkAttachmentUploadPermission(
+				request.getServletContext(), forumId)
+				&& theCurrentUser.isAttmEnabled()) {
+			request.setAttribute("attachmentsEnabled", true);
+
+			AttachmentConfig config = SystemContextService
+					.getService()
+					.getDataManagementService(
+							ServiceEnum.RUNTIME_PARAMETER_SERVICE)
+					.getAttachmentConfig();
+			int maxAttachments = config.getMaxAttmtNum();
+			request.setAttribute("maxAttachments", maxAttachments);
+			request.setAttribute("maxAttmSize", config.getMaxSize());
+		}
+
+		return "default/user/response/response_form";
 	}
 }

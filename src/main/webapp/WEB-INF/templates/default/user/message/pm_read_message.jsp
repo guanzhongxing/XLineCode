@@ -1,6 +1,6 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
 <fmt:message var="title" key="all.jsp.privateMsg" />
-<%@ include file="/templates/default/user/common/header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/user/common/header.jsp"%>
 
 <table cellspacing="0" cellpadding="10" width="100%" align="center" border="0">
 	<tbody>
@@ -15,7 +15,7 @@
                             <tr valign="middle">
                             	<td>
 									<a href="displayPrivateMsgInbox.do">
-										<img src="${contextPath}/templates/default/images/msg_inbox.gif" border="0" alt="[Inbox]" />
+										<img src="${resourcesHost}/images/msg_inbox.gif" border="0" alt="[Inbox]" />
 									</a>
 								</td>
 								<td>
@@ -25,7 +25,7 @@
 								</td>
 								<td>
 									<a href="displayPrivateMsgSentbox.do">
-										<img src="${contextPath}/templates/default/images/msg_sentbox.gif" border="0" alt="[Sentbox]" />
+										<img src="${resourcesHost}/images/msg_sentbox.gif" border="0" alt="[Sentbox]" />
 									</a>
 								</td>
 								<td>
@@ -47,10 +47,10 @@
 					<table cellspacing="2" cellpadding="2" width="100%" border="0">
 						<tbody>
 							<tr>
-								<td valign="middle"><a href="initCreatePrivateMsg.do?pmId=${thePm.id}" class="icon_reply"><img src="${contextPath}/templates/default/images/${locale}/reply.gif" alt="" /></a>
+								<td valign="middle"><a href="initCreatePrivateMsg.do?pmId=${thePm.id}" class="icon_reply"><img src="${resourcesHost}/images/${locale}/reply.gif" alt="" /></a>
 								</td>
 								<td width="100%">
-									<span class="nav">&nbsp;<a class="nav" href="displayForums.do"><fmt:message key="all.jsp.forums"/></a></span>
+									<span class="nav">&nbsp;<a class="nav" href="forums"><fmt:message key="all.jsp.forums"/></a></span>
 								</td>
 							</tr>
 						</tbody>
@@ -77,7 +77,7 @@
 								<td class="row2" width="10%"><span class="genmed"><fmt:message key="all.jsp.msgSubject"/>:</span></td>
 								<td class="row2"><span class="genmed">${thePm.subject}</span></td>
 								<td class="row2" nowrap="nowrap" align="right">
-									<a href="initCreatePrivateMsg.do?quote=true&pmId=${thePm.id}" class="icon_quote"><img src="${contextPath}/templates/default/images/${locale}/icon_quote.gif" alt="" /></a>
+									<a href="initCreatePrivateMsg.do?quote=true&pmId=${thePm.id}" class="icon_quote"><img src="${resourcesHost}/images/${locale}/icon_quote.gif" alt="" /></a>
 								</td>
 							</tr>
 							<tr>
@@ -102,7 +102,7 @@
 					<table cellspacing="2" cellpadding="2" width="100%" align="center" border="0">
 						<tbody>
 							<tr>
-								<td><a href="initCreatePrivateMsg.do?pmId=${thePm.id}" class="icon_reply"><img src="${contextPath}/templates/default/images/${locale}/reply.gif" alt="" /></a></td>
+								<td><a href="initCreatePrivateMsg.do?pmId=${thePm.id}" class="icon_reply"><img src="${resourcesHost}/images/${locale}/reply.gif" alt="" /></a></td>
 							</tr>
 						</tbody>
 					</table>
@@ -113,4 +113,4 @@
 	</tbody>
 </table>
 
-<%@ include file="/templates/default/common/footer.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

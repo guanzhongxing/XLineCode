@@ -54,7 +54,7 @@
 												</td>
 												<td class="row1" width="100%" height="50"><span
 													class="forumlink"><a class="forumlink"
-														href="${contextPath}/displayTopics.do?forumzoneId=${forumzone.id}&forumId=${forum.id}">${forum.name}</a></span><br />
+														href="${contextPath}/forums/${forum.id}">${forum.name}</a></span><br />
 													<span class="genmed"> ${forum.description} </span> <br />
 												</td>
 												<td class="row2" valign="middle" align="center" height="50">
@@ -102,9 +102,9 @@
 																	pattern="hh:mm" />
 																<br />
 																<a
-																	href="${contextPath}/displayProfile.do?userId=${latestTopic.author.id}">${latestTopic.author.name}</a>
+																	href="${contextPath}/users/${latestTopic.author.id}">${latestTopic.author.name}</a>
 																<a
-																	href="${contextPath}/displayResponses.do?forumId=${forum.id}&topicId=${latestTopic.id}">
+																	href="${contextPath}/forums/topics/${latestTopic.id}">
 																	<img
 																	src="${resourcesHost}/images/icon_latest_reply.gif"
 																	border="0" alt="[Latest Reply]" />
@@ -178,7 +178,7 @@
 						</fmt:message> <br /> <fmt:message key="forum_list.jsp.registeredUserNum">
 							<fmt:param value="${systemState.registeredUserNum}" />
 						</fmt:message> <br /> <fmt:message key="forum_list.jsp.thelatestuser" /><a
-						href="${contextPath}/displayProfile.do?userId=${systemState.latestRegisteredUser.id}">&nbsp;${systemState.latestRegisteredUser.name}</a>
+						href="${contextPath}/users/${systemState.latestRegisteredUser.id}">&nbsp;${systemState.latestRegisteredUser.name}</a>
 					</td>
 				</tr>
 
@@ -205,7 +205,7 @@
 							<c:when test="${not empty userSessions}">
 								<c:forEach var="userSession" items="${userSessions}">
 									<a
-										href="${contextPath}/displayProfile.do?userId=${userSession.value.userId}">
+										href="${contextPath}/users/${userSession.value.userId}">
 										<c:choose>
 											<c:when test="${userSession.value.admin}">
 												<span class="admin">${userSession.value.username}</span>

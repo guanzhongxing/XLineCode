@@ -1,10 +1,10 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
 
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8;" />
 <link rel="stylesheet" type="text/css"
-	href="${contextPath}/templates/default/styles/style.css" />
+	href="${resourcesHost}/css/style.css" />
 
 <style type="text/css">
 h1 {
@@ -110,7 +110,7 @@ p,td {
 
 			<tr>
 				<td colspan="5" height="1" class="row3"><img
-					src="${contextPath}/templates/default/images/spacer.gif" width="1"
+					src="${resourcesHost}/images/spacer.gif" width="1"
 					height="1" alt="." /></td>
 			</tr>
 		</table>

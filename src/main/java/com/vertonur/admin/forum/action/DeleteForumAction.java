@@ -28,8 +28,7 @@ public final class DeleteForumAction extends OperactionCheckAction {
 		ForumService forumService = new ForumService();
 		for (String forumIdStr : forumIds) {
 			String[] tmp = forumIdStr.split("_");
-			Forum forum = forumService.getForumById(Integer.parseInt(tmp[0]),
-					Integer.parseInt(tmp[1]),false);
+			Forum forum = forumService.getForumById(Integer.parseInt(tmp[1]));
 			forum.setDeprecated(true);
 			try {
 				forumService.updateForum(forum);

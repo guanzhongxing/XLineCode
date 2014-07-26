@@ -100,7 +100,7 @@ public class RespondTopicAction extends Action {
 			rsp.setLatestOne(true);
 			rsp.setAuthor(user);
 
-			Topic topic = infoService.getTopicById(forumId, topicId, false);
+			Topic topic = infoService.getTopicById(topicId);
 			rsp.setTopic(topic);
 			// end
 

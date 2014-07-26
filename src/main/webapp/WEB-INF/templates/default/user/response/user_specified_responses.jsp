@@ -1,6 +1,6 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
 <fmt:message var="title" key="user_specified_responses.jsp.title" />
-<%@ include file="/templates/default/user/common/header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/user/common/header.jsp"%>
 
 <c:set var="displayedUser" value="${requestScope.displayedUser}" />
 <table cellspacing="0" cellpadding="10" width="100%" align="center"
@@ -20,7 +20,7 @@
 			<table cellspacing="2" cellpadding="2" width="100%" border="0">
 				<tr>
 					<td valign="middle" align="left" colspan="0"><a class="nav"
-						href="displayForums.do"><fmt:message key="all.jsp.forums" /></a>
+						href="${contextPath}/forums"><fmt:message key="all.jsp.forums" /></a>
 						&raquo; <a class="nav"
 						href="displayProfile.do?userId=${displayedUser.id}"><fmt:message
 								key="user_specified_responses.jsp.profileFor">
@@ -31,7 +31,7 @@
 							</fmt:message> </span></td>
 
 					<td valign="middle" align="right"><%@ include
-							file="/templates/common/pagination/pagination.jsp"%>
+							file="/WEB-INF/templates/common/pagination/pagination.jsp"%>
 					</td>
 				</tr>
 			</table>
@@ -88,8 +88,8 @@
 
 					<tr>
 						<td class="spacerow" colspan="2" height="1"><img
-							src="${contextPath}/templates/${templateName}/images/spacer.gif"
-							alt="" width="1" height="1" /></td>
+							src="${resourcesHost}/images/spacer.gif" alt="" width="1"
+							height="1" /></td>
 					</tr>
 				</c:forEach>
 				<!-- END OF POST LISTING -->
@@ -110,7 +110,7 @@
 				<tr>
 
 					<td valign="middle" align="left" colspan="0"><a class="nav"
-						href="displayForums.do"><fmt:message key="all.jsp.forums" /></a>
+						href="${contextPath}/forums"><fmt:message key="all.jsp.forums" /></a>
 						&raquo; <a class="nav"
 						href="displayProfile.do?userId=${displayedUser.id}"><fmt:message
 								key="user_specified_responses.jsp.profileFor">
@@ -121,13 +121,12 @@
 							</fmt:message></span></td>
 
 					<td valign="middle" align="right"><%@ include
-							file="/templates/common/pagination/pagination.jsp"%>
+							file="/WEB-INF/templates/common/pagination/pagination.jsp"%>
 					</td>
 				</tr>
 
 				<tr>
-					<td colspan="3"><img
-						src="${contextPath}/templates/${templateName}/images/spacer.gif"
+					<td colspan="3"><img src="${resourcesHost}/images/spacer.gif"
 						alt="" width="1" height="1" /></td>
 				</tr>
 			</table>
@@ -141,4 +140,4 @@
 	</tr>
 </table>
 
-<%@ include file="/templates/default/common/footer.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

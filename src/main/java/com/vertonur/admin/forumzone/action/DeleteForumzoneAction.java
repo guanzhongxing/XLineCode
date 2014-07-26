@@ -34,7 +34,7 @@ public class DeleteForumzoneAction extends OperactionCheckAction {
 
 		ForumzoneService forumzoneService = new ForumzoneService();
 		for (int id : ids) {
-			Forumzone forumzone = forumzoneService.getForumzoneById(id, false);
+			Forumzone forumzone = forumzoneService.getForumzoneById(id);
 			forumzone.setDeprecated(true);
 			try {
 				forumzoneService.updateForumzone(forumzone);

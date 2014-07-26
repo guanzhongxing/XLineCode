@@ -1,13 +1,13 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
 <fmt:message var="title" key="user_profile.jsp.profile" />
-<%@ include file="/templates/default/user/common/header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/user/common/header.jsp"%>
 
 <c:set var="displayedUser" value="${requestScope.displayedUser}" />
 <table cellspacing="2" cellpadding="2" width="100%" align="center"
 	border="0">
 	<tr>
 		<td align="right"><span class="nav"><a class="nav"
-				href="${contextPath}/displayForums.do">&gt;&gt;&gt;<fmt:message
+				href="${contextPath}/forums">&gt;&gt;&gt;<fmt:message
 						key="forum_list.jsp.forums" /></a></span></td>
 	</tr>
 </table>
@@ -124,7 +124,7 @@
 						<td class="row1" valign="middle"><b><span class="gen">
 									<a href="initCreatePrivateMsg.do?userId=${displayedUser.id}"
 									class="icon_pm"><img
-										src="${contextPath}/templates/default/images/${locale}/icon_pm.gif"
+										src="${resourcesHost}/images/${locale}/icon_pm.gif"
 										alt="" /></a>
 							</span></b></td>
 					</tr>
@@ -134,4 +134,4 @@
 	</c:if>
 </table>
 
-<%@ include file="/templates/default/common/footer.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

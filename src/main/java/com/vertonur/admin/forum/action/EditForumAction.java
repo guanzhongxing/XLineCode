@@ -35,10 +35,8 @@ public final class EditForumAction extends Action {
 		boolean moderated = castedForm.isModerated();
 		int priority = castedForm.getPriority();
 
-		int oldForumzoneId = castedForm.getForumzoneId();
 		ForumService forumService = new ForumService();
-		Forum forum = (Forum) forumService.getForumById(oldForumzoneId,
-				forumId, false);
+		Forum forum = (Forum) forumService.getForumById(forumId);
 		forum.setName(forumName);
 		forum.setModerated(moderated);
 		forum.setDescription(desc);

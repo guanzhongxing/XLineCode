@@ -1,6 +1,6 @@
-<%@ include file="/templates/default/common/common_header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
 <fmt:message var="title" key="header.jsp.register" />
-<%@ include file="/templates/default/user/common/header.jsp"%>
+<%@ include file="/WEB-INF/templates/default/user/common/header.jsp"%>
 
 <table class="forumline" align="center" border="0" cellpadding="3"
 	cellspacing="1" width="80%">
@@ -25,7 +25,7 @@
 					onclick="document.location = '${contextPath}/initRegistration.do?fromAdmin=${requestScope.fromAdmin}';"
 					type="button">&nbsp;&nbsp; <input class="mainoption"
 					value="<fmt:message key="agreement_show.jsp.noAccept"/>"
-					onclick="document.location = '${contextPath}/displayForums.do';"
+					onclick="document.location = '${contextPath}/forums';"
 					type="button">&nbsp;&nbsp;</td>
 			</tr>
 		</c:when>
@@ -40,4 +40,4 @@
 
 </table>
 
-<%@ include file="/templates/default/common/footer.jsp"%>
+<%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

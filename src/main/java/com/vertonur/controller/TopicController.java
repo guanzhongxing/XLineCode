@@ -1,15 +1,15 @@
-package com.vertonur.user.topic.action;
+package com.vertonur.controller;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.struts.action.Action;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.vertonur.bean.Forum;
 import com.vertonur.bean.Forumzone;
@@ -25,15 +25,17 @@ import com.vertonur.util.ForumCommonUtil;
 import com.vertonur.util.ForumCommonUtil.PageType;
 import com.vertonur.util.PermissionUtils;
 
-public final class DisplayTopicsAction extends Action {
-	public ActionForward execute(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+@Controller
+public class TopicController {
 
-		int forumId = Integer.parseInt(request.getParameter("forumId"));
-		int forumzoneId = Integer.parseInt(request.getParameter("forumzoneId"));
+	@RequestMapping(value = "/forums/{forumId}", method = RequestMethod.GET)
+	public String getTopicList(@PathVariable int forumId,
+			HttpServletRequest request) throws IllegalAccessException,
+			InstantiationException, InvocationTargetException,
+			NoSuchMethodException {
+
 		ForumService forumService = new ForumService();
-		Forum forum = forumService.getForumById(forumzoneId, forumId);
+		Forum forum = forumService.getForumById(forumId);
 
 		String startStr = (String) request.getParameter("start");
 		int paginationStart = ForumCommonUtil
@@ -46,6 +48,7 @@ public final class DisplayTopicsAction extends Action {
 		List<Topic> topics = infoService.getTopicsByForum(
 				userSession.getUserId(), forumId, paginationStart);
 
+		int forumzoneId = forum.getForumzone().getId();
 		List<Topic> announcements = infoService.getSystemAnnouncements();
 		announcements
 				.addAll(infoService.getForumzoneAnnouncements(forumzoneId));
@@ -64,14 +67,14 @@ public final class DisplayTopicsAction extends Action {
 				forum.getDescription(), PageType.INFO_PAGE);
 		// end
 
-		request.setAttribute("enableNewTopic", PermissionUtils
-				.checkTopicPostPermission(getServlet().getServletContext(),
-						forumId));
+		request.setAttribute(
+				"enableNewTopic",
+				PermissionUtils.checkTopicPostPermission(
+						request.getServletContext(), forumId));
 		PaginationContext pageCxt = new PaginationContext(paginationSize,
-				paginationStart, mapping.getPath().split("/")[1]
-						+ ".do?forumzoneId=" + forumzoneId + "&forumId="
-						+ forum.getId(), CxtType.TOPIC);
+				paginationStart, request.getRequestURI()+"?", CxtType.TOPIC);
 		request.setAttribute("pageCxt", pageCxt);
-		return mapping.findForward("ToDisplayTopicsPage");
+
+		return "default/user/topic/forum_topic_list";
 	}
 }

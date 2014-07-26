@@ -82,7 +82,7 @@
 
 	<beans:bean id="authenticationFilter"
 		class="com.vertonur.filters.UserSessionAuthenticationFilter">
-		<beans:property name="filterProcessesUrl" value="/userLogin.do" />
+		<beans:property name="filterProcessesUrl" value="/users/login" />
 		<beans:property name="postOnly" value="false" />
 		<beans:property name="usernameParameter" value="userId" />
 		<beans:property name="passwordParameter" value="password" />

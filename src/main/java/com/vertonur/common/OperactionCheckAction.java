@@ -29,14 +29,14 @@ public abstract class OperactionCheckAction extends Action {
 		UserSession userSession = (UserSession) session
 				.getAttribute(Constants.USER_SESSION);
 		if (userSession.isGuest()) {
-			@SuppressWarnings("unchecked")
 			Enumeration<String> names = request.getParameterNames();
-			Map<String,String> params=new HashMap<String,String>();
-			while(names.hasMoreElements()){
-				String name=names.nextElement();
+			Map<String, String> params = new HashMap<String, String>();
+			while (names.hasMoreElements()) {
+				String name = names.nextElement();
 				params.put(name, request.getParameter(name));
 			}
-			RequestContext context=userSession.new RequestContext(request.getServletPath(),params);
+			RequestContext context = userSession.new RequestContext(
+					request.getServletPath(), params);
 			userSession.setRequestContext(context);
 			ActionMessages errors = new ActionMessages();
 			errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
@@ -52,5 +52,5 @@ public abstract class OperactionCheckAction extends Action {
 
 	public abstract ActionForward processRequest(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
-			HttpServletResponse response) throws Exception ;
+			HttpServletResponse response) throws Exception;
 }
