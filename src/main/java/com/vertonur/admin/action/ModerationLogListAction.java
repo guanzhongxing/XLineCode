@@ -118,6 +118,7 @@ public class ModerationLogListAction extends OperactionCheckAction {
 		return mapping.findForward("ToModerationViewPage");
 	}
 
+	@Deprecated
 	private ActionForward processModeratorLogListRq(ActionMapping mapping,
 			HttpServletRequest request, String action) {
 

@@ -1,6 +1,9 @@
 package com.vertonur.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,12 +14,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.vertonur.bean.User;
 import com.vertonur.bean.config.GlobalConfig;
 import com.vertonur.bean.config.SystemConfig;
+import com.vertonur.constants.Constants;
 import com.vertonur.context.SystemContextService;
 import com.vertonur.dms.RuntimeParameterService;
 import com.vertonur.dms.constant.ServiceEnum;
+import com.vertonur.pagination.PaginationContext;
+import com.vertonur.pagination.PaginationContext.CxtType;
 import com.vertonur.pojo.config.UserConfig;
 import com.vertonur.service.InfoService;
 import com.vertonur.service.UserService;
+import com.vertonur.session.UserSession;
+import com.vertonur.util.ForumCommonUtil;
+import com.vertonur.util.ForumCommonUtil.PageType;
 
 @Controller
 public class UserController {
@@ -60,5 +69,32 @@ public class UserController {
 			return "default/user/user/user_form";
 		else
 			return "default/user/user/user_profile";
+	}
+
+	@RequestMapping(value = "/users", method = RequestMethod.GET)
+	public String getUserLis(@RequestParam(defaultValue = "0") int start,
+			HttpServletRequest request) {
+
+		UserService userService = new UserService();
+		long paginationSize = userService.getUserNum();
+		List<User> members = userService.getUsers(start);
+
+		String requestPath = request.getRequestURI() + "?";
+		PaginationContext pageCxt = new PaginationContext(paginationSize,
+				start, requestPath, CxtType.MEMBER);
+		request.setAttribute(PaginationContext.PAGE_CXT, pageCxt);
+		request.setAttribute("members", members);
+
+		HttpSession session = ((HttpServletRequest) request).getSession(false);
+		UserSession userSession = (UserSession) session
+				.getAttribute(Constants.USER_SESSION);
+		if (userSession.isAdmin())
+			request.setAttribute("showEmail", true);
+		else
+			request.setAttribute("showEmail", false);
+
+		ForumCommonUtil.setPageSeo(request, null, null, PageType.HOME_PAGE);
+		
+		return "default/user/user/members_list";
 	}
 }

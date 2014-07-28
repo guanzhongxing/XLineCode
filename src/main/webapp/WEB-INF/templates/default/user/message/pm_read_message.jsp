@@ -14,22 +14,22 @@
                           <tbody>
                             <tr valign="middle">
                             	<td>
-									<a href="displayPrivateMsgInbox.do">
+									<a href="${contextPath}/pms">
 										<img src="${resourcesHost}/images/msg_inbox.gif" border="0" alt="[Inbox]" />
 									</a>
 								</td>
 								<td>
-									<a href="displayPrivateMsgInbox.do">
+									<a href="${contextPath}/pms">
 										<span class="cattitle"><fmt:message key="pm_list.jsp.inbox"/> &nbsp;</span>
 									</a>
 								</td>
 								<td>
-									<a href="displayPrivateMsgSentbox.do">
+									<a href="${contextPath}/pms?boxType=sentBox">
 										<img src="${resourcesHost}/images/msg_sentbox.gif" border="0" alt="[Sentbox]" />
 									</a>
 								</td>
 								<td>
-									<a href="displayPrivateMsgSentbox.do">
+									<a href="${contextPath}/pms?boxType=sentBox">
 										<span class="cattitle"><fmt:message key="pm_list.jsp.sentBox"/>&nbsp;</span>
 									</a>
 								</td>
@@ -47,7 +47,7 @@
 					<table cellspacing="2" cellpadding="2" width="100%" border="0">
 						<tbody>
 							<tr>
-								<td valign="middle"><a href="initCreatePrivateMsg.do?pmId=${thePm.id}" class="icon_reply"><img src="${resourcesHost}/images/${locale}/reply.gif" alt="" /></a>
+								<td valign="middle"><a href="${contextPath}/pms/form?pmId=${thePm.id}" class="icon_reply"><img src="${resourcesHost}/images/${locale}/reply.gif" alt="" /></a>
 								</td>
 								<td width="100%">
 									<span class="nav">&nbsp;<a class="nav" href="forums"><fmt:message key="all.jsp.forums"/></a></span>
@@ -77,7 +77,7 @@
 								<td class="row2" width="10%"><span class="genmed"><fmt:message key="all.jsp.msgSubject"/>:</span></td>
 								<td class="row2"><span class="genmed">${thePm.subject}</span></td>
 								<td class="row2" nowrap="nowrap" align="right">
-									<a href="initCreatePrivateMsg.do?quote=true&pmId=${thePm.id}" class="icon_quote"><img src="${resourcesHost}/images/${locale}/icon_quote.gif" alt="" /></a>
+									<a href="${contextPath}/pms/form?quote=true&pmId=${thePm.id}" class="icon_quote"><img src="${resourcesHost}/images/${locale}/icon_quote.gif" alt="" /></a>
 								</td>
 							</tr>
 							<tr>
@@ -94,7 +94,7 @@
 							<tr>
 								<td class="catbottom" align="right" colspan="3" height="28">
 									<input type="hidden" value="${thePm.id}" name="id" />
-									&nbsp; <input class="liteoption" type="submit" value="removeMessage}" name="delete" />
+									&nbsp; <input class="liteoption" type="submit" value="" name="delete" />
 								</td>
 							</tr>
 						</tbody>
@@ -102,7 +102,7 @@
 					<table cellspacing="2" cellpadding="2" width="100%" align="center" border="0">
 						<tbody>
 							<tr>
-								<td><a href="initCreatePrivateMsg.do?pmId=${thePm.id}" class="icon_reply"><img src="${resourcesHost}/images/${locale}/reply.gif" alt="" /></a></td>
+								<td><a href="${contextPath}/pms/form?pmId=${thePm.id}" class="icon_reply"><img src="${resourcesHost}/images/${locale}/reply.gif" alt="" /></a></td>
 							</tr>
 						</tbody>
 					</table>

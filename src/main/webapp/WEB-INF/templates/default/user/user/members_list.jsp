@@ -48,7 +48,7 @@
 		<tr align="center">
 			<td class="row2"><span class="gen">${member.id}</span></td>
 			<td class="row2"><span class="gen"><a
-					href="displayProfile.do?userId=${member.id}">${member.name}</a></span></td>
+					href="${contextPath}/users/${member.id}">${member.name}</a></span></td>
 			<td class="row2"><span class="gen"><a
 					href="initCreatePrivateMsg.do?userId=${member.id}" class="icon_pm"><img
 						src="${resourcesHost}/images/${locale}/icon_pm.gif"

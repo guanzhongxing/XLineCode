@@ -17,7 +17,7 @@
 					border="0">
 					<tr>
 						<td align="right"><span class="nav"> &raquo; <a
-								class="nav" href="{contextPath}/forums"><fmt:message
+								class="nav" href="${contextPath}/forums"><fmt:message
 										key="all.jsp.forums" /></a>
 						</span></td>
 					</tr>
@@ -133,7 +133,7 @@
 						<tr>
 							<td class="row1"><iframe width="100%" height="300"
 									frameborder="0"
-									src="${contextPath}/displayPrivateMsg.do?pmId=${param.pmId}&iFrame=true"></iframe>
+									src="${contextPath}/pms/${param.pmId}?iFrame=true"></iframe>
 							</td>
 						</tr>
 					</table>

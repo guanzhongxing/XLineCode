@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=utf-8" language="java"%>
-<fmt:message var="title" key="all.jsp.privateMsg" />
 <%@ include file="/WEB-INF/templates/common/taglibs.jsp"%>
+<fmt:message var="title" key="all.jsp.privateMsg" />
 
 <html>
 	<head>
@@ -23,11 +23,11 @@
 							</tr>
 							<tr>
 								<td class="row2"><span class="genmed"><fmt:message key="pm.jsp.from"/>:</span></td>
-								<td class="row2" width="100%" colspan="2"><span class="genmed"><a class="nav" href="displayProfile.do?userId=${reviewedPm.author.id}">${reviewedPm.author.name}</a></span></td>
+								<td class="row2" width="100%" colspan="2"><span class="genmed"><a class="nav" href="${contextPath}/users/${reviewedPm.author.id}">${reviewedPm.author.name}</a></span></td>
 							</tr>
 							<tr>
 								<td class="row2"><span class="genmed"><fmt:message key="pm.jsp.to"/>:</span></td>
-								<td class="row2" width="100%" colspan="2"><span class="genmed"><a class="nav" href="displayProfile.do?userId=${reviewedPm.receiver.id}">${reviewedPm.receiver.name}</a></span></td>
+								<td class="row2" width="100%" colspan="2"><span class="genmed"><a class="nav" href="${contextPath}/users/${reviewedPm.receiver.id}">${reviewedPm.receiver.name}</a></span></td>
 							</tr>
 							<tr>
 								<td class="row2"><span class="genmed"><fmt:message key="pm.jsp.date"/>:</span></td>

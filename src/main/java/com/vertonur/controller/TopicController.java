@@ -1,6 +1,7 @@
 package com.vertonur.controller;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.vertonur.bean.Forum;
 import com.vertonur.bean.Forumzone;
@@ -72,9 +74,48 @@ public class TopicController {
 				PermissionUtils.checkTopicPostPermission(
 						request.getServletContext(), forumId));
 		PaginationContext pageCxt = new PaginationContext(paginationSize,
-				paginationStart, request.getRequestURI()+"?", CxtType.TOPIC);
+				paginationStart, request.getRequestURI() + "?", CxtType.TOPIC);
 		request.setAttribute("pageCxt", pageCxt);
 
 		return "default/user/topic/forum_topic_list";
+	}
+
+	@RequestMapping(value = { "/forums/topics" }, method = RequestMethod.GET)
+	public String getTopicStatisticList(
+			@RequestParam(defaultValue = "recent") String mode,
+			HttpServletRequest request) {
+		
+		ForumService forumService = new ForumService();
+		InfoService infoService = new InfoService();
+		List<Forum> forums = forumService.getForums();
+		List<Forum> subForums = new ArrayList<Forum>();
+		HttpSession session = request.getSession(false);
+		UserSession userSession = (UserSession) session
+				.getAttribute(Constants.USER_SESSION);
+		for (Forum forum : forums) {
+			List<Topic> topics;
+			if ("recent".equals(mode))
+				topics = infoService.getRecentTopicsByForum(
+						userSession.getUserId(), forum);
+			else
+				topics = infoService.getHottestTopicsByForum(
+						userSession.getUserId(), forum);
+			if (topics.size() != 0) {
+				if ("recent".equals(mode))
+					forum.setRecentTopics(topics);
+				else
+					forum.setHotTopics(topics);
+			} else
+				subForums.add(forum);
+		}
+
+		if (subForums.size() != 0)
+			forums.removeAll(subForums);
+
+		ForumCommonUtil.setPageSeo(request, null, null, PageType.HOME_PAGE);
+		request.setAttribute("forums", forums);
+		request.setAttribute("mode", mode);
+		
+		return "default/user/topic/topic_statistic_list";
 	}
 }

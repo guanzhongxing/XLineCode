@@ -48,11 +48,11 @@
 
 						<td class="row1" valign="top" align="center" nowrap="nowrap">
 							<a
-							href="${contextPath}/displayProfile.do?userId=${log.moderator.id}">${log.moderator.name}</a>
+							href="${contextPath}/users/${log.moderator.id}">${log.moderator.name}</a>
 						</td>
 						<td class="row1" valign="top" align="center" nowrap="nowrap">
 							<a
-							href="${contextPath}/displayProfile.do?userId=${log.infoAuthor.id}">${log.infoAuthor.name}</a>
+							href="${contextPath}/users/${log.infoAuthor.id}">${log.infoAuthor.name}</a>
 						</td>
 						<td class="row2" valign="top" align="center" nowrap="nowrap">
 							<c:if test="${log.status=='DELETED'}">
@@ -94,7 +94,7 @@
 									<c:otherwise>
 										<c:if test="${log.logType=='INFO'}">
 											[<a
-												href="${contextPath}/displayResponses.do?forumId=${content.category.id}&topicId=${content.id}"><fmt:message
+												href="${contextPath}/forums/topics/${content.id}"><fmt:message
 													key="moderation_acvitity_log.jsp.view.topic" /></a>]
 										</c:if>
 										<c:if test="${log.logType=='CMT'}">
@@ -105,9 +105,9 @@
 												</c:when>
 												<c:otherwise>
 													[<a
-														href="${contextPath}/displayResponses.do?forumId=${info.category.id}&topicId=${info.id}"><fmt:message
+														href="${contextPath}/forums/topics/${info.id}"><fmt:message
 															key="moderation_acvitity_log.jsp.view.topic" /></a>]<br> [<a
-														href="${contextPath}/displayResponses.do?forumId=${info.category.id}&topicId=${info.id}&rspId=${content.id}#${content.id}"><fmt:message
+														href="${contextPath}/forums/topics/${info.id}#${content.id}"><fmt:message
 															key="moderation_acvitity_log.jsp.view.rsp" /></a>]
 												</c:otherwise>
 											</c:choose>

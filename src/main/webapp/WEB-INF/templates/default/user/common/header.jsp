@@ -34,16 +34,16 @@
 														key="header.jsp.search" /></b></a> &nbsp; <img
 											src="${resourcesHost}/images/icon_mini_recentTopics.gif"
 											alt="[Recent Topics]" /> <a id="latest" class="mainmenu"
-											href="${contextPath}/topicList.do?mode=recent" rel="nofollow"><fmt:message
+											href="${contextPath}/forums/topics" rel="nofollow"><fmt:message
 													key="header.jsp.recentTopic" /></a> &nbsp; <img
 											src="${resourcesHost}/images/icon_mini_recentTopics.gif"
 											alt="[Hottest Topics]" /> <a id="hottest" class="mainmenu"
-											href="${contextPath}/topicList.do?mode=hottest"
+											href="${contextPath}/forums/topics?mode=hottest"
 											rel="nofollow"><fmt:message
 													key="header.jsp.hottestTopics" /></a> &nbsp; <img
 											src="${resourcesHost}/images/icon_mini_members.gif"
 											alt="[Members]" />&nbsp; <a id="latest2" class="mainmenu"
-											href="${contextPath}/displayMembers.do" rel="nofollow"><fmt:message
+											href="${contextPath}/users" rel="nofollow"><fmt:message
 													key="header.jsp.members" /></a> &nbsp;</span> <span class="mainmenu">
 											<img src="${resourcesHost}/images/icon_mini_groups.gif"
 											alt="[Groups]" />&nbsp; <a id="backtosite" class="mainmenu"
@@ -54,7 +54,7 @@
 												<span class="mainmenu"> <c:if
 														test="${sessionScope.userSession.moderator}">
 														<a id="moderationlog" class="mainmenu" rel="nofollow"
-															href="${contextPath}/do/admin/moderation?action=moderatorLogList"><img
+															href="${contextPath}/moderations/log"><img
 															src="${resourcesHost}/images/icon_mini_members.gif"
 															alt="[Moderation Log]"> <fmt:message
 																key="header.jsp.mdr.log" /></a>&nbsp;
@@ -65,7 +65,7 @@
 															key="header.jsp.myProfile" />
 												</a>&nbsp; <a id="privatemessages" class="mainmenu"
 													rel="nofollow"
-													href="${contextPath}/displayPrivateMsgInbox.do?userId=${sessionScope.userSession.userId}">
+													href="${contextPath}/pms">
 														<img src="${resourcesHost}/images/icon_mini_message.gif"
 														border="0" alt="[Message]" /> <fmt:message
 															key="all.jsp.privateMsg" />

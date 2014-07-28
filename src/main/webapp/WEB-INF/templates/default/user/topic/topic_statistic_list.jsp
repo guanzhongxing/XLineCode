@@ -72,13 +72,13 @@
 						<tr>
 							<td class="row2" valign="middle" align="center"><a
 								class="postdetails"
-								href="displayTopics.do?forumzoneId=${forum.forumzone.id}&forumId=${forum.id}&forumName=${forum.name}">${forum.name}</a>&nbsp;
+								href="${contextPath}/forums/${forum.id}">${forum.name}</a>&nbsp;
 							</td>
 							<td class="row1" valign="middle" align="center" width="20"><%@ include
 									file="topic_status_displayer.jsp"%></td>
 							<td class="row1" width="80%"><span class="topictitle">
 									<a
-									href="displayResponses.do?forumId=${forum.id}&topicId=${topic.id}">${topic.subject}</a>
+									href="${contextPath}/forums/topics/${topic.id}">${topic.subject}</a>
 							</span></td>
 
 							<c:set var="statistician" value="${topic.statistician}" />
@@ -86,7 +86,7 @@
 								class="postdetails">${statistician.responseNum}</span></td>
 							<td class="row3" valign="middle" align="center"><span
 								class="name"><a
-									href="displayProfile.do?userId=${topic.author.id}">${topic.author.name}</a></span>
+									href="${contextPath}/users/${topic.author.id}">${topic.author.name}</a></span>
 							</td>
 
 							<td class="row2" valign="middle" align="center"><span
@@ -102,9 +102,9 @@
 												pattern="hh:mm" />
 											<br />
 											<a
-												href="displayProfile.do?userId=${latestResponse.author.id}">${latestResponse.author.name}</a>
+												href="${contextPath}/users/${latestResponse.author.id}">${latestResponse.author.name}</a>
 											<a
-												href="displayResponses.do?forumId=${forum.id}&topicId=${latestResponse.topic.id}#${latestResponse.id}"><img
+												href="${contextPath}/forums/topics/${latestResponse.topic.id}#${latestResponse.id}"><img
 												src="${resourcesHost}/images/icon_latest_reply.gif"
 												border="0" alt="Latest Reply" /></a>
 										</c:when>
