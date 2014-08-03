@@ -64,7 +64,7 @@
 					<td valign="top"><c:choose>
 							<c:when test="${requestScope.rsNum!=0}">
 								<b><a class="gen"
-									href="displayUserSpecifiedResponses.do?userId=${displayedUser.id}">
+									href="${contextPath}/forums/topics/responses?userId=${displayedUser.id}">
 										<fmt:message key="displayprofile.jsp.postedResponseNum">
 											<fmt:param value="${requestScope.rsNum}" />
 											<fmt:param value="${displayedUser.name}" />
@@ -85,7 +85,7 @@
 					<td><c:choose>
 							<c:when test="${requestScope.topicNum!=0}">
 								<b><a class="gen"
-									href="displayUserSpecifiedTopics.do?userId=${displayedUser.id}">
+									href="${contextPath}/forums/topics?userId=${displayedUser.id}">
 										<fmt:message key="displayprofile.jsp.postedTopicNum">
 											<fmt:param value="${requestScope.topicNum}" />
 											<fmt:param value="${displayedUser.name}" />
@@ -122,10 +122,9 @@
 						<td valign="middle" nowrap="nowrap" align="right"><span
 							class="gen"><fmt:message key="all.jsp.privateMsg" />:</span></td>
 						<td class="row1" valign="middle"><b><span class="gen">
-									<a href="initCreatePrivateMsg.do?userId=${displayedUser.id}"
+									<a href="${contextPath}/pms/form?userId=${displayedUser.id}"
 									class="icon_pm"><img
-										src="${resourcesHost}/images/${locale}/icon_pm.gif"
-										alt="" /></a>
+										src="${resourcesHost}/images/${locale}/icon_pm.gif" alt="" /></a>
 							</span></b></td>
 					</tr>
 				</table>

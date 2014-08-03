@@ -22,7 +22,7 @@
 					<td valign="middle" align="left" colspan="0"><a class="nav"
 						href="${contextPath}/forums"><fmt:message key="all.jsp.forums" /></a>
 						&raquo; <a class="nav"
-						href="displayProfile.do?userId=${displayedUser.id}"><fmt:message
+						href="${contextPath}/users/${displayedUser.id}"><fmt:message
 								key="user_specified_responses.jsp.profileFor">
 								<fmt:param value="${displayedUser.name}" />
 							</fmt:message> </a> &raquo; <span class="nav"><fmt:message
@@ -67,11 +67,11 @@
 							<table width="100%">
 								<tr>
 									<td><span class="gen"> <a
-											href="displayTopics.do?forumzoneId=${forumzoneId}&forumId=${forumOfRs.id}">${forumOfRs.name}</a>
+											href="${contextPath}/forums/${forumOfRs.id}">${forumOfRs.name}</a>
 											&raquo; <a
-											href="displayResponses.do?forumId=${forumOfRs.id}&topicId=${topicOfRs.id}">${topicOfRs.subject}</a>
+											href="${contextPath}/forums/topics/${topicOfRs.id}">${topicOfRs.subject}</a>
 											&raquo; <a
-											href="displayResponses.do?forumId=${forumOfRs.id}&topicId=${topicOfRs.id}&rspId=${response.id}#${response.id}"><fmt:message
+											href="${contextPath}/forums/topics/${topicOfRs.id}?rspId=${response.id}#${response.id}"><fmt:message
 													key="user_specified_responses.jsp.goToRs" /></a>
 									</span></td>
 									<td align="right"></td>
@@ -112,7 +112,7 @@
 					<td valign="middle" align="left" colspan="0"><a class="nav"
 						href="${contextPath}/forums"><fmt:message key="all.jsp.forums" /></a>
 						&raquo; <a class="nav"
-						href="displayProfile.do?userId=${displayedUser.id}"><fmt:message
+						href="${contextPath}/user/${displayedUser.id}"><fmt:message
 								key="user_specified_responses.jsp.profileFor">
 								<fmt:param value="${displayedUser.name}" />
 							</fmt:message></a> &raquo; <span class="nav"><fmt:message

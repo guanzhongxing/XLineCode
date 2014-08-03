@@ -50,7 +50,7 @@
 			<td class="row2"><span class="gen"><a
 					href="${contextPath}/users/${member.id}">${member.name}</a></span></td>
 			<td class="row2"><span class="gen"><a
-					href="initCreatePrivateMsg.do?userId=${member.id}" class="icon_pm"><img
+					href="${contextPath}/pms/form?userId=${member.id}" class="icon_pm"><img
 						src="${resourcesHost}/images/${locale}/icon_pm.gif"
 						alt="" /></a></span></td>
 			<td class="row2"><span class="gen"><c:choose>

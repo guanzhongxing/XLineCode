@@ -16,12 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.vertonur.bean.Forum;
 import com.vertonur.bean.Forumzone;
 import com.vertonur.bean.Topic;
+import com.vertonur.bean.User;
 import com.vertonur.constants.Constants;
 import com.vertonur.pagination.PaginationContext;
 import com.vertonur.pagination.PaginationContext.CxtType;
 import com.vertonur.service.ForumService;
 import com.vertonur.service.ForumzoneService;
 import com.vertonur.service.InfoService;
+import com.vertonur.service.UserService;
 import com.vertonur.session.UserSession;
 import com.vertonur.util.ForumCommonUtil;
 import com.vertonur.util.ForumCommonUtil.PageType;
@@ -84,7 +86,7 @@ public class TopicController {
 	public String getTopicStatisticList(
 			@RequestParam(defaultValue = "recent") String mode,
 			HttpServletRequest request) {
-		
+
 		ForumService forumService = new ForumService();
 		InfoService infoService = new InfoService();
 		List<Forum> forums = forumService.getForums();
@@ -115,7 +117,31 @@ public class TopicController {
 		ForumCommonUtil.setPageSeo(request, null, null, PageType.HOME_PAGE);
 		request.setAttribute("forums", forums);
 		request.setAttribute("mode", mode);
-		
+
 		return "default/user/topic/topic_statistic_list";
+	}
+
+	@RequestMapping(value = { "/forums/topics" }, method = RequestMethod.GET, params = "userId")
+	public String getUserSpecifiedTopicList(@RequestParam int userId,
+			@RequestParam(defaultValue = "0") int start,
+			HttpServletRequest request) {
+
+		UserService userService = new UserService();
+		User theUser = userService.getUserById(userId);
+		request.setAttribute("displayedUser", theUser);
+
+		// override system default pagination offset while offset of user
+		// specified response is available
+		InfoService infoService = new InfoService();
+		List<Topic> topics = infoService.getTopicsByUser(theUser, start);
+		request.setAttribute("userSpecifiedTopics", topics);
+
+		long paginationSize = infoService.getTopicNumByCreator(theUser);
+		PaginationContext pageCxt = new PaginationContext(paginationSize,
+				start, request.getRequestURI() + "?userId=" + userId,
+				CxtType.TOPIC);
+		request.setAttribute(PaginationContext.PAGE_CXT, pageCxt);
+
+		return "default/user/topic/user_specified_topics";
 	}
 }

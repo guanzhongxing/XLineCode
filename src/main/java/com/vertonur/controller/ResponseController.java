@@ -116,7 +116,8 @@ public class ResponseController {
 
 			long paginationSize = infoService.getResponseNumByTopic(topic);
 			PaginationContext pageCxt = new PaginationContext(paginationSize,
-					paginationStart, request.getServletPath(), CxtType.RESPONSE);
+					paginationStart, request.getRequestURI() + "?",
+					CxtType.RESPONSE);
 			request.setAttribute("pageCxt", pageCxt);
 
 			AttachmentConfig attmConfig = service.getDataManagementService(
@@ -238,5 +239,30 @@ public class ResponseController {
 		}
 
 		return "default/user/response/response_form";
+	}
+
+	@RequestMapping(value = "/forums/topics/responses", method = RequestMethod.GET)
+	public String getUserSpecifiedResponseList(@RequestParam int userId,
+			@RequestParam(defaultValue = "0") int start,
+			HttpServletRequest request) {
+
+		UserService userService = new UserService();
+		User theUser = userService.getUserById(userId);
+		request.setAttribute("displayedUser", theUser);
+
+		// override system default pagination offset while offset of user
+		// specified response is available
+		InfoService infoService = new InfoService();
+		List<Response> responses = infoService.getResponsesByUser(theUser,
+				start);
+		request.setAttribute("userSpecifiedResponses", responses);
+
+		long paginationSize = infoService.getResponseNumByUser(theUser);
+		PaginationContext pageCxt = new PaginationContext(paginationSize,
+				start, request.getRequestURI() + "?userId=" + userId,
+				CxtType.RESPONSE);
+		request.setAttribute(PaginationContext.PAGE_CXT, pageCxt);
+
+		return "default/user/response/user_specified_responses";
 	}
 }
