@@ -25,7 +25,7 @@
 					</tr>
 					<tr>
 						<td class="row1"><a id="forumIndex" class="genmed"
-							target="main" href="${contextPath}/do/admin/statistic"><fmt:message
+							target="main" href="${contextPath}/admin/statistic"><fmt:message
 									key="menu.jsp.admin.index" /></a></td>
 					<tr>
 						<td class="catsides" height="28"><span class="cattitle"><fmt:message
@@ -35,15 +35,15 @@
 					<c:if test="${enableOperateGroup}">
 						<tr>
 							<td class="row1"><a id="groups" class="genmed"
-								href="${contextPath}/do/admin/group/get?action=list"
-								target="main"><fmt:message key="menu.jsp.groups" /></a></td>
+								href="${contextPath}/admin/groups" target="main"><fmt:message
+										key="menu.jsp.groups" /></a></td>
 						</tr>
 					</c:if>
 
 					<c:if test="${enableOperateUser}">
 						<tr>
 							<td class="row1"><a id="users" class="genmed"
-								href="${contextPath}/do/admin/user/list" target="main"><fmt:message
+								href="${contextPath}/users?admin" target="main"><fmt:message
 										key="menu.jsp.users" /></a></td>
 						</tr>
 						<tr>
@@ -63,7 +63,7 @@
 					<c:if test="${enableOperateForumzone}">
 						<tr>
 							<td class="row1"><a id="categories" class="genmed"
-								href="${contextPath}/do/admin/forumzone/list" target="main"><fmt:message
+								href="${contextPath}/forumzones" target="main"><fmt:message
 										key="menu.jsp.categories" /></a></td>
 						</tr>
 					</c:if>
@@ -71,24 +71,23 @@
 					<c:if test="${enableOperateForum}">
 						<tr>
 							<td class="row1"><a id="forums" class="genmed"
-								href="${contextPath}/do/admin/forum/list" target="main"><fmt:message
+								href="${contextPath}/admin/forums" target="main"><fmt:message
 										key="menu.jsp.forums" /></a></td>
 						</tr>
 					</c:if>
 
 					<tr>
 						<td class="row1"><a id="forums" class="genmed"
-							href="${contextPath}/do/admin/moderation?action=list"
-							target="main"><fmt:message key="menu.jsp.approving" /></a></td>
+							href="${contextPath}/moderations" target="main"><fmt:message
+									key="menu.jsp.approving" /></a></td>
 					</tr>
 
 					<c:if test="${enableOperateRanking}">
 						<tr>
 							<td class="row1">
 								<p>
-									<a id="rankings" class="genmed"
-										href="${contextPath}/do/admin/ranking/get" target="main"><fmt:message
-											key="menu.jsp.rankings" /></a>
+									<a id="rankings" class="genmed" href="${contextPath}/rankings"
+										target="main"><fmt:message key="menu.jsp.rankings" /></a>
 								</p>
 							</td>
 						</tr>
@@ -101,8 +100,7 @@
 									<tr>
 										<td width="20px">&nbsp;</td>
 										<td><a id="pointsConfig" class="gensmall"
-											href="${contextPath}/do/admin/ranking/pointsconfig/get"
-											target="main"><fmt:message
+											href="${contextPath}/rankings/points" target="main"><fmt:message
 													key="menu.jsp.rankings.points.config" /></a></td>
 									</tr>
 								</table>
@@ -114,8 +112,8 @@
 						<tr>
 							<td class="row1"><p>
 									<a id="configurations" class="genmed"
-										href="${contextPath}/do/admin/system/config/list"
-										target="main"><fmt:message key="menu.jsp.configs" /></a>
+										href="${contextPath}/system" target="main"><fmt:message
+											key="menu.jsp.configs" /></a>
 								</p></td>
 						</tr>
 					</c:if>
@@ -124,7 +122,7 @@
 						<tr>
 							<td class="row1"><p>
 									<a id="configurations" class="genmed"
-										href="${contextPath}/do/admin/group/get?action=list&permissionConfig=true"
+										href="${contextPath}/admin/groups?permissionConfig=true"
 										target="main"><fmt:message
 											key="menu.jsp.backend.perm.config" /></a>
 								</p></td>

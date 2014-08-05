@@ -39,7 +39,7 @@
 				<td class="row1" colspan="${colspan}"><span class="gen">${group.name}</span></td>
 				<c:if test="${!permissionConfig}">
 					<td class="row1" align="center"><span class="gen"><a
-							href="${contextPath}/do/admin/group/get?action=edit&&groupId=${group.id}"><fmt:message
+							href="${contextPath}/admin/groups/form?groupId=${group.id}"><fmt:message
 									key="group_list.jsp.edit" /></a></span></td>
 					<td class="row1" align="center"><c:if
 							test="${group.deletable}">
@@ -47,7 +47,7 @@
 						</c:if></td>
 				</c:if>
 				<td class="row1" align="center"><span class="gen"><a
-						href="${contextPath}/do/admin/permission/list?groupId=${group.id}<c:if test="${permissionConfig}">&permissionType=backend</c:if>"><fmt:message
+						href="${contextPath}/admin/permissions/${group.id}<c:if test="${permissionConfig}">?permissionType=backend</c:if>"><fmt:message
 								key="group_list.jsp.security" /></a></span></td>
 			</tr>
 
@@ -60,7 +60,7 @@
 				<td class="catbottom" colspan="4" height="28"><input
 					class="mainoption" type="button"
 					value="<fmt:message key="group_list.jsp.new" />" name="button"
-					onclick="document.location = '${contextPath}/do/admin/group/get?action=add';" />
+					onclick="document.location = '${contextPath}/admin/groups/form';" />
 					&nbsp;&nbsp; <input class="mainoption" type="submit"
 					value="<fmt:message key="group_list.jsp.delete" />" /></td>
 			</tr>

@@ -28,6 +28,7 @@ public class GroupListAction extends OperactionCheckAction {
 				.getDataManagementService(ServiceEnum.GROUP_SERVICE);
 		String action = request.getParameter("action");
 		if ("edit".equals(action) || "add".equals(action)) {
+//			@Deprecated
 			saveToken(request);
 
 			List<Group> groups = groupService.getTopLevelGroups();
@@ -45,6 +46,7 @@ public class GroupListAction extends OperactionCheckAction {
 
 			return mapping.findForward("GroupEditPage");
 		} else if ("subGroup".equals(action)) {
+//			@Deprecated
 			int groupId = Integer.parseInt(request.getParameter("groupId"));
 			Group group = groupService.getGroupById(groupId);
 			request.setAttribute("group", group);
@@ -63,6 +65,7 @@ public class GroupListAction extends OperactionCheckAction {
 			} else
 				return mapping.findForward("SubGroupOptionPage");
 		} else {
+//			@Deprecated
 			saveToken(request);
 
 			String permissionConfig = request.getParameter("permissionConfig");

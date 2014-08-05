@@ -1,7 +1,7 @@
 <%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
 
 <c:set var="baseUrl"
-	value="/do/admin/group/get?action=subGroup&type=userOption&userId=${user.id}" />
+	value="/admin/groups" />
 <c:set var="userGroups" value="${user.groups}" />
 <c:forEach var="subGroup" items="${group.subGroups}">
 	<c:set var="selected" value="false" />
@@ -15,5 +15,5 @@
 		<c:forEach begin="0" end="${subGroup.nestedLevel}">&nbsp;&nbsp;</c:forEach>
 		${subGroup.name}
 	</option>
-	<c:import url="${baseUrl}&groupId=${subGroup.id}" />
+	<c:import url="${baseUrl}/${subGroup.id}?type=userOption&userId=${user.id}" />
 </c:forEach>

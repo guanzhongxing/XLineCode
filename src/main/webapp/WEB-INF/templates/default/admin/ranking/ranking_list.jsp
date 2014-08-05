@@ -44,7 +44,7 @@
 			<td class="catbottom" colspan="5" height="28"><input
 				class="mainoption" type="button"
 				value="<fmt:message key="ranking_list.jsp.new" />" name="button"
-				onclick="document.location = '${contextPath}/do/admin/ranking/form';" />
+				onclick="document.location = '${contextPath}/rankings/form';" />
 				&nbsp;&nbsp; <input class="mainoption" type="submit"
 				value="<fmt:message key="ranking_list.jsp.delete.selected" />"
 				name="submit" /></td>

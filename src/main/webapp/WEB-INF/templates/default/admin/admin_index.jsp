@@ -2,13 +2,13 @@
 
 <html>
 <head>
-<title>Vertonur - Administration interface</title>
+<title>XLineCode - Administration interface</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 
 <frameset rows="*" cols="170,*" framespacing="0" frameborder="NO" border="0">
-  <frame src="${contextPath}/templates/default/admin/menu.jsp" name="leftFrame" scrolling="NO" noresize>
-  <frame src="${contextPath}/do/${requestScope.servicePath}" name="main">
+  <frame src="${contextPath}/admin/menu" name="leftFrame" scrolling="NO" noresize>
+  <frame src="${contextPath}/${requestScope.servicePath}" name="main">
 </frameset>
 <noframes><body>
 

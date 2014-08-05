@@ -1,34 +1,31 @@
-package com.vertonur.admin.action;
+package com.vertonur.controller;
 
 import java.util.Set;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import com.vertonur.admin.security.PermissionConfigSection;
+import com.vertonur.admin.security.PermissionConfigSessionManager;
 import com.vertonur.context.SystemContextService;
 import com.vertonur.dms.GroupService;
 import com.vertonur.dms.constant.ServiceEnum;
-import com.vertonur.admin.security.PermissionConfigSection;
-import com.vertonur.admin.security.PermissionConfigSessionManager;
-import com.vertonur.common.OperactionCheckAction;
 import com.vertonur.pojo.security.Group;
 
-public class PermissionListAction extends OperactionCheckAction {
+@Controller
+public class PermissionController {
 
-	@Override
-	public ActionForward processRequest(ActionMapping mapping, ActionForm form,
-			HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+	@RequestMapping(value = "/admin/permissions/{groupId}", method = RequestMethod.GET)
+	public String showPermissionConfigForm(@PathVariable int groupId,
+			HttpServletRequest request) {
 
-		saveToken(request);
-		int groupId = Integer.parseInt(request.getParameter("groupId"));
 		GroupService groupService = SystemContextService.getService()
 				.getDataManagementService(ServiceEnum.GROUP_SERVICE);
 		Group group = groupService.getGroupById(groupId);
@@ -38,7 +35,7 @@ public class PermissionListAction extends OperactionCheckAction {
 		String managerName = "permissionConfigSessionManager";
 		if ("backend".equals(permissionType))
 			managerName = "backendPermissionConfigSessionManager";
-		ServletContext context = this.getServlet().getServletContext();
+		ServletContext context = request.getServletContext();
 		WebApplicationContext appContext = WebApplicationContextUtils
 				.getRequiredWebApplicationContext(context);
 		PermissionConfigSessionManager permissionConfigSessionManager = (PermissionConfigSessionManager) appContext
@@ -47,6 +44,6 @@ public class PermissionListAction extends OperactionCheckAction {
 				.getSections(group);
 		request.setAttribute("sections", sections);
 
-		return mapping.findForward("PermissionListPage");
+		return "default/admin/group_security_form";
 	}
 }

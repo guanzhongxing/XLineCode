@@ -11,7 +11,7 @@
 		</tr>
 
 		<c:set var="baseUrl"
-			value="/do/admin/group/get?action=subGroup&type=userOption&rankingId=${user.id}" />
+			value="/admin/groups" />
 		<c:set var="userGroups" value="${user.groups}" />
 		<tr>
 			<td class="row1" width="38%"><span class="gen"><fmt:message
@@ -26,7 +26,7 @@
 						</c:forEach>
 						<option value="${group.id}"
 							<c:if test="${selected}">selected</c:if>>${group.name}</option>
-						<c:import url="${baseUrl}&groupId=${group.id}" />
+						<c:import url="${baseUrl}/${group.id}?type=userOption&userId=${user.id}" />
 					</c:forEach>
 			</select></td>
 		</tr>

@@ -54,7 +54,7 @@
 												<span class="mainmenu"> <c:if
 														test="${sessionScope.userSession.moderator}">
 														<a id="moderationlog" class="mainmenu" rel="nofollow"
-															href="${contextPath}/moderations/log"><img
+															href="${contextPath}/moderations/logs"><img
 															src="${resourcesHost}/images/icon_mini_members.gif"
 															alt="[Moderation Log]"> <fmt:message
 																key="header.jsp.mdr.log" /></a>&nbsp;

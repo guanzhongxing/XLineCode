@@ -45,6 +45,7 @@ public class ModerationLogListAction extends OperactionCheckAction {
 		return mapping.getInputForward();
 	}
 
+	@Deprecated
 	private ActionForward processListRq(ActionMapping mapping,
 			HttpServletRequest request) {
 

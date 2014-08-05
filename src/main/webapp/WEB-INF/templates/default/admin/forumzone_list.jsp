@@ -27,7 +27,7 @@
 				<td class="catleft" width="38%"><span class="cattitle">${forumzone.name}</span></td>
 				<td class="catleft" align="center"><span class="gen"><a
 						id="categoryEdit"
-						href="${contextPath}/do/admin/forumzone/edit/init?id=${forumzone.id}"><fmt:message
+						href="${contextPath}/forumzones/form?forumzoneId=${forumzone.id}"><fmt:message
 								key="forumzone_list.jsp.edit" /></a></span></td>
 				<td class="catleft" align="center" width="10%"><input
 					type="checkbox" name="forumzoneIds" value="${forumzone.id}" /></td>
@@ -60,7 +60,7 @@
 				class="mainoption" type="button"
 				value="<fmt:message key="forumzone_list.jsp.insert" />"
 				id="btn_insert" name="button"
-				onclick="document.location = '${contextPath}/do/admin/forumzone/create/init';" />
+				onclick="document.location = '${contextPath}/forumzones/form';" />
 				&nbsp;&nbsp; <input class="mainoption" type="submit"
 				value="<fmt:message key="forumzone_list.jsp.delete" />"
 				name="submit" /></td>

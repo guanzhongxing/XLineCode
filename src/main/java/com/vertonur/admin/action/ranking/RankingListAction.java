@@ -30,6 +30,7 @@ public class RankingListAction extends OperactionCheckAction {
 			request.setAttribute("nestedLv", ++nestedLv);
 			return mapping.findForward("RankingListFragmentPage");
 		} else {
+			// @Deprecated
 			Ranking ranking = rankingService.getFirstRanking();
 			Ranking timeRanking = rankingService.getFirstTimeRanking();
 			request.setAttribute("ranking", ranking);

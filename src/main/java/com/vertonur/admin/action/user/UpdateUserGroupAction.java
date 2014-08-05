@@ -25,9 +25,11 @@ import com.vertonur.service.UserService;
 public class UpdateUserGroupAction extends SecureHttpMethodRouterAction {
 
 	@Override
+	@Deprecated
 	protected ActionForward handleGetRequest(HttpServletRequest request,
 			HttpServletResponse response, ActionMapping mapping, ActionForm form)
 			throws Exception {
+		
 		saveToken(request);
 		GroupService groupService = SystemContextService.getService()
 				.getDataManagementService(ServiceEnum.GROUP_SERVICE);

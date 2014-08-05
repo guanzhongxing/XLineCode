@@ -91,7 +91,7 @@ p,td {
 			<c:forEach var="session" items="${requestScope.userSessions}">
 				<tr>
 					<td width="20%" class="row}">&nbsp;<span class="gen"><a
-							href="${contextPath}/displayMyProfile.do?userId=${session.userId}" class="gen">${session.username}</a></span>&nbsp;
+							href="${contextPath}/users/${session.userId}" class="gen">${session.username}</a></span>&nbsp;
 					</td>
 					<td width="20%" align="center" class="row}">&nbsp;<span
 						class="gen"><fmt:formatDate value="${session.loginDate}"

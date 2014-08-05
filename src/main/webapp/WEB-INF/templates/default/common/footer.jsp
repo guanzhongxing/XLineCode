@@ -5,7 +5,7 @@
 	test="${sessionScope.userSession.admin||sessionScope.userSession.moderator}">
 	<tr>
 		<td align="center"><span class="gen"><a
-				href="${contextPath}/do/admin/index" id="adminpanel" rel="nofollow"><fmt:message
+				href="${contextPath}/admin/home" id="adminpanel" rel="nofollow"><fmt:message
 						key="footer.jsp.controlPanel" /></a></span></td>
 	</tr>
 </c:if>

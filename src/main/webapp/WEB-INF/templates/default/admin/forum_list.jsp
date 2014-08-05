@@ -34,7 +34,7 @@
 							<td class="row1"><span class="forumLink">${forum.name}</span></td>
 							<td class="row1" align="center"><span class="gen"> <a
 									id="forumEdit"
-									href="${contextPath}/do/admin/forum/edit/init?forumzoneId=${forumzone.id}&forumId=${forum.id}"><fmt:message
+									href="${contextPath}/forums/form?forumId=${forum.id}"><fmt:message
 											key="forum_list.jsp.edit" /></a>
 							</span></td>
 							<td class="row2" align="center" width="10%"><input
@@ -55,7 +55,7 @@
 				class="mainoption" type="button"
 				value="<fmt:message key="forum_list.jsp.insert" />" id="btn_insert"
 				name="button"
-				onclick="document.location = '${contextPath}/do/admin/forum/create/init';" />
+				onclick="document.location = '${contextPath}/forums/form';" />
 				&nbsp;&nbsp; <input class="mainoption" type="submit"
 				value="<fmt:message key="forum_list.jsp.delete" />" name="submit" />
 			</td>
