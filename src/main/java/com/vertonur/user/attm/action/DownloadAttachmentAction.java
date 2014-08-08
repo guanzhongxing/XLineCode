@@ -23,6 +23,7 @@ import com.vertonur.dms.AttachmentService;
 import com.vertonur.dms.constant.ServiceEnum;
 import com.vertonur.pojo.Attachment;
 import com.vertonur.pojo.AttachmentInfo;
+import com.vertonur.pojo.AttachmentInfo.AttachmentType;
 import com.vertonur.service.UserService;
 import com.vertonur.session.UserSession;
 import com.vertonur.user.topic.form.UserTopicForm;
@@ -88,7 +89,17 @@ public class DownloadAttachmentAction extends MappingDispatchAction {
 
 				request.setAttribute("isImage", true);
 				request.setAttribute("attachmentId", attm.getId());
-				request.setAttribute("url", attm.getAttmInfo().getDownloadUrl());
+				AttachmentInfo attmInfo = attm.getAttmInfo();
+				AttachmentType type = attmInfo.getAttachmentType();
+				if (AttachmentType.BCS.equals(type))
+					request.setAttribute("url", attmInfo.getDownloadUrl());
+				else {
+					String contextPath = (String) this.getServlet()
+							.getServletContext().getAttribute("contextPath");
+					request.setAttribute("url", contextPath
+							+ "/do/local/image?id=" + attm.getId());
+				}
+
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

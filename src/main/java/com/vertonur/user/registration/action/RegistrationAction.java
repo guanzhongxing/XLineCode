@@ -143,10 +143,8 @@ public final class RegistrationAction extends Action {
 				.getAttachmentConfig();
 		user.setAttmEnabled(config.isAttmtEnabled());
 		user.setCanDownloadAttms(config.isDownloadEnabled());
-		if (groupType == GroupType.GENERIC_MDR) {
+		if (groupType == GroupType.GENERIC_MDR)
 			userService.saveModerator((Moderator) user);
-		} else
-			userService.saveUser(user);
 
 		FormFile image = rgtForm.getImage();
 		if (image != null && image.getFileSize() != 0)
@@ -155,7 +153,10 @@ public final class RegistrationAction extends Action {
 					image.getFileSize(), user);
 		else
 			userService.setUpDefaultAvatar(user);
-		userService.updateUser(user);
+		if (groupType == GroupType.GENERIC_MDR) {
+			userService.updateUser(user);
+		} else
+			userService.saveUser(user);
 		return user;
 	}
 
