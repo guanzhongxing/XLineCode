@@ -79,7 +79,7 @@
 											</c:when>
 											<c:otherwise>
 												<span class="mainmenu"> <a id="register"
-													class="mainmenu" href="${contextPath}/showAgreement.do"
+													class="mainmenu" href="${contextPath}/users/register"
 													rel="nofollow"> <img
 														src="${resourcesHost}/images/icon_mini_register.gif"
 														border="0" alt="[Register]" /> <fmt:message

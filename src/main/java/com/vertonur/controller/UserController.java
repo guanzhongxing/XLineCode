@@ -1,15 +1,26 @@
 package com.vertonur.controller;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
+import org.apache.commons.mail.EmailException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.vertonur.bean.User;
 import com.vertonur.bean.config.GlobalConfig;
@@ -17,17 +28,29 @@ import com.vertonur.bean.config.SystemConfig;
 import com.vertonur.constants.Constants;
 import com.vertonur.context.SystemContextService;
 import com.vertonur.dms.GroupService;
+import com.vertonur.dms.MailService;
 import com.vertonur.dms.RuntimeParameterService;
+import com.vertonur.dms.SystemService;
+import com.vertonur.dms.TemplateService;
 import com.vertonur.dms.constant.ServiceEnum;
+import com.vertonur.dms.exception.AttachmentSizeExceedException;
 import com.vertonur.pagination.PaginationContext;
 import com.vertonur.pagination.PaginationContext.CxtType;
+import com.vertonur.pojo.Admin;
+import com.vertonur.pojo.Moderator;
+import com.vertonur.pojo.config.AttachmentConfig;
 import com.vertonur.pojo.config.UserConfig;
 import com.vertonur.pojo.security.Group;
+import com.vertonur.pojo.security.Group.GroupType;
+import com.vertonur.pojo.statistician.UserMsgStatistician;
 import com.vertonur.service.InfoService;
 import com.vertonur.service.UserService;
 import com.vertonur.session.UserSession;
 import com.vertonur.util.ForumCommonUtil;
 import com.vertonur.util.ForumCommonUtil.PageType;
+import com.vertonur.util.TxtFileReader;
+
+import freemarker.template.TemplateException;
 
 @Controller
 public class UserController {
@@ -100,12 +123,12 @@ public class UserController {
 		return "default/user/user/members_list";
 	}
 
-	@RequestMapping(value = "/users",params="admin")
+	@RequestMapping(value = "/users", params = "admin")
 	public String getAdminUserList(@RequestParam(defaultValue = "0") int start,
 			@RequestParam(required = false) String username,
 			@RequestParam(defaultValue = "0") int groupId,
 			HttpServletRequest request) {
-		
+
 		long paginationSize;
 		List<User> members;
 		UserService userService = new UserService();
@@ -140,12 +163,11 @@ public class UserController {
 
 		return "default/admin/user_list";
 	}
-	
+
 	@RequestMapping(value = "/users/{userId}/groups")
-	public String getAdminUserGroupList(
-			@PathVariable int userId,
+	public String getAdminUserGroupList(@PathVariable int userId,
 			HttpServletRequest request) {
-		
+
 		GroupService groupService = SystemContextService.getService()
 				.getDataManagementService(ServiceEnum.GROUP_SERVICE);
 		List<Group> groups = groupService.getTopLevelGroups();
@@ -154,7 +176,215 @@ public class UserController {
 		UserService userService = new UserService();
 		User user = userService.getUserById(userId);
 		request.setAttribute("user", user);
-		
+
 		return "default/admin/user_groups";
+	}
+
+	@RequestMapping(value = "/users/register")
+	public String showRegistrationAgreement(HttpServletRequest request)
+			throws IOException {
+
+		UserConfig config = SystemContextService
+				.getService()
+				.getDataManagementService(ServiceEnum.RUNTIME_PARAMETER_SERVICE)
+				.getUserConfig();
+		boolean registrationEnabled = config.isRegistrationEnabled();
+		if (registrationEnabled) {
+			request.setAttribute("registrationEnabled", registrationEnabled);
+
+			URL filePath = request.getServletContext().getResource(
+					"/WEB-INF/templates/common/txt/terms_zh_CN.txt");
+			String content = TxtFileReader.readTxtFile(filePath.openStream());
+			request.setAttribute("agreementContent", content);
+			String fromAdmin = request.getParameter("fromAdmin");
+			if ("true".equals(fromAdmin))
+				request.setAttribute("fromAdmin", true);
+		}
+
+		return "default/user/registration/show_agreement";
+	}
+
+	@RequestMapping(value = "/users/register/form")
+	public String showRegistrationForm(
+			@RequestParam(required = false) boolean fromAdmin,
+			HttpServletRequest request) throws IOException {
+
+		if (fromAdmin) {
+			request.setAttribute("fromAdmin", true);
+			GroupService groupService = SystemContextService.getService()
+					.getDataManagementService(ServiceEnum.GROUP_SERVICE);
+			List<Group> groups = groupService.getTopLevelGroups();
+			request.setAttribute("groups", groups);
+		}
+
+		GlobalConfig config = SystemConfig.getConfig().getGlobalConfig();
+		request.setAttribute("registrationCaptchaEnabled",
+				config.isRegistrationCaptchaEnabled());
+		return "default/user/registration/registration_form";
+	}
+
+	@RequestMapping(value = "/users/register", method = RequestMethod.POST)
+	public String registerUser(@Valid com.vertonur.pojo.User user,
+			BindingResult bindingResult,
+			@RequestParam(defaultValue = "0") int groupId,
+			@RequestParam String confirmPwd,
+			@RequestParam(required = false) MultipartFile image,
+			@RequestParam(required = false) boolean fromAdmin,
+			HttpServletRequest request) throws IOException, TemplateException,
+			EmailException, AttachmentSizeExceedException, URISyntaxException {
+
+		if (bindingResult.hasErrors()) {
+			return "default/user/registration/registration_form";
+		}
+
+		SystemContextService service = SystemContextService.getService();
+		com.vertonur.dms.UserService userService = service
+				.getDataManagementService(ServiceEnum.USER_SERVICE);
+		com.vertonur.pojo.User tmp = userService
+				.getUserByEmail(user.getEmail());
+		if (tmp != null) {
+			request.setAttribute("emailExist", true);
+			return "default/user/registration/registration_form";
+		}
+
+		UserConfig userConfig = service.getDataManagementService(
+				ServiceEnum.RUNTIME_PARAMETER_SERVICE).getUserConfig();
+		int avatarSize = userConfig.getAvatarSize();
+		int size = avatarSize * 1024;
+		if (image != null && image.getSize() != 0 && image.getSize() > size) {
+			request.setAttribute("fileInvalid", true);
+			return "default/user/registration/registration_form";
+		}
+
+		GlobalConfig globalConfig = SystemConfig.getConfig().getGlobalConfig();
+		if (globalConfig.isRegistrationCaptchaEnabled()) {
+			if (!"true".equals(ForumCommonUtil.checkCaptchaResult(request))) {
+				request.setAttribute("wrongCaptcha", true);
+				request.setAttribute("requireCaptcha", true);
+				return "default/user/registration/registration_form";
+			}
+		}
+
+		SystemService systemService = service
+				.getDataManagementService(ServiceEnum.SYSTEM_SERVICE);
+		GroupService groupService = service
+				.getDataManagementService(ServiceEnum.GROUP_SERVICE);
+		Group group = null;
+		if (fromAdmin) {
+			group = groupService.getGroupById(groupId);
+		} else {
+			int defaultUserGroupId = systemService.getSystemStatistician()
+					.getDefaultUserGroupId();
+			group = groupService.getGroupById(defaultUserGroupId);
+		}
+		createUser(user, image, group, userService);
+
+		boolean requireAuthEmail = SystemContextService
+				.getService()
+				.getDataManagementService(ServiceEnum.RUNTIME_PARAMETER_SERVICE)
+				.getUserConfig().isRequireNewUserAuthEmail();
+		if (requireAuthEmail) {
+			sendActivationMail(request, user);
+
+			request.setAttribute("registration", true);
+			return "default/user/message";
+		} else {
+			userService.activateUser(user.getId());
+			if (fromAdmin) {
+				return "redirect:/users?admin";
+			} else {
+				return "redirect:/users/login?userId=" + user.getEmail()
+						+ "&password=" + user.getPassword()
+						+ "&registrationMark=true";
+			}
+		}
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void sendActivationMail(HttpServletRequest request,
+			com.vertonur.pojo.User user) throws IOException, TemplateException,
+			EmailException {
+		Map data = new HashMap();
+		data.put("user", user);
+		SystemConfig systemConfig = SystemConfig.getConfig();
+		String forumName = systemConfig.getGlobalConfig().getForumName();
+		data.put("forumName", forumName);
+		String host = request.getLocalName();
+		int port = request.getLocalPort();
+		StringBuilder sb = new StringBuilder();
+		sb.append("http://");
+		sb.append(host);
+		if (port != 80) {
+			sb.append(":");
+			sb.append(port);
+		}
+		sb.append(request.getContextPath());
+		sb.append("/accountActivation.do?authCode=");
+		int id = user.getId();
+		String authCode = SystemContextService.getService()
+				.addNewAcctActivationSession(id);
+		sb.append(authCode);
+		sb.append("&userId=");
+		sb.append(id);
+		data.put("url", sb.toString());
+		System.out.println(sb.toString());
+		data.put("activationKey", authCode);
+
+		TemplateService templateService = SystemContextService.getService()
+				.getDataManagementService(ServiceEnum.TEMPLATE_SERVICE);
+		MailService mailService = SystemContextService.getService()
+				.getDataManagementService(ServiceEnum.MAIL_SERVICE);
+		String msg = templateService.getProcessedTxt(
+				mailService.getActivateAcctNotificationFile(), data);
+		Map addresses = new HashMap();
+		addresses.put(user.getName(), user.getEmail());
+		mailService.sendMail(
+				forumName + "--"
+						+ mailService.getActivateAcctNotificationSubject(),
+				msg, addresses);
+	}
+
+	private void createUser(com.vertonur.pojo.User user, MultipartFile image,
+			Group group, com.vertonur.dms.UserService userService)
+			throws FileNotFoundException, AttachmentSizeExceedException,
+			IOException, URISyntaxException {
+
+		GroupType groupType = group.getGroupType();
+		com.vertonur.pojo.User tmp;
+		if (groupType == GroupType.GENERIC_MDR) {
+			tmp = new Moderator();
+			BeanUtils.copyProperties(user, tmp);
+			user = tmp;
+		} else if (groupType == GroupType.GENERIC_ADMIN) {
+			tmp = new Admin();
+			BeanUtils.copyProperties(user, tmp);
+			user = tmp;
+		}
+		user.addGroup(group);
+
+		UserMsgStatistician statistician = new UserMsgStatistician();
+		statistician.setUser(user);
+		user.setStatistician(statistician);
+
+		AttachmentConfig config = SystemContextService
+				.getService()
+				.getDataManagementService(ServiceEnum.RUNTIME_PARAMETER_SERVICE)
+				.getAttachmentConfig();
+		user.setAttmEnabled(config.isAttmtEnabled());
+		user.setCanDownloadAttms(config.isDownloadEnabled());
+		if (groupType == GroupType.GENERIC_MDR) {
+			userService.saveModerator((Moderator) user);
+		}
+
+		if (image != null && image.getSize() != 0)
+			userService.setUpAvatar(image.getInputStream(),
+					image.getContentType(), image.getOriginalFilename(),
+					image.getSize(), user);
+		else
+			userService.setUpDefaultAvatar(user);
+		if (groupType == GroupType.GENERIC_MDR) {
+			userService.updateUser(user);
+		} else
+			userService.saveUser(user);
 	}
 }

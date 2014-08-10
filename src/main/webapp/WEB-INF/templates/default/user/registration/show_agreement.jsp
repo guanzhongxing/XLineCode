@@ -9,6 +9,9 @@
 				key="agreement_show.jsp.title" /></th>
 	</tr>
 
+	<c:if test="${empty requestScope.fromAdmin}">
+		<c:set var="fromAdmin" value="false" />
+	</c:if>
 	<c:choose>
 		<c:when test="${requestScope.registrationEnabled}">
 			<tr>
@@ -22,7 +25,7 @@
 					class="mainoption"
 					value="<fmt:message key="agreement_show.jsp.accept"/>"
 					name="submit"
-					onclick="document.location = '${contextPath}/initRegistration.do?fromAdmin=${requestScope.fromAdmin}';"
+					onclick="document.location = '${contextPath}/users/register/form?fromAdmin=${fromAdmin}';"
 					type="button">&nbsp;&nbsp; <input class="mainoption"
 					value="<fmt:message key="agreement_show.jsp.noAccept"/>"
 					onclick="document.location = '${contextPath}/forums';"
@@ -37,7 +40,6 @@
 			</tr>
 		</c:otherwise>
 	</c:choose>
-
 </table>
 
 <%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

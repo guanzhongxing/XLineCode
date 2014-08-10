@@ -8,9 +8,11 @@
 </script>
 <script type="text/javascript" src="scripts/CheckUserNameExistence.js"></script>
 
-<html:form
-	action="submitRegistration.do?fromAdmin=${requestScope.fromAdmin|| requestScope.RegistrationForm.fromAdmin}"
-	method="post" enctype="multipart/form-data">
+<c:if test="${empty requestScope.fromAdmin}">
+	<c:set var="fromAdmin" value="false" />
+</c:if>
+<sf:form action="${contextPath}/users/register?fromAdmin=${fromAdmin}"
+	modelAttribute="user" method="post" enctype="multipart/form-data">
 	<table cellspacing="2" cellpadding="2" width="100%" align="center"
 		border="0">
 		<tr>
@@ -30,16 +32,17 @@
 		<tr>
 			<td class="row2" colspan="2" align="center"><span
 				class="gensmall" style="color: red"><fmt:message
-						key="registration_form.jsp.requiredFields" /></span></td>
+						key="registration_form.jsp.requiredFields" /><br /> <sf:errors
+						path="*" cssClass="error" /></span></td>
 		</tr>
 		<tr>
 			<td class="row1" width="38%"><span class="gen"><fmt:message
 						key="registration_form.jsp.user" />: *</span></td>
-			<td class="row2"><html:text styleClass="post"
-					style="WIDTH: 200px" maxlength="25" size="25" property="userName"
-					styleId="username" onfocus="javascript:act=false;"
-					onkeyup="javascript:act=true;"
-					onblur="showProcessIcon(act);startRequest('GET','checkUserNameExistence.do?userName='+this.value+'&timeStamp='+new Date().getTime(),true,null,act);" />
+			<td class="row2"><input type="text" class="post"
+				style="WIDTH: 200px" maxlength="25" size="25" name="name"
+				styleId="username" onfocus="javascript:act=false;"
+				onkeyup="javascript:act=true;"
+				onblur="showProcessIcon(act);startRequest('GET','checkUserNameExistence.do?userName='+this.value+'&timeStamp='+new Date().getTime(),true,null,act);" />
 				<span class="gen" style="color: #ff0000"> <b><html:errors
 							property="userName" /></b>
 			</span></td>
@@ -48,18 +51,20 @@
 		<tr>
 			<td class="row1"><span class="gen"><fmt:message
 						key="registration_form.jsp.emailAddress" />: *</span></td>
-			<td class="row2"><html:text styleClass="post"
-					style="WIDTH: 200px" maxlength="255" size="25" property="email" />
-				<span class="gen" style="color: #ff0000"> <b><html:errors
-							property="email" /></b>
+			<td class="row2"><input type="text" class="post"
+				style="WIDTH: 200px" maxlength="255" size="25" name="email" /> <span
+				class="gen" style="color: #ff0000"> <b><c:if
+							test="${requestScope.emailExist}">
+							<fmt:message key="error.form.email.exist" />
+						</c:if></b>
 			</span></td>
 		</tr>
 
 		<tr>
 			<td class="row1"><span class="gen"><fmt:message
 						key="registration_form.jsp.password" />: *</span></td>
-			<td class="row2"><html:password property="pwd" styleClass="post"
-					style="WIDTH: 200px" size="25" maxlength="100" /> <span
+			<td class="row2"><input type="password" name="password"
+				class="post" style="WIDTH: 200px" size="25" maxlength="100" /> <span
 				class="gen" style="color: #ff0000"> <b><html:errors
 							property="pwd" /></b>
 			</span></td>
@@ -68,19 +73,20 @@
 		<tr>
 			<td class="row1"><span class="gen"><fmt:message
 						key="registration_form.jsp.confirmPassword" />: * </span></td>
-			<td class="row2"><html:password styleClass="post"
-					style="WIDTH: 200px" maxlength="100" size="25"
-					property="confirmPwd" /> <span class="gen" style="color: #ff0000">
-					<b><html:errors property="confirmPwd" /></b>
+			<td class="row2"><input type="password" class="post"
+				style="WIDTH: 200px" maxlength="100" size="25" name="confirmPwd" />
+				<span class="gen" style="color: #ff0000"> <b><html:errors
+							property="confirmPwd" /></b>
 			</span></td>
 		</tr>
 
 		<tr>
 			<td class="row1"><span class="gen"><fmt:message
 						key="registration_form.jsp.gender" />: * </span></td>
-			<td class="row2"><html:radio styleClass="post" property="gender"
-					value="m" /> <fmt:message key="registration_form.jsp.male" /> <html:radio
-					styleClass="post" property="gender" value="f" /> <fmt:message
+			<td class="row2"><input type="radio" styleClass="post"
+				property="gender" value="m" /> <fmt:message
+					key="registration_form.jsp.male" /> <html:radio styleClass="post"
+					property="gender" value="f" /> <fmt:message
 					key="registration_form.jsp.female" /> <span class="gen"
 				style="color: #ff0000"> <b><html:errors property="gender" /></b>
 			</span></td>
@@ -118,8 +124,10 @@
 		<tr>
 			<td class="row1"><span class="gen"><fmt:message
 						key="registration_form.jsp.avatar" />: * </span></td>
-			<td class="row2"><html:file property="image" /> <html:errors
-					property="image" /></td>
+			<td class="row2"><input type="file" name="image" /> <c:if
+					test="${requestScope.fileInvalid}">
+					<fmt:message key="error.form.fileinvalid" />
+				</c:if> <html:errors property="image" /></td>
 		</tr>
 
 		<c:if test="${requestScope.registrationCaptchaEnabled}">
@@ -144,6 +152,6 @@
 				value="<fmt:message key="all.jsp.reset"/>" name="reset" /></td>
 		</tr>
 	</table>
-</html:form>
+</sf:form>
 
 <%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

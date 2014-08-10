@@ -1,14 +1,10 @@
 package com.vertonur.bean;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import com.vertonur.pojo.AbstractInfo;
 import com.vertonur.pojo.Attachment;
-import com.vertonur.pojo.Comment;
 import com.vertonur.pojo.UserPreferences;
 import com.vertonur.pojo.security.Group;
 
@@ -76,7 +72,7 @@ public class User {
 		return user.getRegTime();
 	}
 
-	public Set<Info> getResponses() {
+	/*public Set<Info> getResponses() {
 		Set<AbstractInfo> comments = user.getComments();
 		Iterator<AbstractInfo> iterator = comments.iterator();
 		Set<Info> infos = new HashSet<Info>();
@@ -86,7 +82,7 @@ public class User {
 			infos.add(rsp);
 		}
 		return infos;
-	}
+	}*/
 
 	public String getSignature() {
 		return user.getSignature();
@@ -96,7 +92,7 @@ public class User {
 		return new UserMsgStatistician(user.getStatistician());
 	}
 
-	public Set<Info> getTopics() {
+	/*public Set<Info> getTopics() {
 		Set<AbstractInfo> infos = user.getInfos();
 		Iterator<AbstractInfo> iterator = infos.iterator();
 		Set<Info> topics = new HashSet<Info>();
@@ -106,7 +102,7 @@ public class User {
 			topics.add(topic);
 		}
 		return topics;
-	}
+	}*/
 
 	public UserPreferences getUserPres() {
 		return user.getUserPres();
@@ -122,14 +118,6 @@ public class User {
 
 	public boolean isCanDownloadAttms() {
 		return user.isCanDownloadAttms();
-	}
-
-	public void removeInfo(Info info) {
-		user.removeInfo((com.vertonur.pojo.Info) info.getCore());
-	}
-
-	public void removeTopic(Topic topic) {
-		user.removeInfo((com.vertonur.pojo.Info) topic.getCore());
 	}
 
 	public void setAttmEnabled(boolean attmEnabled) {
@@ -192,32 +180,12 @@ public class User {
 		user.setRegTime(regTime);
 	}
 
-	public void setResponses(Set<Info> responses) {
-		Iterator<Info> iterator = responses.iterator();
-		Set<AbstractInfo> comments = new HashSet<AbstractInfo>();
-		while (iterator.hasNext()) {
-			Info rsp = iterator.next();
-			comments.add(rsp.getCore());
-		}
-		user.setComments(comments);
-	}
-
 	public void setSignature(String signature) {
 		user.setSignature(signature);
 	}
 
 	public void setStatistician(UserMsgStatistician statistician) {
 		user.setStatistician(statistician.getCore());
-	}
-
-	public void setTopics(Set<Info> infos) {
-		Iterator<Info> iterator = infos.iterator();
-		Set<AbstractInfo> coreInfos = new HashSet<AbstractInfo>();
-		while (iterator.hasNext()) {
-			Info topic = iterator.next();
-			coreInfos.add(topic.getCore());
-		}
-		user.setInfos(coreInfos);
 	}
 
 	public void setUserPres(UserPreferences userPres) {
