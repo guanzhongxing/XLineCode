@@ -25,11 +25,11 @@
 								alt="[Disk]" />
 							<c:choose>
 								<c:when test="${requestScope.downloadCaptchaEnabled}">
-									<a href="initDownloadAttachment.do?attmId=${attm.id}"
+									<a href="${contextPath}/attachments/${attm.id}/captcha"
 										class="gensmall" target="_blank"><b>download</b></a>
 								</c:when>
 								<c:otherwise>
-									<a href="downloadAttachment.do?attmId=${attm.id}"
+									<a href="${contextPath}/attachments/${attm.id}"
 										class="gensmall" target="_blank"><b>download</b></a>
 								</c:otherwise>
 							</c:choose>

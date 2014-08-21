@@ -1,8 +1,8 @@
 <%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
 <%@ include file="/WEB-INF/templates/default/user/common/header.jsp"%>
 
-<html:form action="changePassword.do" method="post"
-	enctype="multipart/form-data">
+<sf:form action="${contextPath}/users/${requestScope.userId}/password"
+	method="put">
 	<table cellspacing="0" cellpadding="10" width="100%" align="center"
 		border="0">
 		<tr>
@@ -16,7 +16,9 @@
 					</tr>
 					<tr>
 						<td colspan="2"><span class="gen" style="color: #ff0000">
-								<b><html:errors property="invalidPwd" /></b>
+								<b><c:if test="${requestScope.invalidPwd}">
+										<fmt:message key="error.invalid.pwd" />
+									</c:if> </b>
 						</span></td>
 					</tr>
 					<tr>
@@ -33,8 +35,8 @@
 					<tr>
 						<td class="row1" width="45%" align="right"><span class="gen"><fmt:message
 									key="user_form.jsp.currentPwd" />: *</span><br /></td>
-						<td class="row2"><html:password property="currentPwd"
-								styleClass="post" style="WIDTH: 200px" size="25" maxlength="100" /><span
+						<td class="row2"><input type="password" name="currentPwd"
+							class="post" style="WIDTH: 200px" size="25" maxlength="100" /><span
 							class="gen" style="color: #ff0000"> <b><html:errors
 										property="currentPwd" /></b>
 						</span></td>
@@ -43,8 +45,8 @@
 					<tr>
 						<td class="row1" align="right"><span class="gen"><fmt:message
 									key="user_form.jsp.newPwd" />: *</span><br /></td>
-						<td class="row2"><html:password styleClass="post"
-								style="WIDTH: 200px" maxlength="100" size="25" property="newPwd" /><span
+						<td class="row2"><input type="password" name="newPwd"
+							class="post" style="WIDTH: 200px" maxlength="100" size="25" /><span
 							class="gen" style="color: #ff0000"> <b><html:errors
 										property="newPwd" /></b>
 						</span></td>
@@ -53,10 +55,9 @@
 					<tr>
 						<td class="row1" align="right"><span class="gen"><fmt:message
 									key="user_form.jsp.confirmPwd" />: *</span><br /></td>
-						<td class="row2"><html:password styleClass="post"
-								style="WIDTH: 200px" maxlength="100" size="25"
-								property="confirmPwd" /><span class="gen"
-							style="color: #ff0000"> <b><html:errors
+						<td class="row2"><input type="password" name="confirmPwd"
+							class="post" style="WIDTH: 200px" maxlength="100" size="25" /><span
+							class="gen" style="color: #ff0000"> <b><html:errors
 										property="confirmPwd" /></b>
 						</span></td>
 					</tr>
@@ -72,6 +73,6 @@
 			</td>
 		</tr>
 	</table>
-</html:form>
+</sf:form>
 
 <%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

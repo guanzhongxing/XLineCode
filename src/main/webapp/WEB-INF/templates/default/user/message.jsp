@@ -59,7 +59,7 @@
 												<fmt:message key="message.jsp.save.cmt.to.locked.info" />
 											</c:when>
 											<c:when test="${requestScope.requireCaptcha}">
-												<form action="${contextPath}/downloadAttachment.do?attmId=${param.attmId}" method="post">
+												<form action="${contextPath}/attachments/${requestScope.attachmentId}" method="post">
 													<input type='hidden' id='YXM_here' />
 													<script type='text/javascript' charset='gbk'
 														id='YXM_script'

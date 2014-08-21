@@ -15,6 +15,7 @@ import javax.validation.Valid;
 import org.apache.commons.mail.EmailException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,10 +35,14 @@ import com.vertonur.dms.SystemService;
 import com.vertonur.dms.TemplateService;
 import com.vertonur.dms.constant.ServiceEnum;
 import com.vertonur.dms.exception.AttachmentSizeExceedException;
+import com.vertonur.dms.exception.InvalidOldPasswordException;
 import com.vertonur.pagination.PaginationContext;
 import com.vertonur.pagination.PaginationContext.CxtType;
 import com.vertonur.pojo.Admin;
+import com.vertonur.pojo.Attachment;
+import com.vertonur.pojo.AttachmentInfo;
 import com.vertonur.pojo.Moderator;
+import com.vertonur.pojo.UserPreferences;
 import com.vertonur.pojo.config.AttachmentConfig;
 import com.vertonur.pojo.config.UserConfig;
 import com.vertonur.pojo.security.Group;
@@ -94,6 +99,71 @@ public class UserController {
 			return "default/user/user/user_form";
 		else
 			return "default/user/user/user_profile";
+	}
+
+	@RequestMapping(value = "/users/{userId}", method = RequestMethod.PUT)
+	public String updateUserProfile(@PathVariable int userId,
+			@Valid com.vertonur.pojo.User user, BindingResult bindingResult,
+			@RequestParam(defaultValue = "0") byte attachSignature,
+			@RequestParam(defaultValue = "0") byte hideOnlineStatus,
+			@RequestParam(defaultValue = "0") byte showEmailAddr,
+			@RequestParam(defaultValue = "0") byte delAvatar,
+			@RequestParam(required = false) MultipartFile image,
+			@RequestParam(defaultValue = "default") String locale,
+			HttpServletRequest request) throws IOException, URISyntaxException,
+			AttachmentSizeExceedException {
+
+		if (bindingResult.hasErrors()) {
+			return showUserProfile(userId, true, request);
+		}
+
+		com.vertonur.dms.UserService userService = SystemContextService
+				.getService()
+				.getDataManagementService(ServiceEnum.USER_SERVICE);
+		com.vertonur.pojo.User savedUser = userService.getUserById(userId);
+		request.setAttribute("displayedUser", savedUser);
+
+		savedUser.setName(user.getName());
+		savedUser.setEmail(user.getEmail());
+		savedUser.setQq(user.getQq());
+		savedUser.setMsn(user.getMsn());
+		savedUser.setWebSite(user.getWebSite());
+		savedUser.setLocation(user.getLocation());
+		savedUser.setInterests(user.getInterests());
+		savedUser.setSignature(user.getSignature());
+
+		UserPreferences userPres = savedUser.getUserPres();
+		if (userPres == null) {
+			userPres = new UserPreferences();
+			savedUser.setUserPres(userPres);
+		}
+		userPres.setAttachSignature(attachSignature);
+		userPres.setHideOnlineStatus(hideOnlineStatus);
+		userPres.setShowEmailAddr(showEmailAddr);
+
+		if (locale.equals("default"))
+			locale = request.getLocale().toString();
+		userPres.setLocale(locale);
+		HttpSession session = request.getSession(true);
+		UserSession userSession = (UserSession) session
+				.getAttribute(Constants.USER_SESSION);
+		userSession.setLocale(locale);
+
+		Attachment attachment = savedUser.getAvatar();
+		AttachmentInfo attmInfo = attachment.getAttmInfo();
+		String filePath = attmInfo.getFilePath();
+		if (delAvatar == 1 && !filePath.contains(Constants.DEFAULT_AVATAR))
+			userService.setUpDefaultAvatar(savedUser);
+
+		if (image != null && image.getSize() != 0)
+			userService.setUpAvatar(image.getInputStream(),
+					image.getContentType(), image.getOriginalFilename(),
+					image.getSize(), savedUser);
+
+		userService.updateUser(savedUser);
+		request.setAttribute("userId", userId);
+
+		return "redirect:" + request.getServletPath() + "?" + "mine=true";
 	}
 
 	@RequestMapping(value = "/users", method = RequestMethod.GET)
@@ -294,8 +364,7 @@ public class UserController {
 				return "redirect:/users?admin";
 			} else {
 				return "redirect:/users/login?userId=" + user.getEmail()
-						+ "&password=" + user.getPassword()
-						+ "&registrationMark=true";
+						+ "&password=" + confirmPwd + "&registrationMark=true";
 			}
 		}
 	}
@@ -386,5 +455,37 @@ public class UserController {
 			userService.updateUser(user);
 		} else
 			userService.saveUser(user);
+	}
+
+	@RequestMapping(value = "/users/register/{userId}")
+	public String showRegistrationCompletion(@PathVariable int userId,
+			Model model) {
+
+		model.addAttribute(userId);
+		return "default/user/registration/registration_completion";
+	}
+
+	@RequestMapping(value = "/users/{userId}/password")
+	public String showPasswordForm(@PathVariable int userId,
+			HttpServletRequest request) {
+
+		return "default/user/user/user_change_pwd";
+	}
+
+	@RequestMapping(value = "/users/{userId}/password", method = RequestMethod.PUT)
+	public String updatePassword(@PathVariable int userId,
+			@RequestParam String currentPwd, @RequestParam String newPwd,
+			HttpServletRequest request) {
+
+		SystemContextService service = SystemContextService.getService();
+		com.vertonur.dms.UserService userService = service
+				.getDataManagementService(ServiceEnum.USER_SERVICE);
+		try {
+			userService.changePassword(userId, currentPwd, newPwd);
+			return "redirect:/messages?password";
+		} catch (InvalidOldPasswordException e) {
+			request.setAttribute("invalidPwd", "true");
+			return "default/user/user/user_change_pwd";
+		}
 	}
 }

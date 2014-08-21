@@ -99,8 +99,7 @@ public class UserSessionAuthenticationFilter extends
 				session.setMaxInactiveInterval(new Long(userSession
 						.getValidPeriod()).intValue());
 				if (registrationMark != null) {
-					handler.setDefaultTargetUrl("/templates/default/user/registration/registration_completion.jsp?userId="
-							+ username);
+					handler.setDefaultTargetUrl("/users/register/" + username);
 				} else {
 					String fromUrl = request.getParameter("fromUrl");
 					if (fromUrl != null && !"".equals(fromUrl))
@@ -109,14 +108,6 @@ public class UserSessionAuthenticationFilter extends
 			} else
 				authentication = userSession.getAuthentication();
 
-			// TODO:
-			/*
-			 * Check to see if the request can be redirected to original
-			 * resource after authentication RequestContext context =
-			 * userSession.getRequestContext(); if (context != null) {
-			 * handler.setDefaultTargetUrl(context.getRequestUri());
-			 * userSession.setRequestContext(null); return null; }
-			 */
 		} catch (LoginException e) {
 			String msg = "Exception occurs when logging in with "
 					+ SystemContextService.class.getName();

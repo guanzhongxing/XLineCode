@@ -3,9 +3,8 @@
 <%@ include file="/WEB-INF/templates/default/user/common/header.jsp"%>
 
 <set var="displayedUser" value="${requestScope.displayedUser}" />
-<html:form action="updateMyProfile.do" method="post"
-	enctype="multipart/form-data">
-	<input type="hidden" name="userId" value="${displayedUser.id}" />
+<sf:form action="${contextPath}/users/${displayedUser.id}" method="PUT"
+	modelAttribute="user" enctype="multipart/form-data">
 	<table cellspacing="0" cellpadding="10" width="100%" align="center"
 		border="0">
 		<tr>
@@ -24,7 +23,8 @@
 					<tr>
 						<td class="row2" colspan="2" align="center"><span
 							class="gensmall"><font color="red"><fmt:message
-										key="user_form.jsp.requiredFields" /></font></span></td>
+										key="user_form.jsp.requiredFields" /> <sf:errors path="*"
+										cssClass="error" /></font></span></td>
 					</tr>
 
 					<tr>
@@ -49,7 +49,7 @@
 
 					<tr>
 						<td class="row1"></td>
-						<td class="row2"><a href="initChangePassword.do" />Change
+						<td class="row2"><a href="${contextPath}/users/${displayedUser.id}/password" />Change
 							password</td>
 					</tr>
 
@@ -205,8 +205,8 @@
 					<tr>
 						<td class="row1"><span class="gen"><fmt:message
 									key="user_form.jsp.loadAvatar" />:</span></td>
-						<td class="row2"><html:file style="WIDTH: 200px;"
-								property="image" /> <html:errors property="fileinvalid" /></td>
+						<td class="row2"><input type="file" style="WIDTH: 200px;"
+							name="image" /> <html:errors property="fileinvalid" /></td>
 					</tr>
 
 					<tr>
@@ -221,6 +221,6 @@
 			</td>
 		</tr>
 	</table>
-</html:form>
+</sf:form>
 
 <%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

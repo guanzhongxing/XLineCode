@@ -30,6 +30,8 @@ import com.vertonur.user.topic.form.UserTopicForm;
 import com.vertonur.util.ForumCommonUtil;
 
 public class DownloadAttachmentAction extends MappingDispatchAction {
+
+	@Deprecated
 	public ActionForward initFileDownload(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
@@ -38,6 +40,7 @@ public class DownloadAttachmentAction extends MappingDispatchAction {
 		return mapping.findForward("CaptchaPage");
 	}
 
+	@Deprecated
 	public ActionForward downloadFile(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -62,6 +65,7 @@ public class DownloadAttachmentAction extends MappingDispatchAction {
 		return null;
 	}
 
+	@Deprecated
 	public ActionForward uploadEmbeddedImage(ActionMapping mapping,
 			ActionForm form, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {

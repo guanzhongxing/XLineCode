@@ -3,31 +3,19 @@
 <%@ include file="/WEB-INF/templates/default/user/common/ckEditor_init.jsp"%>
 <link rel="stylesheet" type="text/css"
 	href="${resourcesHost}/css/tabs.css" />
-<script type="text/javascript" src="${contextPath}/scripts/post.js"></script>
+<script type="text/javascript" src="${resourcesHost}/javascripts/post.js"></script>
 
 <c:choose>
 	<c:when test="${not empty requestScope.edittedTopic}">
-		<c:set var="title" value="${requestScope.edittedTopic.subject}" />
+		<c:set var="subject" value="${requestScope.edittedTopic.subject}" />
 		<c:set var="topicId" value="${requestScope.edittedTopic.id}" />
 		<c:set var="content" value="${requestScope.edittedTopic.content}" />
 		<c:set var="infoType" value="${requestScope.edittedTopic.infoType}" />
 		<c:set var="editted" value="${requestScope.editted}" />
-		<c:set var="fromModeration" value="${requestScope.fromModeration}" />
 	</c:when>
-	<c:otherwise>
-		<c:set var="title" value="${requestScope.UserTopicForm.title}" />
-		<c:set var="topicId" value="${requestScope.UserTopicForm.topicId}" />
-		<c:set var="content" value="${requestScope.UserTopicForm.content}" />
-		<c:set var="infoType" value="${requestScope.UserTopicForm.infoType}" />
-		<c:set var="fromModeration"
-			value="${requestScope.UserTopicForm.fromModeration}" />
-		<c:set var="moderationReason"
-			value="${requestScope.UserTopicForm.moderationReason}" />
-		<c:set var="editted" value="${requestScope.UserTopicForm.editted}" />
-	</c:otherwise>
 </c:choose>
 
-<html:form action="createUserTopic.do" styleId="post"
+<sf:form action="${contextPath}/forums/${requestScope.forumId}/topic" styleId="post" modelAttribute="topic"
 	enctype="multipart/form-data">
 	<table cellspacing="0" cellpadding="10" width="100%" align="center"
 		border="0">
@@ -37,7 +25,7 @@
 					border="0">
 					<tr>
 						<td align="right"><span class="nav"> <a class="nav"
-								href="displayTopics.do?forumzoneId=${param.forumzoneId}&forumId=${param.forumId}">${requestScope.forumName}</a>
+								href="${contextPath}/forums/${requestScope.forumId}">${requestScope.forumName}</a>
 								&raquo; <a class="nav" href="${contextPath}/forums"><fmt:message
 										key="topic_form.jsp.forums" /></a>
 						</span></td>
@@ -56,14 +44,13 @@
 						<td class="row1" width="15%"><span class="gen"><b><fmt:message
 										key="topic_form.jsp.subject" /></b></span></td>
 						<td class="row2" width="85%"><span class="gen"> <input
-								type="hidden" name="forumzoneId" value="${param.forumzoneId}" /><input
 								type="hidden" name="forumId" value="${param.forumId}" /> <input
 								type="hidden" name="forumName" value="${requestScope.forumName}" />
 								<html:errors property="title" /> <input type="hidden"
 								name="editted" value="${editted}" /> <input type="hidden"
 								name="topicId" value="${topicId}" /> <input type="text"
-								class="subject" tabindex="2" maxlength="100" name="title"
-								value="${title}" />
+								class="subject" tabindex="2" maxlength="100" name="subject"
+								value="${subject}" />
 						</span></td>
 					</tr>
 
@@ -143,6 +130,6 @@
 			</td>
 		</tr>
 	</table>
-</html:form>
+</sf:form>
 
 <%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

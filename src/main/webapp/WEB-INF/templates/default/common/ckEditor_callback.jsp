@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=utf-8" language="java"%>
-<script type="text/javascript" src="${contextPath}/scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="${resourcesHost}/javascripts/jquery-1.10.2.min.js"></script>
 
 <script type="text/javascript">
 window.parent.CKEDITOR.tools.callFunction( ${CKEditorFuncNum}, '${url}', function() {

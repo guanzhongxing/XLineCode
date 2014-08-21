@@ -122,7 +122,7 @@
 								<c:if
 									test="${requestScope.enableModeratorEdition||currentTopic.author.id==requestScope.userId}">
 									<a
-										href="${contextPath}/initCreateUserTopic.do?forumzoneId=${forumzoneId}&forumId=${forum.id}&edit=true&topicId=${currentTopic.id}"
+										href="${contextPath}/forums/${forum.id}/topic?edit=true&topicId=${currentTopic.id}"
 										rel="nofollow" class="icon_edit"><img
 										src="${resourcesHost}/images/${locale}/icon_edit.gif"
 										alt="" /></a>

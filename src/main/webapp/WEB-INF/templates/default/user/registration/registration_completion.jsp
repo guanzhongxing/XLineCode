@@ -34,7 +34,7 @@
 								<td align="left"><span class="gen"> <fmt:message
 											key="registration_completion.jsp.registrationCompleteMsg">
 											<fmt:param
-												value="${contextPath}/displayMyProfile.do?userId=${param.userId}" />
+												value="${contextPath}/users/${userId}?mine=true" />
 											<fmt:param value="${contextPath}/forums" />
 										</fmt:message>
 								</span></td>

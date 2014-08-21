@@ -11,15 +11,13 @@
 					<td width="50" valign="middle" align="left"><c:choose>
 							<c:when test="${requestScope.enableNewTopic}">
 								<a
-									href="initCreateUserTopic.do?forumzoneId=${currentForum.forumzone.id}&forumId=${currentForum.id}"
+									href="${contextPath}/forums/${currentForum.id}/topic"
 									rel="nofollow" class="icon_new_topic"> <img
-									src="${resourcesHost}/images/${locale}/post.gif"
-									alt="" />
+									src="${resourcesHost}/images/${locale}/post.gif" alt="" />
 								</a>
 							</c:when>
 							<c:otherwise>
-								<img
-									src="${resourcesHost}/images/${locale}/post_disable.gif"
+								<img src="${resourcesHost}/images/${locale}/post_disable.gif"
 									title="<fmt:message
 								key="all.jsp.lack.of.permission" />" />
 							</c:otherwise>
@@ -32,6 +30,11 @@
 					<td class="nav" nowrap="nowrap" align="right"><%@ include
 							file="/WEB-INF/templates/common/pagination/pagination.jsp"%>
 					</td>
+				</tr>
+				<tr>
+					<td width="50" valign="middle" align="left"><c:if test="">
+							<fmt:message key="error.topic.post.within.time.limition" />
+						</c:if></td>
 				</tr>
 			</table>
 
@@ -83,13 +86,11 @@
 								<a
 									href="initCreateUserTopic.do?forumzoneId=${currentForum.forumzone.id}&forumId=${currentForum.id}"
 									rel="nofollow" class="icon_new_topic"> <img
-									src="${resourcesHost}/images/${locale}/post.gif"
-									alt="" />
+									src="${resourcesHost}/images/${locale}/post.gif" alt="" />
 								</a>
 							</c:when>
 							<c:otherwise>
-								<img
-									src="${resourcesHost}/images/${locale}/post_disable.gif"
+								<img src="${resourcesHost}/images/${locale}/post_disable.gif"
 									title="<fmt:message
 								key="all.jsp.lack.of.permission" />" />
 							</c:otherwise>

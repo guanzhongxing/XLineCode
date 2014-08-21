@@ -109,6 +109,10 @@
 		<constructor-arg value="defaultUserGroupTemplate" />
 	</bean>
 
+	<!-- used by multipartFilter to handle multipart form with file input -->
+	<bean id="filterMultipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+
 	<import resource="info-web-security.xml" />
 	<import resource="info-web-permission-config-beans.xml" />
 	<import resource="info-web-permission-config-beans-backend.xml" />

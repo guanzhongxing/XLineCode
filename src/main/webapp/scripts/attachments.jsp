@@ -10,7 +10,7 @@
 		var template = "<div id='attach_#counter#'><table width='100%' class='gensmall'><tr><td>filename</td>";
 		template += "<td><input type='file' size='50' name='upload'></td></tr>";
 		template += "<tr><td>description</td>";
-		template += "<td><input type='text' name='comment_#counter#' size='50'>";
+		template += "<td><input type='text' name='comment' size='50'>";
 		template += "&nbsp;&nbsp;<a href='javascript:removeAttach(#counter#)' class='gensmall'>[remove]</a></td></tr>";
 		template += "</table><div style='border-top: 1px dashed #000;'>&nbsp;</div></div>";
 	
