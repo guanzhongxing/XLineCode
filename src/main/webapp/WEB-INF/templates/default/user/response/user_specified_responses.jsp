@@ -71,7 +71,7 @@
 											&raquo; <a
 											href="${contextPath}/forums/topics/${topicOfRs.id}">${topicOfRs.subject}</a>
 											&raquo; <a
-											href="${contextPath}/forums/topics/${topicOfRs.id}?rspId=${response.id}#${response.id}"><fmt:message
+											href="${contextPath}/forums/topics/${topicOfRs.id}/${response.id}#${response.id}"><fmt:message
 													key="user_specified_responses.jsp.goToRs" /></a>
 									</span></td>
 									<td align="right"></td>

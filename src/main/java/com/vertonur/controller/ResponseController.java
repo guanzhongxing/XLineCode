@@ -47,6 +47,7 @@ public class ResponseController {
 	@RequestMapping(value = "/forums/topics/{topicId}", method = RequestMethod.GET)
 	public String getResponseList(@PathVariable int topicId,
 			@RequestParam(required = false) boolean iFrame,
+			@RequestParam(defaultValue = "0") int start,
 			HttpServletRequest request) throws IllegalAccessException,
 			InstantiationException, InvocationTargetException,
 			NoSuchMethodException {
@@ -59,19 +60,8 @@ public class ResponseController {
 			topic = (Topic) request.getAttribute(Constants.CURRENT_TOPIC);
 		}
 
-		String rspIdStr = request.getParameter("rspId");
-		int paginationStart = 0;
-		if (rspIdStr != null) {
-			paginationStart = infoService.getRspPageIndex(Integer
-					.parseInt(rspIdStr));
-		} else {
-			String startStr = (String) request.getParameter("start");
-			paginationStart = ForumCommonUtil
-					.strToIntTransitionBuffer(startStr);
-		}
-
-		List<Response> responses = infoService.getResponsesByTopic(topic,
-				paginationStart);
+		List<Response> responses = infoService
+				.getResponsesByTopic(topic, start);
 		request.setAttribute(Constants.RESPONSES, responses);
 		request.setAttribute(Constants.CURRENT_TOPIC, topic);
 
@@ -116,8 +106,7 @@ public class ResponseController {
 
 			long paginationSize = infoService.getResponseNumByTopic(topic);
 			PaginationContext pageCxt = new PaginationContext(paginationSize,
-					paginationStart, request.getRequestURI() + "?",
-					CxtType.RESPONSE);
+					start, request.getRequestURI() + "?", CxtType.RESPONSE);
 			request.setAttribute("pageCxt", pageCxt);
 
 			AttachmentConfig attmConfig = service.getDataManagementService(
@@ -264,5 +253,30 @@ public class ResponseController {
 		request.setAttribute(PaginationContext.PAGE_CXT, pageCxt);
 
 		return "default/user/response/user_specified_responses";
+	}
+
+	@RequestMapping(value = "/forums/topics/{topicId}/{responseId}", method = RequestMethod.GET)
+	public String getResponse(@PathVariable int topicId,
+			@PathVariable int responseId, HttpServletRequest request)
+			throws IllegalAccessException, InstantiationException,
+			InvocationTargetException, NoSuchMethodException {
+
+		InfoService infoService = new InfoService();
+		int start = infoService.getRspPageIndex(responseId);
+
+		return getResponseList(topicId, false, start, request);
+	}
+
+	@RequestMapping(value = "/forums/topics/{topicId}/{responseId}", method = RequestMethod.DELETE)
+	public String deleteResponse(@PathVariable int topicId,
+			@PathVariable int responseId, String reason,
+			HttpServletRequest request) {
+
+		HttpSession session = request.getSession(false);
+		UserSession userSession = (UserSession) session
+				.getAttribute(Constants.USER_SESSION);
+		InfoService infoService = new InfoService();
+		infoService.deleteRsp(responseId, userSession, reason);
+		return "redirect:/forums/topics/" + topicId;
 	}
 }

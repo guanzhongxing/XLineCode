@@ -1,5 +1,6 @@
 package com.vertonur.controller;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,10 +25,13 @@ import com.vertonur.constants.Constants;
 import com.vertonur.context.SystemContextService;
 import com.vertonur.dms.AttachmentService;
 import com.vertonur.dms.constant.ServiceEnum;
+import com.vertonur.dms.exception.AttachmentSizeExceedException;
 import com.vertonur.pagination.PaginationContext;
 import com.vertonur.pagination.PaginationContext.CxtType;
+import com.vertonur.pojo.Info.InfoType;
 import com.vertonur.pojo.ModerationLog.ModerationStatus;
 import com.vertonur.pojo.config.AttachmentConfig;
+import com.vertonur.security.exception.InsufficientPermissionException;
 import com.vertonur.service.ForumService;
 import com.vertonur.service.ForumzoneService;
 import com.vertonur.service.InfoService;
@@ -87,6 +91,18 @@ public class TopicController {
 
 		request.setAttribute("intervalLimit", intervalLimit);
 		return "default/user/topic/forum_topic_list";
+	}
+
+	@RequestMapping(value = "/forums/topics/{topicId}", method = RequestMethod.DELETE)
+	public String deleteTopic(@PathVariable int topicId, String reason,
+			int forumId, HttpServletRequest request) {
+
+		HttpSession session = request.getSession(false);
+		UserSession userSession = (UserSession) session
+				.getAttribute(Constants.USER_SESSION);
+		InfoService infoService = new InfoService();
+		infoService.deleteTopic(topicId, userSession, reason);
+		return "redirect:/forums/" + forumId;
 	}
 
 	@RequestMapping(value = { "/forums/topics" }, method = RequestMethod.GET)
@@ -154,8 +170,6 @@ public class TopicController {
 
 	@RequestMapping(value = "/forums/{forumId}/topic", method = RequestMethod.GET)
 	public String showTopicForm(@PathVariable int forumId,
-			@RequestParam(required = false) boolean edit,
-			@RequestParam(defaultValue = "0") int topicId,
 			HttpServletRequest request) {
 
 		HttpSession session = request.getSession(false);
@@ -164,17 +178,6 @@ public class TopicController {
 		InfoService infoService = new InfoService();
 		if (infoService.isInNewTopicInterval(userSession.getSessionId()))
 			return "redirect:/forums/" + forumId + "?intervalLimit=true";
-
-		if (edit) {
-			Topic topic = infoService.getTopicById(topicId);
-			request.setAttribute("edittedTopic", topic);
-			request.setAttribute("editted", true);
-			if (userSession.getUserId() != topic.getAuthor().getId()
-					&& userSession.isModerator())
-				request.setAttribute("fromModeration", true);
-		} else {
-			request.setAttribute("editted", false);
-		}
 
 		SystemContextService systemContextService = SystemContextService
 				.getService();
@@ -207,6 +210,25 @@ public class TopicController {
 		}
 
 		return "default/user/topic/topic_form";
+	}
+
+	@RequestMapping(value = "/forums/{forumId}/topic/{topicId}", method = RequestMethod.GET)
+	public String showEditTopicForm(@PathVariable int forumId,
+			@PathVariable int topicId, HttpServletRequest request) {
+
+		HttpSession session = request.getSession(false);
+		UserSession userSession = (UserSession) session
+				.getAttribute(Constants.USER_SESSION);
+
+		InfoService infoService = new InfoService();
+		Topic topic = infoService.getTopicById(topicId);
+		request.setAttribute("edittedTopic", topic);
+		request.setAttribute("editted", true);
+		if (userSession.getUserId() != topic.getAuthor().getId()
+				&& userSession.isModerator())
+			request.setAttribute("fromModeration", true);
+
+		return showTopicForm(forumId, request);
 	}
 
 	@RequestMapping(value = "/forums/{forumId}/topic", method = RequestMethod.POST)
@@ -250,7 +272,7 @@ public class TopicController {
 				attachmentService.confirmEmbeddedImageUpload(topic.getCore(),
 						attachmentId);
 
-//		TODO:调试审核功能
+		// TODO:调试审核功能
 		if (ModerationStatus.PENDING.equals(status)
 				|| ModerationStatus.DEFERRED.equals(status)) {
 			request.setAttribute("container", forum.getName());
@@ -264,5 +286,98 @@ public class TopicController {
 		userSession.setLastInfoDate(new Date());
 
 		return "redirect:/forums/" + forumId;
+	}
+
+	@RequestMapping(value = "/forums/{forumId}/topic/{topicId}", method = RequestMethod.PUT)
+	public String updateTopic(@Valid Topic topic, @PathVariable int forumId,
+			@PathVariable int topicId,
+			@RequestParam(required = false) Integer[] attachmentIds,
+			@RequestParam(required = false) MultipartFile upload,
+			@RequestParam(required = false) String comment,
+			@RequestParam(required = false) boolean fromModeration,
+			@RequestParam(required = false) String moderationReason,
+			HttpServletRequest request) throws AttachmentSizeExceedException,
+			IOException {
+
+		InfoService infoService = new InfoService();
+		ForumService forumService = new ForumService();
+		Forum forum = forumService.getForumById(forumId);
+		Forumzone forumzone = forum.getForumzone();
+		HttpSession session = request.getSession(false);
+		UserSession userSession = (UserSession) session
+				.getAttribute(Constants.USER_SESSION);
+		UserService userService = new UserService();
+		User user = userService.getUserById(userSession.getUserId());
+
+		AttachmentService attachmentService = SystemContextService.getService()
+				.getDataManagementService(ServiceEnum.ATTACHMENT_SERVICE);
+		Topic savedTopic = infoService.getTopicById(topicId);
+		String originalSubject = savedTopic.getSubject();
+		String originalContent = savedTopic.getContent();
+		InfoType originalInfoType = savedTopic.getInfoType();
+		savedTopic.setSubject(topic.getSubject());
+		savedTopic.setContent(topic.getContent());
+		savedTopic.setInfoType(topic.getInfoType());
+
+		try {
+			if (fromModeration) {
+				infoService.modifyTopic(originalContent, savedTopic,
+						userSession.getUserId(), moderationReason);
+			} else {
+				ModerationStatus status = infoService.updateTopic(savedTopic);
+				if (ModerationStatus.PENDING.equals(status)
+						|| ModerationStatus.DEFERRED.equals(status)) {
+					request.setAttribute("container", forum.getName());
+					request.setAttribute("dispatchPath",
+							"displayTopics.do?forumzoneId=" + forumzone.getId()
+									+ "&forumId=" + forum.getId()
+									+ "&forumName=" + forum.getName());
+					return "redirect:/messages?topicModeration";
+				}
+			}
+
+			if (upload != null) {
+				attachmentService.uploadAttachment(upload.getInputStream(),
+						upload.getContentType(), upload.getOriginalFilename(),
+						upload.getSize(), comment, user.getCore(),
+						savedTopic.getCore());
+			}
+
+			if (attachmentIds != null)
+				for (int attachmentId : attachmentIds)
+					attachmentService.confirmEmbeddedImageUpload(
+							savedTopic.getCore(), attachmentId);
+
+		} catch (InsufficientPermissionException ex) {
+			// do nothing,just get an fresh topic from db to override
+			// the cached one
+			savedTopic = infoService.getTopicById(topicId);
+			savedTopic.setSubject(originalSubject);
+			savedTopic.setContent(originalContent);
+			savedTopic.setInfoType(originalInfoType);
+
+			request.setAttribute("insufficientPermission", true);
+			return "default/user/message";
+		}
+
+		return "redirect:/forums/topics/" + topicId;
+	}
+
+	@RequestMapping(value = "/forums//topics/{topicId}", method = RequestMethod.PUT)
+	public String lockUnLockTopic(@PathVariable int topicId, String reason,
+			HttpServletRequest request) {
+
+		HttpSession session = request.getSession(false);
+		UserSession userSession = (UserSession) session
+				.getAttribute(Constants.USER_SESSION);
+
+		InfoService service = new InfoService();
+		Topic topic = service.getTopicById(topicId);
+		if (topic.isLocked())
+			service.unlockTopic(topicId, userSession, reason);
+		else
+			service.lockTopic(topicId, userSession, reason);
+
+		return "redirect:" + request.getServletPath();
 	}
 }

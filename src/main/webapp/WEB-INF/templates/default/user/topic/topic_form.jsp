@@ -1,22 +1,31 @@
 <%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
 <%@ include file="/WEB-INF/templates/default/user/common/header.jsp"%>
-<%@ include file="/WEB-INF/templates/default/user/common/ckEditor_init.jsp"%>
+<%@ include
+	file="/WEB-INF/templates/default/user/common/ckEditor_init.jsp"%>
 <link rel="stylesheet" type="text/css"
 	href="${resourcesHost}/css/tabs.css" />
-<script type="text/javascript" src="${resourcesHost}/javascripts/post.js"></script>
+<script type="text/javascript"
+	src="${resourcesHost}/javascripts/post.js"></script>
 
 <c:choose>
 	<c:when test="${not empty requestScope.edittedTopic}">
 		<c:set var="subject" value="${requestScope.edittedTopic.subject}" />
-		<c:set var="topicId" value="${requestScope.edittedTopic.id}" />
 		<c:set var="content" value="${requestScope.edittedTopic.content}" />
 		<c:set var="infoType" value="${requestScope.edittedTopic.infoType}" />
 		<c:set var="editted" value="${requestScope.editted}" />
+		<c:set var="method" value="put" />
+		<c:set var="url"
+			value="${contextPath}/forums/${requestScope.forumId}/topic/${requestScope.edittedTopic.id}" />
 	</c:when>
+	<c:otherwise>
+		<c:set var="method" value="post" />
+		<c:set var="url"
+			value="${contextPath}/forums/${requestScope.forumId}/topic/" />
+	</c:otherwise>
 </c:choose>
 
-<sf:form action="${contextPath}/forums/${requestScope.forumId}/topic" styleId="post" modelAttribute="topic"
-	enctype="multipart/form-data">
+<sf:form action="${url}" styleId="post" modelAttribute="topic"
+	method="${method}" enctype="multipart/form-data">
 	<table cellspacing="0" cellpadding="10" width="100%" align="center"
 		border="0">
 		<tr>
@@ -44,13 +53,12 @@
 						<td class="row1" width="15%"><span class="gen"><b><fmt:message
 										key="topic_form.jsp.subject" /></b></span></td>
 						<td class="row2" width="85%"><span class="gen"> <input
-								type="hidden" name="forumId" value="${param.forumId}" /> <input
-								type="hidden" name="forumName" value="${requestScope.forumName}" />
-								<html:errors property="title" /> <input type="hidden"
-								name="editted" value="${editted}" /> <input type="hidden"
-								name="topicId" value="${topicId}" /> <input type="text"
-								class="subject" tabindex="2" maxlength="100" name="subject"
-								value="${subject}" />
+								type="hidden" name="forumId" value="${requestScope.forumId}" />
+								<input type="hidden" name="forumName"
+								value="${requestScope.forumName}" /> <html:errors
+									property="title" /> <input type="hidden" name="editted"
+								value="${editted}" /> <input type="text" class="subject"
+								tabindex="2" maxlength="100" name="subject" value="${subject}" />
 						</span></td>
 					</tr>
 
