@@ -1,4 +1,4 @@
-<%@ include file="/scripts/attachments.jsp"%>
+<%@ include file="/WEB-INF/templates/default/user/common/attachments.jsp"%>
 
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
 	<tr>

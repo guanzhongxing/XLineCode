@@ -231,6 +231,18 @@ public class TopicController {
 		return showTopicForm(forumId, request);
 	}
 
+	@RequestMapping(value = "/forums/{forumId}/topic/{topicId}", method = RequestMethod.GET, params = "move")
+	public String showMoveTopicForm(@PathVariable int topicId,
+			HttpServletRequest request) {
+
+		ForumzoneService forumzoneService = new ForumzoneService();
+		List<Forumzone> forumzones = forumzoneService.getForumzones();
+		request.setAttribute("forumzones", forumzones);
+		request.setAttribute("topicId", topicId);
+
+		return "default/admin/topic_move";
+	}
+
 	@RequestMapping(value = "/forums/{forumId}/topic", method = RequestMethod.POST)
 	public String createTopic(@Valid Topic topic, @PathVariable int forumId,
 			@RequestParam(required = false) Integer[] attachmentIds,
@@ -363,7 +375,7 @@ public class TopicController {
 		return "redirect:/forums/topics/" + topicId;
 	}
 
-	@RequestMapping(value = "/forums//topics/{topicId}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/forums/topics/{topicId}", method = RequestMethod.PUT)
 	public String lockUnLockTopic(@PathVariable int topicId, String reason,
 			HttpServletRequest request) {
 
@@ -379,5 +391,18 @@ public class TopicController {
 			service.lockTopic(topicId, userSession, reason);
 
 		return "redirect:" + request.getServletPath();
+	}
+
+	@RequestMapping(value = "/forums/topics/{topicId}", method = RequestMethod.PUT, params = "move")
+	public String moveTopic(@PathVariable int topicId, int forumId,
+			String reason, HttpServletRequest request) {
+
+		HttpSession session = request.getSession(false);
+		UserSession userSession = (UserSession) session
+				.getAttribute(Constants.USER_SESSION);
+
+		InfoService service = new InfoService();
+		service.moveTopic(topicId, forumId, userSession.getUserId(), reason);
+		return "redirect:/forums";
 	}
 }

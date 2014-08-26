@@ -8,15 +8,14 @@
 			alert("<fmt:message key="topic_move.jsp.move.reason" />");
 			return false;
 		} else {
-			document.getElementById("reason").value=message;
+			document.getElementById("reason").value = message;
 			return true;
 		}
 	}
 </script>
 
-<html:form action="/admin/topic/move" styleId="topicMovement"
-	enctype="multipart/form-data" onsubmit="return askModerationReason();">
-	<input type="hidden" name="topicId" value="${param.topicId}" />
+<sf:form action="${contextPath}/forums/topics/${topicId}?move" styleId="topicMovement"
+	method="put" onsubmit="return askModerationReason();">
 	<input id="reason" type="hidden" name="reason" value="" />
 
 	<table width="100%" cellspacing="0" cellpadding="10" border="0"
@@ -27,7 +26,8 @@
 					align="center">
 					<tr>
 						<td align="left" class="nav"><a class="nav"
-							href="${contextPath}/forums"><fmt:message key="all.jsp.forums" /></a></td>
+							href="${contextPath}/forums"><fmt:message
+									key="all.jsp.forums" /></a></td>
 					</tr>
 				</table>
 
@@ -50,7 +50,7 @@
 										<tr>
 											<td align="center"><span class="gen"><fmt:message
 														key="topic_move.jsp.move.to" /> <select id="select"
-													name="newForumId">
+													name="forumId">
 														<c:forEach var="forumzone"
 															items="${requestScope.forumzones}">
 															<optgroup label="${forumzone.name}">
@@ -83,6 +83,6 @@
 				</table></td>
 		</tr>
 	</table>
-</html:form>
+</sf:form>
 
 <%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

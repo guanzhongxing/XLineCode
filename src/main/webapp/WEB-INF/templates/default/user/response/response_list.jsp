@@ -259,7 +259,7 @@
 									style="border: 0px;" />
 							</c:if> <c:if test="${enableTopicMovement}">
 								<a
-									href="${contextPath}/do/admin/topic/move/init?topicId=${currentTopic.id}"
+									href="${contextPath}/forums/${forum.id}/topic/${currentTopic.id}?move"
 									rel="nofollow"><img class="icon_topic_move"
 									src="${resourcesHost}/images/topic_move.gif" title="Move"
 									alt=""></a>

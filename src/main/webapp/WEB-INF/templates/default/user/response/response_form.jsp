@@ -4,29 +4,26 @@
 	file="/WEB-INF/templates/default/user/common/ckEditor_init.jsp"%>
 <link rel="stylesheet" type="text/css"
 	href="${resourcesHost}/css/tabs.css" />
-<script type="text/javascript" src="${resourcesHost}/javascripts/post.js"></script>
+<script type="text/javascript"
+	src="${resourcesHost}/javascripts/post.js"></script>
 
 <c:choose>
 	<c:when test="${not empty requestScope.edittedRsp}">
-		<c:set var="title" value="${requestScope.edittedRsp.subject}" />
-		<c:set var="topicId" value="${requestScope.edittedRsp.id}" />
+		<c:set var="subject" value="${requestScope.edittedRsp.subject}" />
 		<c:set var="content" value="${requestScope.edittedRsp.content}" />
 		<c:set var="editted" value="${requestScope.editted}" />
 		<c:set var="fromModeration" value="${requestScope.fromModeration}" />
+		<c:set var="method" value="put" />
+		<c:set var="url" value="${contextPath}/forums/topics/${requestScope.topic.id}/${requestScope.edittedRsp.id}" />
 	</c:when>
 	<c:otherwise>
-		<c:set var="title" value="${requestScope.ResponseForm.title}" />
-		<c:set var="topicId" value="${requestScope.ResponseForm.topicId}" />
-		<c:set var="content" value="${requestScope.ResponseForm.content}" />
-		<c:set var="fromModeration"
-			value="${requestScope.ResponseForm.fromModeration}" />
-		<c:set var="moderationReason"
-			value="${requestScope.ResponseForm.moderationReason}" />
-		<c:set var="editted" value="${requestScope.ResponseForm.editted}" />
+		<c:set var="method" value="post" />
+		<c:set var="url" value="${contextPath}/forums/topics/${requestScope.topic.id}/response" />
 	</c:otherwise>
 </c:choose>
 
-<html:form action="respondTopic.do" styleId="post"
+<sf:form action="${url}"
+	method="${method}" styleId="post" modelAttribute="response"
 	enctype="multipart/form-data">
 	<table cellspacing="0" cellpadding="10" width="100%" align="center"
 		border="0">
@@ -37,7 +34,8 @@
 					<tr>
 						<td align="right"><span class="nav"> <a class="nav"
 								href="${contextPath}/forums/topics/${requestScope.topic.id}">${requestScope.topic.subject}</a>&raquo;
-								<a class="nav" href="${contextPath}/forums/${requestScope.forum.id}">${requestScope.forum.name}</a>&raquo;
+								<a class="nav"
+								href="${contextPath}/forums/${requestScope.forum.id}">${requestScope.forum.name}</a>&raquo;
 								<a class="nav" href="${contextPath}/forums"><fmt:message
 										key="respond_topic.jsp.forums" /></a>
 						</span></td>
@@ -59,14 +57,11 @@
 										key="respond_topic.jsp.subject" /></b></span></td>
 						<td class="row2" width="85%"><span class="gen"><html:errors
 									property="title" /><input class="subject" type="text"
-								tabindex="2" maxlength="100" name="title"
-								value="<c:choose><c:when test="${not empty title}">${title}</c:when><c:when test="${(empty title)&&!editted}"><fmt:message key="respond_topic.jsp.Re"><fmt:param value="${requestScope.topic.subject}"/></fmt:message></c:when></c:choose>" />
+								tabindex="2" maxlength="100" name="subject"
+								value="<c:choose><c:when test="${not empty subject}">${subject}</c:when><c:when test="${(empty subject)&&!editted}"><fmt:message key="respond_topic.jsp.Re"><fmt:param value="${requestScope.topic.subject}"/></fmt:message></c:when></c:choose>" />
 								<input type="hidden" name="forumId"
 								value="${requestScope.forum.id}" /> <input type="hidden"
-								name="editted" value="${editted}" /> <input type="hidden"
-								name="topicId" value="${requestScope.topic.id}" /> <input
-								type="hidden" name="responseId" value="${param.responseId}" />
-						</span></td>
+								name="editted" value="${editted}" /> </span></td>
 					</tr>
 
 					<tr>
@@ -182,6 +177,6 @@
 			</td>
 		</tr>
 	</table>
-</html:form>
+</sf:form>
 
 <%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>

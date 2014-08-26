@@ -36,10 +36,9 @@ import com.vertonur.util.PermissionUtils;
 import com.vertonur.util.ForumCommonUtil.PageType;
 
 @Controller
-@RequestMapping({ "/", "/forums" })
 public class ForumController {
 
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value = { "/", "/forums" }, method = RequestMethod.GET)
 	public String getForumList(HttpServletRequest request) {
 		ForumzoneService forumzoneService = new ForumzoneService();
 		List<Forumzone> forumzones = forumzoneService.getForumzones();

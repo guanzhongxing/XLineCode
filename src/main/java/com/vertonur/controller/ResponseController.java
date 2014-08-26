@@ -1,5 +1,6 @@
 package com.vertonur.controller;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.vertonur.bean.Forum;
 import com.vertonur.bean.Forumzone;
@@ -27,12 +30,17 @@ import com.vertonur.bean.config.GlobalConfig;
 import com.vertonur.bean.config.SystemConfig;
 import com.vertonur.constants.Constants;
 import com.vertonur.context.SystemContextService;
+import com.vertonur.dms.AttachmentService;
 import com.vertonur.dms.RuntimeParameterService;
 import com.vertonur.dms.constant.ServiceEnum;
+import com.vertonur.dms.exception.AttachmentSizeExceedException;
+import com.vertonur.dms.exception.SavingCommentToLockedInfoException;
 import com.vertonur.pagination.PaginationContext;
 import com.vertonur.pagination.PaginationContext.CxtType;
+import com.vertonur.pojo.ModerationLog.ModerationStatus;
 import com.vertonur.pojo.config.AttachmentConfig;
 import com.vertonur.pojo.config.UserConfig;
+import com.vertonur.security.exception.InsufficientPermissionException;
 import com.vertonur.service.ForumzoneService;
 import com.vertonur.service.InfoService;
 import com.vertonur.service.UserService;
@@ -47,6 +55,7 @@ public class ResponseController {
 	@RequestMapping(value = "/forums/topics/{topicId}", method = RequestMethod.GET)
 	public String getResponseList(@PathVariable int topicId,
 			@RequestParam(required = false) boolean iFrame,
+			@RequestParam(required = false) boolean recordStatistic,
 			@RequestParam(defaultValue = "0") int start,
 			HttpServletRequest request) throws IllegalAccessException,
 			InstantiationException, InvocationTargetException,
@@ -80,8 +89,7 @@ public class ResponseController {
 			request.setAttribute("loginUserSessions",
 					service.getLoginSessions());
 
-			String recordStatistic = request.getParameter("recordStatistic");
-			if (!"false".equals(recordStatistic)) {
+			if (!recordStatistic) {
 				TopicStatistician statistician = topic.getStatistician();
 				statistician.addClickThroughRate();
 				infoService
@@ -230,6 +238,133 @@ public class ResponseController {
 		return "default/user/response/response_form";
 	}
 
+	@RequestMapping(value = "/forums/topics/{topicId}/response", method = RequestMethod.POST)
+	public String createResponse(@PathVariable int topicId,
+			@Valid Response response,
+			@RequestParam(required = false) MultipartFile upload,
+			@RequestParam(required = false) String comment,
+			@RequestParam(required = false) Integer[] attachmentIds,
+			HttpServletRequest request) throws AttachmentSizeExceedException,
+			IOException {
+
+		InfoService infoService = new InfoService();
+		HttpSession session = request.getSession(false);
+		UserSession userSession = (UserSession) session
+				.getAttribute(Constants.USER_SESSION);
+		UserService userService = new UserService();
+		User user = userService.getUserById(userSession.getUserId());
+		SystemContextService systemContextService = SystemContextService
+				.getService();
+		AttachmentService attachmentService = systemContextService
+				.getDataManagementService(ServiceEnum.ATTACHMENT_SERVICE);
+
+		// set up data of a new response
+		response.setCreatedTime(new Date());
+		response.setLatestOne(true);
+		response.setAuthor(user);
+
+		Topic topic = infoService.getTopicById(topicId);
+		response.setTopic(topic);
+		// end
+
+		ModerationStatus status = null;
+		try {
+			status = infoService.saveResponse(response);
+			if (upload != null)
+				attachmentService.uploadAttachment(upload.getInputStream(),
+						upload.getContentType(), upload.getOriginalFilename(),
+						new Long(upload.getSize()).longValue(), comment,
+						user.getCore(), response.getCore());
+
+		} catch (SavingCommentToLockedInfoException e) {
+			systemContextService.rollbackTransaction();
+			request.setAttribute("saveCmtToLockedInfo", true);
+			return "default/user/message";
+		}
+
+		if (attachmentIds != null)
+			for (int attachmentId : attachmentIds)
+				attachmentService.confirmEmbeddedImageUpload(topic.getCore(),
+						attachmentId);
+
+		// TODO:调试审核功能
+		if (ModerationStatus.PENDING.equals(status)
+				|| ModerationStatus.DEFERRED.equals(status)) {
+			setModerationInfo(topic, request);
+			return "redirect:/messages?responseModeration";
+		}
+		userSession.setLastCmtDate(new Date());
+
+		return "redirect:/forums/topics/" + topicId + "?recordStatistic=false";
+	}
+
+	private void setModerationInfo(Topic topic, HttpServletRequest request) {
+		request.setAttribute("container", topic.getSubject());
+		request.setAttribute("dispatchPath", "displayResponses.do?forumId="
+				+ topic.getForum().getId() + "&&topicId=" + topic.getId());
+	}
+
+	@RequestMapping(value = "/forums/topics/{topicId}/{responseId}", method = RequestMethod.PUT)
+	public String updateResponse(@PathVariable int topicId,
+			@PathVariable int responseId, @Valid Response response,
+			@RequestParam(required = false) MultipartFile upload,
+			@RequestParam(required = false) String comment,
+			@RequestParam(required = false) Integer[] attachmentIds,
+			@RequestParam(required = false) boolean fromModeration,
+			@RequestParam(required = false) String moderationReason,
+			HttpServletRequest request) throws AttachmentSizeExceedException,
+			IOException {
+
+		InfoService infoService = new InfoService();
+		HttpSession session = request.getSession(false);
+		UserSession userSession = (UserSession) session
+				.getAttribute(Constants.USER_SESSION);
+		UserService userService = new UserService();
+		User user = userService.getUserById(userSession.getUserId());
+		SystemContextService systemContextService = SystemContextService
+				.getService();
+		AttachmentService attachmentService = systemContextService
+				.getDataManagementService(ServiceEnum.ATTACHMENT_SERVICE);
+		Response rsp = infoService.getResponseById(responseId);
+		rsp.setSubject(response.getSubject());
+		String originalContent = rsp.getContent();
+		rsp.setContent(response.getContent());
+
+		try {
+			if (fromModeration) {
+				infoService.modifyRsp(originalContent, rsp,
+						userSession.getUserId(), moderationReason);
+			} else {
+				// TODO:调试审核功能
+				ModerationStatus status = infoService.updateResponse(rsp);
+				if (ModerationStatus.PENDING.equals(status)
+						|| ModerationStatus.DEFERRED.equals(status)) {
+					Topic topic = rsp.getTopic();
+					setModerationInfo(topic, request);
+					return "redirect:/messages?responseModeration";
+				}
+			}
+
+			if (upload != null)
+				attachmentService.uploadAttachment(upload.getInputStream(),
+						upload.getContentType(), upload.getOriginalFilename(),
+						new Long(upload.getSize()).longValue(), comment,
+						user.getCore(), rsp.getCore());
+
+			if (attachmentIds != null)
+				for (int attachmentId : attachmentIds)
+					attachmentService.confirmEmbeddedImageUpload(rsp.getCore(),
+							attachmentId);
+
+		} catch (InsufficientPermissionException ex) {
+			systemContextService.rollbackTransaction();
+			request.setAttribute("insufficientPermission", true);
+			return "default/user/message";
+		}
+
+		return "redirect:/forums/topics/" + topicId + "?recordStatistic=false";
+	}
+
 	@RequestMapping(value = "/forums/topics/responses", method = RequestMethod.GET)
 	public String getUserSpecifiedResponseList(@RequestParam int userId,
 			@RequestParam(defaultValue = "0") int start,
@@ -264,7 +399,7 @@ public class ResponseController {
 		InfoService infoService = new InfoService();
 		int start = infoService.getRspPageIndex(responseId);
 
-		return getResponseList(topicId, false, start, request);
+		return getResponseList(topicId, false, true, start, request);
 	}
 
 	@RequestMapping(value = "/forums/topics/{topicId}/{responseId}", method = RequestMethod.DELETE)
