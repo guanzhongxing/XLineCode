@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -119,5 +120,31 @@ public class PrivateMessageController {
 		}
 
 		return "default/user/message/pm_form";
+	}
+
+	@RequestMapping(value = "/form", method = RequestMethod.POST)
+	public String createMessage(@Valid PrivateMessage pm,
+			@RequestParam int receiverId,
+			@RequestParam(required = false) boolean attachSig,
+			HttpServletRequest request) {
+
+		HttpSession session = request.getSession(false);
+		UserSession userSession = (UserSession) session
+				.getAttribute(Constants.USER_SESSION);
+		UserService userService = SystemContextService.getService()
+				.getDataManagementService(ServiceEnum.USER_SERVICE);
+		User theCurrentUser = userService.getUserById(userSession.getUserId());
+
+		pm.setAuthor(theCurrentUser);
+		pm.setAttachSig(attachSig);
+		User receiver = userService.getUserById(receiverId);
+		pm.setReceiver(receiver);
+		pm.setCreatedTime(new Date());
+		InfoService infoService = SystemContextService.getService()
+				.getDataManagementService(ServiceEnum.INFO_SERVICE);
+		infoService.savePrivateMsg(pm);
+
+		return "redirect:/pms?boxType=sentBox";
+
 	}
 }

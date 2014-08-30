@@ -70,7 +70,7 @@
 														border="0" alt="[Message]" /> <fmt:message
 															key="all.jsp.privateMsg" />
 												</a>&nbsp; <a id="logout" class="mainmenu" rel="nofollow"
-													href="${contextPath}/logout.do"> <img
+													href="${contextPath}/logout"> <img
 														src="${resourcesHost}/images/icon_mini_login.gif"
 														border="0" alt="[Login]" /> <fmt:message
 															key="header.jsp.logout" />&nbsp;[${sessionScope.userSession.username}]

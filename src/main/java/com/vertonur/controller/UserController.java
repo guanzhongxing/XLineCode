@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -61,7 +62,7 @@ import freemarker.template.TemplateException;
 public class UserController {
 
 	@RequestMapping(value = "/users/form", method = RequestMethod.GET)
-	public String showHomePage(HttpServletRequest request) {
+	public String showLoginPage(HttpServletRequest request) {
 
 		GlobalConfig config = SystemConfig.getConfig().getGlobalConfig();
 		request.setAttribute("loginCaptchaEnabled",
@@ -487,5 +488,19 @@ public class UserController {
 			request.setAttribute("invalidPwd", "true");
 			return "default/user/user/user_change_pwd";
 		}
+	}
+
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logout(HttpServletRequest request) throws LoginException {
+
+		HttpSession session = request.getSession();
+		UserSession userSession = (UserSession) session
+				.getAttribute(Constants.USER_SESSION);
+		if (userSession != null && userSession.isLogin()) {
+			SystemContextService.getService().logout(userSession);
+			return "redirect:user/filter_logout";
+		}
+
+		return "redirect:/users/form";
 	}
 }

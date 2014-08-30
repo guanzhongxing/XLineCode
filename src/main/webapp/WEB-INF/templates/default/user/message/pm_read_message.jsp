@@ -42,15 +42,13 @@
                 </table>
 				<br clear="all" />
 				<form action="#" method="post">
-				<input type="hidden" name="module" value="${moduleName}" />
-				<input type="hidden" name="action" value="delete" />
 					<table cellspacing="2" cellpadding="2" width="100%" border="0">
 						<tbody>
 							<tr>
 								<td valign="middle"><a href="${contextPath}/pms/form?pmId=${thePm.id}" class="icon_reply"><img src="${resourcesHost}/images/${locale}/reply.gif" alt="" /></a>
 								</td>
 								<td width="100%">
-									<span class="nav">&nbsp;<a class="nav" href="forums"><fmt:message key="all.jsp.forums"/></a></span>
+									<span class="nav">&nbsp;<a class="nav" href="${contextPath}/forums"><fmt:message key="all.jsp.forums"/></a></span>
 								</td>
 							</tr>
 						</tbody>

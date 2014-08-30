@@ -5,7 +5,7 @@
 	<c:when test="${requestScope.attachmentsEnabled}">
 	window.onload = function() {
 		CKEDITOR.replace('content', {
-			filebrowserUploadUrl : '${contextPath}//attachments/image'
+			filebrowserUploadUrl : '${contextPath}/attachments/image'
 		});
 	};
 	</c:when>

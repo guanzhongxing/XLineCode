@@ -5,7 +5,6 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Style-Type" content="text/css" />
-		<title>{pageTitle}</title>
 		<link rel="stylesheet" type="text/css" href="${resourcesHost}/css/style.css" />
 	</head>
 

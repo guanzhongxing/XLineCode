@@ -1,14 +1,15 @@
 <%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
 <fmt:message var="title" key="all.jsp.privateMsg" />
 <%@ include file="/WEB-INF/templates/default/user/common/header.jsp"%>
-<%@ include file="/WEB-INF/templates/default/user/common/tinyMCE.htm"%>
+<%@ include
+	file="/WEB-INF/templates/default/user/common/ckEditor_init.jsp"%>
 
 <c:if test="${not empty requestScope.reviewedPm}" var="isReply"
 	scope="page">
 	<c:set var="reviewedPm" value="${requestScope.reviewedPm}" />
 </c:if>
 
-<html:form action="createPrivateMsg.do" styleId="post">
+<sf:form action="${contextPath}/pms/form" styleId="post" modelAttribute="pm" method="post">
 	<table cellspacing="0" cellpadding="10" width="100%" align="center"
 		border="0">
 		<tr>
@@ -36,19 +37,19 @@
 										key="pm.jsp.to" /></b></span></td>
 						<td class="row2" width="85%"><span class="gen"> <c:choose>
 									<c:when test="${isReply}">
-										<input type="hidden" name="userId"
+										<input type="hidden" name="receiverId"
 											value="${reviewedPm.author.id}" />
 											${reviewedPm.author.name}
 								</c:when>
 									<c:otherwise>
 										<c:choose>
 											<c:when test="${not empty requestScope.receiver}">
-												<input type="hidden" name="userId"
+												<input type="hidden" name="receiverId"
 													value="${requestScope.receiver.id}" />
 											${requestScope.receiver.name}
 										</c:when>
 											<c:otherwise>
-												<select name="userId">
+												<select name="receiverId">
 													<c:forEach var="user" items="${requestScope.users}">
 														<option value="${user.id}">${user.name}</option>
 													</c:forEach>
@@ -66,7 +67,7 @@
 						<td class="row2" width="85%"><span class="gen"><html:errors
 									property="subject" /><input class="subject" type="text"
 								tabindex="2" maxlength="100" name="subject"
-								value="<c:choose><c:when test="${isReply}">Re:${reviewedPm.subject}</c:when><c:otherwise>${requestScope.PrivateMsgForm.subject}</c:otherwise></c:choose>" /></span></td>
+								value="<c:choose><c:when test="${isReply}">Re:${reviewedPm.subject}</c:when><c:otherwise>${requestScope.subject}</c:otherwise></c:choose>" /></span></td>
 					</tr>
 
 					<tr>
@@ -74,7 +75,7 @@
 										key="all.jsp.msgBody" /></b></span></td>
 
 						<td class="row2" valign="top"><c:if
-								test="${param.quote=='true'}" var="isQuoted" scope="page" />
+								test="${param.quote}" var="isQuoted" scope="page" />
 							<div class="gen">
 								<html:errors property="content" />
 								<input type="hidden" name="isQuoted" value=true />
@@ -83,13 +84,14 @@
 								<blockquote>
 											<cite>${reviewedPm.author.name}</cite>
 							
+									
 									</c:if>
 							<c:choose>
 								<c:when test="${isReply}">
 									${reviewedPm.content}
 								</c:when>
 								<c:otherwise>
-									${requestScope.PrivateMsgForm.content}
+									${requestScope.content}
 								</c:otherwise>
 							</c:choose>
 							<c:if test="${isQuoted}">
@@ -133,14 +135,13 @@
 						<tr>
 							<td class="row1"><iframe width="100%" height="300"
 									frameborder="0"
-									src="${contextPath}/pms/${param.pmId}?iFrame=true"></iframe>
-							</td>
+									src="${contextPath}/pms/${param.pmId}?iFrame=true"></iframe></td>
 						</tr>
 					</table>
 				</td>
 			</tr>
 		</c:if>
 	</table>
-</html:form>
+</sf:form>
 
 <%@ include file="/WEB-INF/templates/default/common/footer.jsp"%>
