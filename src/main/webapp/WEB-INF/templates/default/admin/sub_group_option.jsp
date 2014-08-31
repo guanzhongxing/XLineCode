@@ -5,8 +5,8 @@
 		<option value="${subGroup.id}"
 			<c:if test="${subGroup.id==parentGroupId}">selected</c:if>>
 			<c:forEach begin="0" end="${subGroup.nestedLevel}">&nbsp;&nbsp;</c:forEach>
-			${subGroup.name}
+			${subGroup.name} - -${groupId}
 		</option>
-		<c:import url="${baseUrl}&groupId=${subGroup.id}" />
+		<c:import url="/admin/groups/${subGroup.id}" />
 	</c:if>
 </c:forEach>

@@ -12,7 +12,7 @@
 		<c:set var="permissionConfig" value="false" scope="request" />
 	</c:otherwise>
 </c:choose>
-<html:form action="/admin/group/post?action=delete" method="post">
+<sf:form action="${contextPath}/admin/groups" method="delete">
 	<table class="forumline" cellspacing="1" cellpadding="3" width="100%"
 		border="0">
 		<tr>
@@ -52,7 +52,7 @@
 			</tr>
 
 			<c:import
-				url="/do/admin/group/get?action=subGroup&type=list&groupId=${group.id}" />
+				url="/admin/groups/${group.id}?type=list" />
 		</c:forEach>
 
 		<c:if test="${!permissionConfig}">
@@ -66,5 +66,5 @@
 			</tr>
 		</c:if>
 	</table>
-</html:form>
+</sf:form>
 

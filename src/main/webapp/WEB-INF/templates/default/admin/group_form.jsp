@@ -2,7 +2,18 @@
 <link rel="stylesheet" type="text/css"
 	href="${resourcesHost}/css/style.css" />
 
-<html:form action="/admin/group/post" method="post">
+<c:choose>
+	<c:when test="${not empty requestScope.edittedGroup}">
+		<c:set var="method" value="put" />
+		<c:set var="url"
+			value="${contextPath}/admin/groups/${edittedGroup.id}" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="method" value="post" />
+		<c:set var="url" value="${contextPath}/admin/groups/form" />
+	</c:otherwise>
+</c:choose>
+<sf:form action="${url}" method="${method}">
 	<table class="forumline" cellspacing="1" cellpadding="3" width="100%"
 		border="0">
 		<tr>
@@ -15,47 +26,30 @@
 						key="group_form.jsp.name" /></span></td>
 			<td class="row2"><c:choose>
 					<c:when test="${not empty requestScope.edittedGroup}">
-						<input type="text" name="groupName" value="${edittedGroup.name}" />
+						<input type="text" name="name" value="${edittedGroup.name}" />
 					</c:when>
 					<c:otherwise>
-						<input type="text" name="groupName"
+						<input type="text" name="name"
 							value="${requestScope.GroupConfigForm.groupName}" />
 					</c:otherwise>
-				</c:choose> <html:errors property="groupName" /><input type="hidden"
-				name="groupId" value="${edittedGroup.id}" /></td>
+				</c:choose> <html:errors property="name" /></td>
 		</tr>
-
 
 		<c:choose>
 			<c:when test="${not empty requestScope.edittedGroup}">
-				<c:set var="baseUrl"
-					value="/do/admin/group/get?action=subGroup&&edittedGroupId=${edittedGroup.id}"
+				<c:set var="groupId" value="${requestScope.edittedGroup.id}"
 					scope="request" />
+				<c:set var="parentGroupId"
+					value="${requestScope.edittedGroup.parent.id}" scope="request" />
 			</c:when>
 			<c:otherwise>
-				<c:set var="baseUrl" value="/do/admin/group/get?action=subGroup"
-					scope="request" />
+				<c:set var="parentGroupId" value="-1" scope="request" />
 			</c:otherwise>
 		</c:choose>
 		<tr>
 			<td class="row1"><span class="gen"><fmt:message
 						key="group_form.jsp.parent.name" /></span></td>
-			<td class="row2"><c:choose>
-					<c:when test="${requestScope.GroupConfigForm.parentGroupId!=0}">
-						<c:set var="parentGroupId"
-							value="${requestScope.GroupConfigForm.parentGroupId}"
-							scope="request" />
-					</c:when>
-					<c:when test="${not empty requestScope.edittedGroup}">
-						<c:set var="groupId" value="${requestScope.edittedGroup.id}"
-							scope="request" />
-						<c:set var="parentGroupId"
-							value="${requestScope.edittedGroup.parent.id}" scope="request" />
-					</c:when>
-					<c:otherwise>
-						<c:set var="parentGroupId" value="-1" scope="request" />
-					</c:otherwise>
-				</c:choose> <html:errors property="parentGroupId" /><select
+			<td class="row2"><html:errors property="parentGroupId" /><select
 				name="parentGroupId">
 					<option value="0">
 						<fmt:message key="group_form.jsp.top.lv.group" />
@@ -66,7 +60,7 @@
 							<c:if test="${group.id!=groupId}">
 								<option value="${group.id}"
 									<c:if test="${group.id==parentGroupId}">selected</c:if>>${group.name}</option>
-								<c:import url="${baseUrl}&&groupId=${group.id}" />
+								<c:import url="/admin/groups/${group.id}" />
 							</c:if>
 						</c:forEach>
 					</c:if>
@@ -100,10 +94,11 @@
 		<tr>
 			<td class="row1"><span class="gen"><fmt:message
 						key="group_form.jsp.desc" /></span></td>
-			<td class="row2"><html:errors property="groupDesc" /> <textarea
-					rows="4" cols="30" name="groupDesc" wrap="hard">
+			<td class="row2"><html:errors property="description" /> <textarea
+					rows="4" cols="30" name="description" wrap="hard">
 					<c:choose>
-						<c:when test="${not empty requestScope.GroupConfigForm.groupDesc}">${requestScope.GroupConfigForm.groupDesc}</c:when>
+						<c:when
+							test="${not empty requestScope.GroupConfigForm.description}">${requestScope.GroupConfigForm.description}</c:when>
 						<c:when test="${not empty requestScope.edittedGroup}">${requestScope.edittedGroup.description}</c:when>
 						<c:otherwise>
 							<fmt:message key="group_form.jsp.desc.default" />
@@ -117,5 +112,5 @@
 				value="<fmt:message key="group_form.jsp.update" />" name="submit" /></td>
 		</tr>
 	</table>
-</html:form>
+</sf:form>
 

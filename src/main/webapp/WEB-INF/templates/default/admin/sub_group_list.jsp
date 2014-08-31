@@ -19,7 +19,7 @@
 
 		<c:if test="${!permissionConfig}">
 			<td align="center"><span class="gen"><a
-					href="${contextPath}/do/admin/group/get?action=edit&&groupId=${group.id}"><fmt:message
+					href="${contextPath}/admin/groups/form?groupId=${group.id}"><fmt:message
 							key="group_list.jsp.edit" /></a></span></td>
 			<td align="center"><c:if test="${group.deletable}">
 					<input type="checkbox" name="groupIds" value="${group.id}" />
@@ -30,13 +30,13 @@
 			<c:when test="${permissionConfig}">
 				<c:if test="${group.groupType=='GENERIC_ADMIN'}">
 					<td class="row2" align="center"><span class="gen"><a
-							href="${contextPath}/do/admin/permission/list?groupId=${group.id}"><fmt:message
+							href="${contextPath}/admin/permissions/${group.id}"><fmt:message
 									key="group_list.jsp.security" /></a></span></td>
 				</c:if>
 			</c:when>
 			<c:otherwise>
 				<td class="row2" align="center"><span class="gen"><a
-						href="${contextPath}/do/admin/permission/list?groupId=${group.id}"><fmt:message
+						href="${contextPath}/admin/permissions/${group.id}"><fmt:message
 								key="group_list.jsp.security" /></a></span></td>
 			</c:otherwise>
 		</c:choose>
@@ -44,5 +44,5 @@
 	</tr>
 
 	<c:import
-		url="/do/admin/group/get?action=subGroup&&groupId=${group.id}" />
+		url="/admin/groups/${group.id}" />
 </c:forEach>
