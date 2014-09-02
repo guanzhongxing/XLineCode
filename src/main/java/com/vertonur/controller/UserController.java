@@ -194,7 +194,8 @@ public class UserController {
 		return "default/user/user/members_list";
 	}
 
-	@RequestMapping(value = "/users", params = "admin")
+	@RequestMapping(value = "/users", params = "admin", method = {
+			RequestMethod.GET, RequestMethod.PUT })
 	public String getAdminUserList(@RequestParam(defaultValue = "0") int start,
 			@RequestParam(required = false) String username,
 			@RequestParam(defaultValue = "0") int groupId,
@@ -233,6 +234,21 @@ public class UserController {
 		request.setAttribute(PaginationContext.PAGE_CXT, pageCxt);
 
 		return "default/admin/user_list";
+	}
+
+	@RequestMapping(value = "/users", params = "lock", method = RequestMethod.PUT)
+	public String lockUnLockUsers(@RequestParam int[] userIds,
+			HttpServletRequest request) {
+
+		UserService service = new UserService();
+		for (int id : userIds) {
+			User user = service.getUserById(id);
+			if (user.isLocked())
+				service.unLockUser(user);
+			else
+				service.lockUser(user);
+		}
+		return "redirect:/users?admin";
 	}
 
 	@RequestMapping(value = "/users/{userId}/groups")
