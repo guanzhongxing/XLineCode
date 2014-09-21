@@ -1,36 +1,48 @@
 <%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
 <link rel="stylesheet" type="text/css"
 	href="${resourcesHost}/css/style.css" />
-	
+
 <c:choose>
-	<c:when test="${not empty requestScope.RankingConfigForm}">
-		<c:set var="rankingId" value="${requestScope.RankingConfigForm.id}" />
-		<c:set var="name" value="${requestScope.RankingConfigForm.name}" />
-		<c:set var="timeRanking"
-			value="${requestScope.RankingConfigForm.timeRanking}" />
-		<c:set var="limitHours"
-			value="${requestScope.RankingConfigForm.limitHours}" />
-		<c:set var="points" value="${requestScope.RankingConfigForm.points}" />
-		<c:set var="rankingGroupIds"
-			value="${requestScope.RankingConfigForm.groupIds}" scope="request" />
-	</c:when>
 	<c:when test="${not empty requestScope.ranking}">
 		<c:set var="rankingId" value="${requestScope.ranking.id}" />
 		<c:set var="name" value="${requestScope.ranking.name}" />
 		<c:set var="timeRanking" value="${requestScope.ranking.timeRanking}" />
 		<c:set var="limitHours" value="${requestScope.ranking.limitHours}" />
 		<c:set var="points" value="${requestScope.ranking.points}" />
+
+		<c:choose>
+			<c:when test="${rankingId!=0}">
+				<c:set var="method" value="put" />
+				<c:set var="url"
+					value="${contextPath}/rankings/${requestScope.ranking.id}" />
+			</c:when>
+			<c:otherwise>
+				<c:set var="method" value="post" />
+				<c:set var="url" value="${contextPath}/rankings/form" />
+			</c:otherwise>
+		</c:choose>
 	</c:when>
+	<c:otherwise>
+		<c:set var="method" value="post" />
+		<c:set var="url" value="${contextPath}/rankings/form" />
+	</c:otherwise>
 </c:choose>
 
-<html:form action="/admin/ranking/update" method="post">
-	<input type="hidden" name="id" value="${rankingId}" />
+<sf:form action="${url}" method="${method}">
 	<table class="forumline" cellspacing="1" cellpadding="3" width="100%"
 		border="0">
 		<tbody>
 			<tr>
 				<th class="thhead" valign="middle" colspan="2" height="25"><fmt:message
 						key="ranking_form.jsp.title" /></th>
+			</tr>
+
+			<tr>
+				<td align="center" colspan="5"><span class="gensmall"> <c:if
+							test="${pointsExist}">
+							<fmt:message key="error.ranking.with.points.exist" />
+						</c:if>
+				</span></td>
 			</tr>
 
 			<tr>
@@ -63,9 +75,6 @@
 			</tr>
 
 			<c:if test="${not empty requestScope.groups}">
-				<c:set var="baseUrl"
-					value="/do/admin/group/get?action=subGroup&type=rankingOption"
-					scope="request" />
 				<tr>
 					<td class="row1" width="38%"><span class="gen"><fmt:message
 								key="ranking_form.jsp.groups" /></span></td>
@@ -79,7 +88,7 @@
 								</c:forEach>
 								<option value="${group.id}"
 									<c:if test="${selected}">selected</c:if>>${group.name}</option>
-								<c:import url="${baseUrl}&groupId=${group.id}" />
+								<c:import url="${contextPath}/admin/groups/${group.id}?type=rankingOption" />
 							</c:forEach>
 					</select></td>
 				</tr>
@@ -92,4 +101,4 @@
 			</tr>
 		</tbody>
 	</table>
-</html:form>
+</sf:form>

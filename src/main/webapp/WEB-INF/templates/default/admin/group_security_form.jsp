@@ -17,8 +17,7 @@
 	}
 </script>
 
-<html:form action="/admin/permission/update" method="post">
-	<input type="hidden" name="groupId" value="${group.id}" />
+<sf:form action="${contextPath}/admin/permissions/${group.id}" method="put">
 	<input type="hidden" name="permissionType"
 		value="${param.permissionType}" />
 
@@ -91,4 +90,4 @@
 				name="submit" /></td>
 		</tr>
 	</table>
-</html:form>
+</sf:form>

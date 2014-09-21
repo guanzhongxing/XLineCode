@@ -53,8 +53,6 @@ public class SystemConfigForm extends ValidatorForm {
 	private long newRspInterval;
 
 	private boolean registrationEnabled;
-	private boolean enableCacheRecentTopic;
-	private int recentTopicCacheSize;
 
 	private int hotTopicDef;
 	private int recentTopicPageNum;
@@ -150,22 +148,6 @@ public class SystemConfigForm extends ValidatorForm {
 
 	public void setRegistrationEnabled(boolean registrationEnabled) {
 		this.registrationEnabled = registrationEnabled;
-	}
-
-	public boolean isEnableCacheRecentTopic() {
-		return enableCacheRecentTopic;
-	}
-
-	public void setEnableCacheRecentTopic(boolean enableCacheRecentTopic) {
-		this.enableCacheRecentTopic = enableCacheRecentTopic;
-	}
-
-	public int getRecentTopicCacheSize() {
-		return recentTopicCacheSize;
-	}
-
-	public void setRecentTopicCacheSize(int recentTopicCacheSize) {
-		this.recentTopicCacheSize = recentTopicCacheSize;
 	}
 
 	public int getHotTopicDef() {

@@ -12,5 +12,5 @@
 		<c:forEach begin="0" end="${subGroup.nestedLevel}">&nbsp;&nbsp;</c:forEach>
 		${subGroup.name}
 	</option>
-	<c:import url="${baseUrl}&groupId=${subGroup.id}" />
+	<c:import url="${contextPath}/admin/groups/${subGroup.id}?type=rankingOption" />
 </c:forEach>

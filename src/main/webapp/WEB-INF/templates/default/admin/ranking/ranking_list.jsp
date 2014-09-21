@@ -2,7 +2,7 @@
 <link rel="stylesheet" type="text/css"
 	href="${resourcesHost}/css/style.css" />
 
-<html:form action="admin/ranking/delete" method="post">
+<sf:form action="${contextPath}/rankings" method="delete">
 	<table class="forumline" cellspacing="1" cellpadding="3" width="100%"
 		border="0">
 		<tr>
@@ -28,16 +28,14 @@
 		<c:set var="nestedLv" value="0" />
 		<c:set var="ranking" value="${requestScope.ranking}" />
 		<c:if test="${not empty ranking}">
-			<c:import
-				url="/do/admin/ranking/get?action=subList&rankingId=${ranking.id}&nestedLv=${nestedLv}" />
+			<c:import url="/rankings/${ranking.id}?nestedLv=${nestedLv}" />
 		</c:if>
 
 
 		<c:set var="nestedLv" value="0" />
 		<c:set var="ranking" value="${requestScope.timeRanking}" />
 		<c:if test="${not empty ranking}">
-			<c:import
-				url="/do/admin/ranking/get?action=subList&rankingId=${ranking.id}&nestedLv=${nestedLv}" />
+			<c:import url="/rankings/${ranking.id}?&nestedLv=${nestedLv}" />
 		</c:if>
 
 		<tr align="center">
@@ -50,5 +48,5 @@
 				name="submit" /></td>
 		</tr>
 	</table>
-</html:form>
+</sf:form>
 

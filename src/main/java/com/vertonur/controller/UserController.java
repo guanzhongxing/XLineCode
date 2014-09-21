@@ -61,7 +61,7 @@ import freemarker.template.TemplateException;
 @Controller
 public class UserController {
 
-	@RequestMapping(value = "/users/form", method = RequestMethod.GET)
+	@RequestMapping(value = "/users/form")
 	public String showLoginPage(HttpServletRequest request) {
 
 		GlobalConfig config = SystemConfig.getConfig().getGlobalConfig();

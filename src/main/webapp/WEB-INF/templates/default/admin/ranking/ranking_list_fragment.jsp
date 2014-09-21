@@ -7,7 +7,7 @@
 		<td width="26%" class="row1" align="center"><span class="gen">${ranking.points}</span></td>
 		<td width="26%" class="row1" align="center"><span class="gen">${ranking.timeRanking}</span></td>
 		<td width="26%" class="row1" align="center"><span class="gen"><a
-				href="${contextPath}/do/admin/ranking/form?rankingId=${ranking.id}"><fmt:message
+				href="${contextPath}/rankings/form?rankingId=${ranking.id}"><fmt:message
 						key="ranking_list.jsp.edit" /></a></span></td>
 		<td width="10%" class="row1" align="center"><input
 			type="checkbox" name="ids" value="${ranking.id}" /></td>
@@ -16,7 +16,7 @@
 	<c:set var="spaces" value="${spaces}+&nbsp;" />
 	<c:if test="${ranking!=null}">
 		<c:import
-			url="/do/admin/ranking/get?action=subList&rankingId=${ranking.id}&nestedLv=${nestedLv}" />
+			url="/rankings/${ranking.id}?nestedLv=${nestedLv}" />
 	</c:if>
 </c:if>
 

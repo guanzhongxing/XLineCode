@@ -1,5 +1,5 @@
 <%@ include file="/WEB-INF/templates/default/common/common_header.jsp"%>
-<script type="text/javascript" src="${contextPath}/scripts/jquery.js"></script>
+<script type="text/javascript" src="${resourcesHost}/javascripts/jquery.js"></script>
 <link rel="stylesheet" type="text/css"
 	href="${resourcesHost}/css/style.css" />
 <script language="javascript">
@@ -40,7 +40,7 @@
 			$
 					.ajax({
 						type : "POST",
-						url : "${contextPath}/admin/system/config/list.do?action=sendTestMail",
+						url : "${contextPath}/mail",
 						data : params,
 						dataType : "text",
 						global : false,
@@ -61,7 +61,7 @@
 	}
 </script>
 
-<html:form action="/admin/system/config/update" method="post">
+<sf:form action="${contextPath}/system" method="post">
 
 	<table class="forumline" cellspacing="1" cellpadding="3" width="100%"
 		border="0">
@@ -282,28 +282,6 @@
 		<tr>
 			<td class="catsides" colspan="2"><span class="gen"><b><fmt:message
 							key="config_list.jsp.cache.settings" /></b></span></td>
-		</tr>
-
-		<tr>
-			<td class="row2" width="38%"><span class="gen"><fmt:message
-						key="config_list.jsp.recent.topics.cache.enabled" />-->TODO</span></td>
-			<td class="row2" width="38%"><select
-				name="enableCacheRecentTopic">
-					<option value="true">
-						<fmt:message key="config_list.jsp.true" />
-					</option>
-					<option value="false">
-						<fmt:message key="config_list.jsp.false" />
-					</option>
-			</select></td>
-		</tr>
-
-		<tr>
-			<td class="row2" width="38%"><span class="gen"><fmt:message
-						key="config_list.jsp.recent.topics.cache.size" />-->TODO</span></td>
-			<td class="row2" width="38%"><span class="gen"><input
-					type="text" size="10" name="recentTopicCacheSize" value="" /> <html:errors
-						property="recentTopicCacheSize" /></span></td>
 		</tr>
 
 		<tr>
@@ -549,7 +527,7 @@
 		</tr>
 
 	</table>
-</html:form>
+</sf:form>
 <script language="javascript">
 	resize();
 </script>

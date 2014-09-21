@@ -2,8 +2,7 @@
 <link rel="stylesheet" type="text/css"
 	href="${resourcesHost}/css/style.css" />
 
-<html:form action="admin/ranking/pointsconfig/update" method="post">
-	<input type="hidden" name="pointConfig" value="true" />
+<sf:form action="${contextPath}/rankings/points" method="put">
 	<table class="forumline" cellspacing="1" cellpadding="3" width="100%"
 		border="0">
 		<tr>
@@ -12,16 +11,12 @@
 		</tr>
 
 		<tr>
-			<td align="left" colspan="3"><span class="gensmall"> <logic:messagesPresent
-						message="true">
-						<html:messages id="msg" message="true">
-							<bean:write name="msg" />
-							<br />
-						</html:messages>
-					</logic:messagesPresent>
-			</span></td>
+			<td align="left" colspan="3"><span class="gensmall"><c:if
+						test="${updated}">
+						<fmt:message key="message.update.points.success" />
+					</c:if> </span></td>
 		</tr>
-		
+
 		<tr>
 			<td class="row2"><span class="gen"><b><fmt:message
 							key="ranking_points_config.jsp.topic.points" /></b></span></td>
@@ -51,5 +46,5 @@
 				name="submit" /></td>
 		</tr>
 	</table>
-</html:form>
+</sf:form>
 

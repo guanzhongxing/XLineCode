@@ -60,12 +60,12 @@
 
 	<beans:bean id="authenticationEntryPoint"
 		class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
-		<beans:property name="loginFormUrl" value="/forum/user/login/init.do" />
+		<beans:property name="loginFormUrl" value="/users/form" />
 	</beans:bean>
 
 	<beans:bean id="authenticationFailureHandler"
 		class="org.springframework.security.web.authentication.ExceptionMappingAuthenticationFailureHandler">
-		<beans:property name="defaultFailureUrl" value="/forum/user/login/init.do" />
+		<beans:property name="defaultFailureUrl" value="/users/form" />
 		<beans:property name="useForward" value="true" />
 	</beans:bean>
 

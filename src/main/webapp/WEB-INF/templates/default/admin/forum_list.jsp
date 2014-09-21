@@ -2,7 +2,7 @@
 <link rel="stylesheet" type="text/css"
 	href="${resourcesHost}/css/style.css" />
 
-<html:form action="/admin/forum/delete" method="post">
+<sf:form action="${contextPath}/forums" method="delete">
 	<table class="forumline" cellspacing="1" cellpadding="3" width="100%"
 		border="0">
 		<tr>
@@ -11,13 +11,19 @@
 		</tr>
 
 		<tr>
-			<td align="center" colspan="5"><span class="gensmall"> <logic:messagesPresent
-						message="true">
-						<html:messages id="msg" message="true">
-							<bean:write name="msg" />
-							<br />
-						</html:messages>
-					</logic:messagesPresent>
+			<td align="center" colspan="5"><span class="gensmall"> <c:if
+						test="${created}">
+						<fmt:message
+							key="message.admin.forum.action.CreateForumAction.create.succeed" />
+					</c:if> <c:if test="${updated}">
+						<fmt:message
+							key="message.admin.forum.action.EditForumAction.edit.succeed" />
+					</c:if> <c:if test="${msgToBeModerated}">
+						<fmt:message key="msg.pending.to.modernate" />
+					</c:if> <c:if test="${deleted}">
+						<fmt:message
+							key="message.admin.forum.action.DeleteForumAction.delete.succeed" />
+					</c:if>
 			</span></td>
 		</tr>
 
@@ -39,7 +45,7 @@
 							</span></td>
 							<td class="row2" align="center" width="10%"><input
 								type="checkbox" name="forumIds"
-								value="${forumzone.id}_${forum.id}" /></td>
+								value="${forum.id}" /></td>
 
 							<td class="row2" align="center" width="10%"><span
 								class="gen">${forum.priority}</span></td>
@@ -61,4 +67,4 @@
 			</td>
 		</tr>
 	</table>
-</html:form>
+</sf:form>
