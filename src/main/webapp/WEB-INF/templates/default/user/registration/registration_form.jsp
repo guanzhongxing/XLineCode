@@ -32,8 +32,7 @@
 		<tr>
 			<td class="row2" colspan="2" align="center"><span
 				class="gensmall" style="color: red"><fmt:message
-						key="registration_form.jsp.requiredFields" /><br /> <sf:errors
-						path="*" cssClass="error" /></span></td>
+						key="registration_form.jsp.requiredFields" /><br /></span></td>
 		</tr>
 		<tr>
 			<td class="row1" width="38%"><span class="gen"><fmt:message
@@ -43,8 +42,8 @@
 				styleId="username" onfocus="javascript:act=false;"
 				onkeyup="javascript:act=true;"
 				onblur="showProcessIcon(act);startRequest('GET','checkUserNameExistence.do?userName='+this.value+'&timeStamp='+new Date().getTime(),true,null,act);" />
-				<span class="gen" style="color: #ff0000"> <b><html:errors
-							property="userName" /></b>
+				<span class="gen" style="color: #ff0000"> <b><sf:errors
+							path="name" cssClass="error" /></b>
 			</span></td>
 		</tr>
 
@@ -56,7 +55,7 @@
 				class="gen" style="color: #ff0000"> <b><c:if
 							test="${requestScope.emailExist}">
 							<fmt:message key="error.form.email.exist" />
-						</c:if></b>
+						</c:if> <sf:errors path="email" cssClass="error" /></b>
 			</span></td>
 		</tr>
 
@@ -65,8 +64,8 @@
 						key="registration_form.jsp.password" />: *</span></td>
 			<td class="row2"><input type="password" name="password"
 				class="post" style="WIDTH: 200px" size="25" maxlength="100" /> <span
-				class="gen" style="color: #ff0000"> <b><html:errors
-							property="pwd" /></b>
+				class="gen" style="color: #ff0000"> <b><sf:errors
+							path="password" cssClass="error" /></b>
 			</span></td>
 		</tr>
 
@@ -75,20 +74,20 @@
 						key="registration_form.jsp.confirmPassword" />: * </span></td>
 			<td class="row2"><input type="password" class="post"
 				style="WIDTH: 200px" maxlength="100" size="25" name="confirmPwd" />
-				<span class="gen" style="color: #ff0000"> <b><html:errors
-							property="confirmPwd" /></b>
+				<span class="gen" style="color: #ff0000"> <b><sf:errors
+							path="*" cssClass="error" /></b>
 			</span></td>
 		</tr>
 
 		<tr>
 			<td class="row1"><span class="gen"><fmt:message
-						key="registration_form.jsp.gender" />: * </span></td>
+						key="registration_form.jsp.gender" />:</span></td>
 			<td class="row2"><input type="radio" styleClass="post"
 				property="gender" value="m" /> <fmt:message
-					key="registration_form.jsp.male" /> <html:radio styleClass="post"
-					property="gender" value="f" /> <fmt:message
+					key="registration_form.jsp.male" /> <input type="radio"
+				styleClass="post" property="gender" value="f" /> <fmt:message
 					key="registration_form.jsp.female" /> <span class="gen"
-				style="color: #ff0000"> <b><html:errors property="gender" /></b>
+				style="color: #ff0000"> <b></b>
 			</span></td>
 		</tr>
 
@@ -117,17 +116,17 @@
 								<c:import url="${baseUrl}&&groupId=${group.id}" />
 							</c:forEach>
 						</c:if>
-				</select> <html:errors property="groupId" /></td>
+				</select> <sf:errors path="*" cssClass="error" /></td>
 			</tr>
 		</c:if>
 
 		<tr>
 			<td class="row1"><span class="gen"><fmt:message
-						key="registration_form.jsp.avatar" />: * </span></td>
+						key="registration_form.jsp.avatar" />: </span></td>
 			<td class="row2"><input type="file" name="image" /> <c:if
 					test="${requestScope.fileInvalid}">
 					<fmt:message key="error.form.fileinvalid" />
-				</c:if> <html:errors property="image" /></td>
+				</c:if> <sf:errors path="*" cssClass="error" /></td>
 		</tr>
 
 		<c:if test="${requestScope.registrationCaptchaEnabled}">

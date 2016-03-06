@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.json.JSONException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.qiniu.api.auth.AuthException;
+import com.qiniu.api.auth.digest.Mac;
+import com.qiniu.api.config.Config;
+import com.qiniu.api.rs.PutPolicy;
 import com.vertonur.bean.Forum;
 import com.vertonur.bean.Forumzone;
 import com.vertonur.bean.Topic;
@@ -168,6 +173,23 @@ public class TopicController {
 		return "default/user/topic/user_specified_topics";
 	}
 
+	private String setQiniuToken() {
+		Config.ACCESS_KEY = "VH-romznsGAIZ824VyBbWsAlekZcbhLHiMyo8Rd0";
+		Config.SECRET_KEY = "2IMVpsSItzgyoEMAcMyRilVG2yfZ5uZmIL1trynv";
+		Mac mac = new Mac(Config.ACCESS_KEY, Config.SECRET_KEY);
+		// 请确保该bucket已经存在
+		String bucketName = "ttbox";
+		PutPolicy putPolicy = new PutPolicy(bucketName);
+		try {
+			return putPolicy.token(mac);
+		} catch (AuthException | JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return "";
+	}
+
 	@RequestMapping(value = "/forums/{forumId}/topic", method = RequestMethod.GET)
 	public String showTopicForm(@PathVariable int forumId,
 			HttpServletRequest request) {
@@ -185,6 +207,8 @@ public class TopicController {
 				.getDataManagementService(ServiceEnum.USER_SERVICE);
 		com.vertonur.pojo.User user = userService.getUserById(userSession
 				.getUserId());
+		String token = setQiniuToken();
+		request.setAttribute("qiniuToken", token);
 		if (PermissionUtils.checkAttachmentUploadPermission(
 				request.getServletContext(), forumId)
 				&& user.isAttmEnabled()) {

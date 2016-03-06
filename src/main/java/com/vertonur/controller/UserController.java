@@ -12,12 +12,15 @@ import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.apache.commons.mail.EmailException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -58,6 +61,7 @@ import com.vertonur.util.TxtFileReader;
 
 import freemarker.template.TemplateException;
 
+@Validated
 @Controller
 public class UserController {
 
@@ -311,10 +315,11 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/users/register", method = RequestMethod.POST)
-	public String registerUser(@Valid com.vertonur.pojo.User user,
+	public String registerUser(
+			@Valid com.vertonur.pojo.User user,
 			BindingResult bindingResult,
 			@RequestParam(defaultValue = "0") int groupId,
-			@RequestParam String confirmPwd,
+			@RequestParam @Size(min=1) String confirmPwd,
 			@RequestParam(required = false) MultipartFile image,
 			@RequestParam(required = false) boolean fromAdmin,
 			HttpServletRequest request) throws IOException, TemplateException,
